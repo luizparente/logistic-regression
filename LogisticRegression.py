@@ -36,9 +36,9 @@ class LogisticRegression:
             self.weights -= self.learning_rate * gradient_weights
             self.bias -= self.learning_rate * gradient_bias
 
-            if epoch % 100 == 0:
-                loss = self.compute_loss(feature_matrix, labels)
-                print(f"Epoch {epoch}, Loss: {loss}")
+            # if epoch % 100 == 0:
+            #     loss = self.compute_loss(feature_matrix, labels)
+            #     print(f"Epoch {epoch}, Loss: {loss}")
 
     def fit(self, feature_matrix, labels):
         """This method trains the logistic regression model."""
