@@ -21,7 +21,7 @@ class LogisticRegression:
         
         return loss
 
-    def gradient_descent(self, feature_matrix, labels):
+    def gradient_descent(self, feature_matrix, labels, verbose=False):
         """This method performs gradient descent to minimize the loss."""
         num_samples = len(labels)
         
@@ -36,18 +36,18 @@ class LogisticRegression:
             self.weights -= self.learning_rate * gradient_weights
             self.bias -= self.learning_rate * gradient_bias
 
-            # if epoch % 100 == 0:
-            #     loss = self.compute_loss(feature_matrix, labels)
-            #     print(f"Epoch {epoch}, Loss: {loss}")
+            if epoch % 100 == 0 and verbose:
+                loss = self.compute_loss(feature_matrix, labels)
+                print(f"Epoch {epoch}, Loss: {loss}")
 
-    def fit(self, feature_matrix, labels):
+    def fit(self, feature_matrix, labels, verbose=False):
         """This method trains the logistic regression model."""
         num_samples, num_features = feature_matrix.shape
         self.weights = np.zeros(num_features)
         self.bias = 0
 
         # Training the model using gradient descent.
-        self.gradient_descent(feature_matrix, labels)
+        self.gradient_descent(feature_matrix, labels, verbose)
 
     def predict(self, feature_matrix):
         """This method predicts the binary vector output based on learned weights and bias."""
