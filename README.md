@@ -28,7 +28,7 @@ The code proposed here is organized as follows:
 
 # `LogisticRegression` Class Implementation
 
-This class provides an abstraction that allows users to create a Logistic Regression model instance that can be trained and used for predictions. The strategy employed for its implementation is described as follows.
+This class provides an abstraction that allows users to create a Logistic Regression model instance that can be trained and used for predictions. The strategy employed for its implementation is described in the sub-sections below.
 
 ## Training Data
 
@@ -40,7 +40,7 @@ The model expects an input of training data in the following format:
 
 ## Initialization
 
-Model initialization defines the following parameters:
+Model parameters are initialized as follows:
 
 - **Weights (`θ`):** The weights (coefficients) of the model, here initialized as zeros. These weights are of size $m$ (one for each feature).
 
@@ -48,21 +48,19 @@ Model initialization defines the following parameters:
 
 ## Model Hypothesis
 
-- **Linear Combination:** For each data point, we compute the weighted sum of the features plus the bias term:
+A linear combination (linear model) is implemented for the inputs and weights.
 
-   $$
-   z = \theta_1 x_1 + \theta_2 x_2 + \dots + \theta_m x_m + b
-   $$
+- **Linear Combination:** For each data point, we compute the weighted sum of the features plus the bias term. 
 
-   This is the linear combination (linear model) of the inputs and weights.
+$$
+z = \theta_1 x_1 + \theta_2 x_2 + \dots + \theta_m x_m + b
+$$
 
-- **Sigmoid Function (Logistic Function):** We apply the sigmoid function to the linear combination $z$ to obtain the predicted probability:
+- **Sigmoid Function (Logistic Function):** This function maps the output of the linear combination to a probability between 0 and 1, which represents the probability of the positive class (prediction being `true`). We apply the sigmoid function to the linear combination $z$ to obtain the predicted probability:
 
-   $$
-   \hat{y}(z) = \frac{1}{1 + e^{-z}}
-   $$
-
-   This function maps the output of the linear combination to a probability between 0 and 1, which represents the probability of the positive class (prediction being `true`).
+$$
+\hat{y}(z) = \frac{1}{1 + e^{-z}}
+$$
 
 ## Loss Function (Cost Function)
 
@@ -78,25 +76,25 @@ Where $y^{(i)}$ is the true label and $\hat{y}^{(i)}$ is the predicted probabili
 
 The goal of Logistic Regression is to find the optimal values for the weights and bias that minimize the loss function. This is typically done using an optimization algorithm like **gradient descent**, which goes as follows:
 
-- Compute the gradients (partial derivatives) of the loss function with respect to each parameter (weights and bias):
-   $$
-   \frac{\partial J(\theta)}{\partial \theta_j} = \frac{1}{n} \sum_{i=1}^{n} \left( \hat{y}^{(i)} - y^{(i)} \right) x_j^{(i)}
-   $$
-   $$
-   \frac{\partial J(\theta)}{\partial b} = \frac{1}{n} \sum_{i=1}^{n} \left( \hat{y}^{(i)} - y^{(i)} \right)
-   $$
+1. Compute the gradients (partial derivatives) of the loss function with respect to each parameter (weights and bias):
 
-- Update the weights and bias using the gradients:
-   $$
-   \theta_j := \theta_j - \alpha \frac{\partial J(\theta)}{\partial \theta_j}
-   $$
-   $$
-   b := b - \alpha \frac{\partial J(\theta)}{\partial b}
-   $$
+$$
+\frac{\partial J(\theta)}{\partial \theta_j} = \frac{1}{n} \sum_{i=1}^{n} \left( \hat{y}^{(i)} - y^{(i)} \right) x_j^{(i)}
+$$
+$$
+\frac{\partial J(\theta)}{\partial b} = \frac{1}{n} \sum_{i=1}^{n} \left( \hat{y}^{(i)} - y^{(i)} \right)
+$$
 
-   Where $\alpha$ is the learning rate, which controls the step size of each update.
+2. Update the weights and bias using the gradients, ($\alpha$ is the learning rate, which controls the step size of each update):
 
-- Repeat until the loss converges (i.e., the change in the cost function between iterations is small enough) or a predefined number of iterations is reached.
+$$
+\theta_j := \theta_j - \alpha \frac{\partial J(\theta)}{\partial \theta_j}
+$$
+$$
+b := b - \alpha \frac{\partial J(\theta)}{\partial b}
+$$
+
+3. Repeat until the loss converges (i.e., the change in the cost function between iterations is small enough) or a predefined number of iterations is reached.
 
 ## Model Evaluation
 
@@ -104,7 +102,7 @@ We evaluate the model’s performance by comparing the predicted labels against 
 
 ## Output
 
-After training, the learned weights and bias can be used to make predictions on new data. The output is a probability, but for classification, a threshold (commonly 0.5) may be applied to convert the probability into a binary class label:
+After training, the learned weights and bias can be used to make predictions on new data. The output is a probability, but for classification, a *Decision Boundary* (commonly 0.5) may be applied to convert the probability into a binary class label:
 
 $$
 \hat{y} = \begin{cases} 
