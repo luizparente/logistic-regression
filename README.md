@@ -1,46 +1,70 @@
 # Logistic Regression Implementation
 
-This repository implements the classic Logistic Regression machine learning algorithm. The code presented here is restricted to native Python functions and NumPy.
+This repository implements the classic Logistic Regression machine learning algorithm. Additionally, we explore an optimization as proposed by Agniva Chowdhury and Pradeep Ramuhalli in [A Provably Accurate Randomized Sampling Algorithm for Logistic Regression](https://ojs.aaai.org/index.php/AAAI/article/view/29042).
 
-## `LogisticRegression` Class Implementation
+All code presented here is restricted to native Python functions and NumPy.
+
+## How this Repository is Structured
+
+The code proposed here is organized as follows:
+
+- Directory `src` contains the source code for this project.
+   - `requirements.txt` lists the requirements for the Python virtual environment necessary for the project.
+- Sub-directory `classic` provides the classic implementation for the Logistic Regression algorithm, as detailed below.
+   - Class `LogisticRegression` provides a classic implementation for the Logistic Regression algorithm.
+   - `tests.ipynb` provides tests for `LogisticRegression`.
+- Sub-directory `optimized_sampling` implements the optimization proposed in the aforementioned paper. **Work currently in progress.**
+
+```
+./src
+├── classic
+│   ├── LogisticRegression.py
+│   ├── tests.ipynb
+├── optimized_sampling
+│   └── in progress...
+└── requirements.txt
+```
+<br>
+
+# `LogisticRegression` Class Implementation
 
 This class provides an abstraction that allows users to create a Logistic Regression model instance that can be trained and used for predictions. The strategy employed for its implementation is described as follows.
 
-### Training Data
+## Training Data
 
 The model expects an input of training data in the following format:
 
-   - **Features (`X`):** A matrix of input features where each row represents a data point and each column represents a feature (e.g., a matrix of shape $n \times m$, where $n$ is the number of data points and $m$ is the number of features).
+- **Features (`X`):** A matrix of input features where each row represents a data point and each column represents a feature (e.g., a matrix of shape $n \times m$, where $n$ is the number of data points and $m$ is the number of features).
 
-   - **Labels (`y`):** A vector of length $n$ with the target binary labels (0 or 1, for binary logistic regression), corresponding to the input features.
+- **Labels (`y`):** A vector of length $n$ with the target binary labels (0 or 1, for binary logistic regression), corresponding to the input features.
 
-### Initialization
+## Initialization
 
 Model initialization defines the following parameters:
 
-   - **Weights (`θ`):** The weights (coefficients) of the model, here initialized as zeros. These weights are of size $m$ (one for each feature).
+- **Weights (`θ`):** The weights (coefficients) of the model, here initialized as zeros. These weights are of size $m$ (one for each feature).
 
-   - **Bias (`b`):** A scalar value added to the output of the linear combination of the features, here initialized to zero.
+- **Bias (`b`):** A scalar value added to the output of the linear combination of the features, here initialized to zero.
 
-### Model Hypothesis
+## Model Hypothesis
 
-   - **Linear Combination:** For each data point, we compute the weighted sum of the features plus the bias term:
+- **Linear Combination:** For each data point, we compute the weighted sum of the features plus the bias term:
 
-      $$
-      z = \theta_1 x_1 + \theta_2 x_2 + \dots + \theta_m x_m + b
-      $$
+   $$
+   z = \theta_1 x_1 + \theta_2 x_2 + \dots + \theta_m x_m + b
+   $$
 
-      This is the linear combination (linear model) of the inputs and weights.
+   This is the linear combination (linear model) of the inputs and weights.
 
-   - **Sigmoid Function (Logistic Function):** We apply the sigmoid function to the linear combination $z$ to obtain the predicted probability:
+- **Sigmoid Function (Logistic Function):** We apply the sigmoid function to the linear combination $z$ to obtain the predicted probability:
 
-     $$
-     \hat{y}(z) = \frac{1}{1 + e^{-z}}
-     $$
+   $$
+   \hat{y}(z) = \frac{1}{1 + e^{-z}}
+   $$
 
-     This function maps the output of the linear combination to a probability between 0 and 1, which represents the probability of the positive class (prediction being `true`).
+   This function maps the output of the linear combination to a probability between 0 and 1, which represents the probability of the positive class (prediction being `true`).
 
-### Loss Function (Cost Function)
+## Loss Function (Cost Function)
 
 The loss function used in logistic regression is the **binary cross-entropy**, which measures the difference between the predicted probabilities versus the actual (expected) values. For a dataset of $n$ examples, the cost function $J(\theta)$ is given by:
 
@@ -50,34 +74,35 @@ $$
 
 Where $y^{(i)}$ is the true label and $\hat{y}^{(i)}$ is the predicted probability for each data point.
 
-### Optimization
+## Optimization
 
 The goal of Logistic Regression is to find the optimal values for the weights and bias that minimize the loss function. This is typically done using an optimization algorithm like **gradient descent**, which goes as follows:
 
-  - Compute the gradients (partial derivatives) of the loss function with respect to each parameter (weights and bias):
-    $$
-    \frac{\partial J(\theta)}{\partial \theta_j} = \frac{1}{n} \sum_{i=1}^{n} \left( \hat{y}^{(i)} - y^{(i)} \right) x_j^{(i)}
-    $$
-    $$
-    \frac{\partial J(\theta)}{\partial b} = \frac{1}{n} \sum_{i=1}^{n} \left( \hat{y}^{(i)} - y^{(i)} \right)
-    $$
-  - Update the weights and bias using the gradients:
-    $$
-    \theta_j := \theta_j - \alpha \frac{\partial J(\theta)}{\partial \theta_j}
-    $$
-    $$
-    b := b - \alpha \frac{\partial J(\theta)}{\partial b}
-    $$
+- Compute the gradients (partial derivatives) of the loss function with respect to each parameter (weights and bias):
+   $$
+   \frac{\partial J(\theta)}{\partial \theta_j} = \frac{1}{n} \sum_{i=1}^{n} \left( \hat{y}^{(i)} - y^{(i)} \right) x_j^{(i)}
+   $$
+   $$
+   \frac{\partial J(\theta)}{\partial b} = \frac{1}{n} \sum_{i=1}^{n} \left( \hat{y}^{(i)} - y^{(i)} \right)
+   $$
 
-    Where $\alpha$ is the learning rate, which controls the step size of each update.
+- Update the weights and bias using the gradients:
+   $$
+   \theta_j := \theta_j - \alpha \frac{\partial J(\theta)}{\partial \theta_j}
+   $$
+   $$
+   b := b - \alpha \frac{\partial J(\theta)}{\partial b}
+   $$
 
-   - Repeat until the loss converges (i.e., the change in the cost function between iterations is small enough) or a predefined number of iterations is reached.
+   Where $\alpha$ is the learning rate, which controls the step size of each update.
 
-### Model Evaluation
+- Repeat until the loss converges (i.e., the change in the cost function between iterations is small enough) or a predefined number of iterations is reached.
+
+## Model Evaluation
 
 We evaluate the model’s performance by comparing the predicted labels against the actual values. Common metrics include accuracy, precision, recall, F1 score, etc.
 
-### Output
+## Output
 
 After training, the learned weights and bias can be used to make predictions on new data. The output is a probability, but for classification, a threshold (commonly 0.5) may be applied to convert the probability into a binary class label:
 
