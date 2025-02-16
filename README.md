@@ -135,7 +135,7 @@ X_train = scaler.transform(X_train)
 X_test = scaler.transform(X_test)
 
 # Initializing and training the model.
-logistic_regression_model = LogisticRegression(learning_rate=0.1, epochs=1000)
+logistic_regression_model = LogisticRegression(learning_rate=0.1, epochs=5000)
 logistic_regression_model.fit(X_train, y_train)
 
 # Making predictions on the test set.
@@ -146,5 +146,5 @@ accuracy = accuracy_score(y_test, predictions)
 print(f"Accuracy on test set: {accuracy * 100:.2f}%")
 
 
-# Output: Accuracy on test set: 94.74%
+# Output: Accuracy on test set: 97.37%
 ```
