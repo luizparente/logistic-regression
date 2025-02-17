@@ -10,21 +10,22 @@ The code proposed here is organized as follows:
 
 - Directory `src` contains the source code for this project.
    - `requirements.txt` lists the requirements for the Python virtual environment necessary for the project.
-- Sub-directory `classic` provides the classic implementation for the Logistic Regression algorithm, as detailed below.
-   - Class `LogisticRegression` provides a classic implementation for the Logistic Regression algorithm.
-   - `tests.ipynb` provides tests for `LogisticRegression`.
+   - `model_benchmarking.ipynb` provides tests and comparisons for our `LogisticRegression` versus other implementations and variations.
+- Sub-directory `ours` provides our "vanilla" implementation for the Logistic Regression algorithm, as detailed below.
 - Sub-directory `optimized_sampling` implements the optimization proposed in the aforementioned paper. **Work currently in progress.**
+- Sub-directory `utilities` implements basic utilities for obtaining additional performance metrics for the models.
 
 ```
-./src
-├── classic
-│   ├── LogisticRegression.py
-│   ├── tests.ipynb
+src
+├── ours
+│   └── LogisticRegression.py
 ├── optimized_sampling
-│   └── in progress...
-└── requirements.txt
+│   └── work in progress...
+├── utilities
+│   └── Stopwatch.py
+├── requirements.txt
+└── model_benchmarking.ipynb
 ```
-<br>
 
 # `LogisticRegression` Class Implementation
 
