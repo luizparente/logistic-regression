@@ -11,13 +11,13 @@ The code proposed here is organized as follows:
 - Directory `src` contains the source code for this project.
    - `requirements.txt` lists the requirements for the Python virtual environment necessary for the project.
    - `model_benchmarking.ipynb` provides tests and comparisons for our `LogisticRegression` versus other implementations and variations.
-- Sub-directory `ours` provides our "vanilla" implementation for the Logistic Regression algorithm, as detailed below.
+- Sub-directory `regression` provides our "vanilla" implementation for the Logistic Regression algorithm.
 - Sub-directory `optimized_sampling` provides a simplified implementation of the optimized sampling algorithm proposed in the aforementioned paper.
 - Sub-directory `utilities` implements basic utilities for obtaining additional performance metrics for the models.
 
 ```
 src
-├── ours
+├── regression
 │   └── LogisticRegression.py
 ├── optimized_sampling
 │   └── BasicOptimizedSampler.py
