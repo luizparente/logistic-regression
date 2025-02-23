@@ -133,73 +133,53 @@ camera-ready copies. Here is a brief summary:
 \subsection{Summary and Critique of the Selected Papers}
 
 
-\subsubsection{Paper 1: Main Paper}
+\subsubsection{Main Paper \cite{chow24}: A Provably Accurate Randomized Sampling Algorithm for Logistic Regression}
 
-\textbf{Summary:} Logistic Regression is a fundamental supervised learning technique widely used for binary classification, where the goal is to model the probability of an event occurring based on predictor variables. In the field of Machine Learning, Logistic Regression is often applied in the context of disease classification, anomaly detection, among others.
+\textbf{Summary:} The paper presents a randomized sampling-based algorithm for \textbf{logistic regression}, focusing on reducing the computational complexity associated with large datasets. Logistic regression is a widely used method for binary classification tasks, where the goal is to predict one of two possible outcomes based on input features. However, when the number of observations greatly exceeds the number of predictor variables, solving logistic regression becomes computationally expensive, especially when using methods like Iteratively Reweighted Least Squares (IRLS). In this work, \citeauthor{chow24} propose a novel approach to address this issue by leveraging a randomized sampling technique that guarantees high-quality approximations to the estimated probabilities of logistic regression, with a sample size significantly smaller than the total number of observations. The primary goal is to make logistic regression more efficient for large-scale datasets while maintaining prediction accuracy.
 
-Numerous efforts have been made in recent years to improve computation time and precision of Logistic Regression models, especially for large-scale datasets. The selected paper presents a randomized sampling algorithm for Logistic Regression that efficiently approximates the estimated probabilities while maintaining high prediction accuracy.
+The paper focuses on the use of row leverage scores, which is a measure of how influential each row of the data matrix is in determining the regression model. Leverage scores allow for a sampling strategy where data points with higher scores are more likely to be selected. This ensures that the sampled data points are representative of the overall dataset, which in turn allows for an efficient approximation of the logistic regression model's parameters. The authors' proposed algorithm constructs a sampling matrix using these scores, and the resulting subsampled log-likelihood function is optimized to estimate the model parameters. This randomized approach allows for substantial reductions in computational cost while preserving the accuracy of the regression model.
 
-The proposed method\footnote{The authors provide an implementation of the proposed algorithm in Python, which can be found at https://github.com/agnivac/subsampledlogisticregression } is based on leverage score sampling, a technique from randomized numerical linear algebra that selects rows from the data matrix based on their importance. It also leverages randomized matrix multiplication to reduce the complexity of solving the maximum likelihood estimation (MLE) problem.
+The paper provides a theoretical derivation of an approximation bound that guarantees the accuracy of the estimated probabilities obtained from the subsampled data. Specifically, the authors show that the error between the estimated probabilities from the subsampled logistic regression model and the full-data model can be bounded by a factor of \( \epsilon \), where \( \epsilon \) is the error tolerance. This bound depends on the goodness of fit of the full-data model. In other words, if the full model already provides a good fit to the data, the approximated probabilities will be highly accurate. The paper further proves that the number of samples required to achieve this approximation is proportional to \( d/\epsilon^2 \), where \( d \) is the number of predictor variables. This result is significant because it shows that only a small subset of the data is needed to achieve a high-quality approximation, making the algorithm scalable and efficient.
 
-The theoretical results show that the estimated probabilities closely match those of the full-data model, while significantly reducing computational overhead. In addition, the experimental results confirm that the approach provides accurate probability estimates and maintains low misclassification rates. Ultimately, the study shows that leverage score-based sampling is efficient compared to alternative sampling methods, and prove that accurate estimations of logistic regression probabilities can be achieved with significantly fewer data points than the original dataset.
+To validate their approach, the authors conduct extensive empirical evaluations on real-world datasets, including a cardiovascular disease prediction dataset, a customer churn prediction dataset, and a credit card default prediction dataset. The experiments compare the performance of the proposed leverage score-based sampling method with other sampling schemes, including uniform sampling and the L2S method. The results demonstrate that the leverage score-based method performs comparably to other methods in terms of the accuracy of estimated probabilities, and sometimes outperforms them, particularly as the sample size increases. Moreover, the method achieves misclassification rates close to those obtained by the full-data model, further confirming its effectiveness. These empirical results validate the theoretical claims and show that the proposed algorithm can deliver accurate logistic regression estimates with a reduced sample size.
+
+The paper concludes with a discussion about the implications of their findings and suggesting future research directions. While the proposed method performs well in practice, the authors highlight that there is still room for improvement in terms of algorithmic efficiency and scalability, particularly in high-dimensional settings where \( n \ll d \). They also suggest exploring alternative sketching techniques, such as random projection-based methods, to further enhance the sampling process. Additionally, the paper points out that the approach could be extended to handle other forms of regression and machine learning models, making it a valuable tool for a variety of applications. Overall, the paper makes a significant contribution by providing an efficient and scalable solution to logistic regression for large datasets, with strong theoretical guarantees and solid empirical results.
 
 
 \textbf{Critique:} TBD.
 
 
-\subsubsection{Paper 2: Supplementary Paper}
+\subsubsection{Supplementary Paper \cite{yad21}: SLOE: A Faster Method for Statistical Inference in High-Dimensional
+Logistic Regression}
 
-\textbf{Graphics files} should be a reasonable size, and included from
-an appropriate format. Use vector formats (.eps/.pdf) for plots,
-lossless bitmap formats (.png) for raster graphics with sharp lines, and
-jpeg for photo-like images.
+\textbf{Summary:} In high-dimensional problems, where the number of features is comparable to or exceeds the number of samples, traditional logistic regression methods, specifically maximum likelihood estimation (MLE), commonly present poor performance. The existing large-sample asymptotic theory for logistic regression approximations fails in these scenarios, leading to inflated parameter estimates and unreliable statistical inference.
 
-The style file uses the \texttt{hyperref} package to make clickable
-links in documents. If this causes problems for you, add
-\texttt{nohyperref} as one of the options to the \texttt{icml2025}
-usepackage statement.
+\citeauthor{yad21} propose a novel solution, the Signal Strength Leave-One-Out Estimator (SLOE), to efficiently estimate the signal strength parameter, which is crucial for performing dimensionality corrections. This method significantly improves the practical application of the corrections developed in previous works, making it computationally feasible and faster to implement in real-world applications.
 
-The final versions of papers accepted for publication should follow the
-same format and naming convention as initial submissions, except that
-author information (names and affiliations) should be given. See
-\cref{final author} for formatting instructions.
+At the heart of this paper is the challenge of estimating the signal strength, which is used in dimensionality corrections to adjust the bias and variance in high-dimensional \textbf{logistic regression}. Previous methods, such as the ProbeFrontier heuristic, attempted to estimate this signal strength but were computationally expensive and conceptually complex. The proposed SLOE method reparameterizes the problem in terms of a more easily estimated "corrupted" signal strength, which accounts for the noise in the parameter estimates due to finite sample sizes. The paper demonstrates that using this reparameterization, the bias and variance adjustments for MLE can be performed accurately, even in finite samples, which is a significant improvement over traditional methods that rely on large-sample approximations.
 
-The footnote, ``Preliminary work. Under review by the International
-Conference on Machine Learning (ICML). Do not distribute.'' must be
-modified to ``\textit{test of the
-$\mathit{42}^{nd}$ International Conference on Machine Learning},
-Vancouver, Canada, PMLR 267, 2025.
-Copyright 2025 by the author(s).''
+One of the key advantages of SLOE is its computational efficiency. While previous heuristics like ProbeFrontier required multiple subsampling iterations and linear programming to estimate the signal strength, SLOE uses a simple and fast approach by leveraging leave-one-out (LOO) techniques. The method estimates the corrupted signal strength using a rank-one update formula that avoids refitting the model multiple times. The paper shows that SLOE achieves a substantial reduction in computation time compared to ProbeFrontier, making it a practical tool for routine use in high-dimensional logistic regression. This efficiency gain is particularly important when working with large datasets, where computational speed is crucial.
 
-For those using the \textbf{\LaTeX} style file, this change (and others) is
-handled automatically by simply changing
-$\mathtt{\backslash usepackage\{icml2025\}}$ to
-$$\mathtt{\backslash usepackage[accepted]\{icml2025\}}$$
-Authors using \textbf{Word} must edit the
-footnote on the first page of the document themselves.
+The authors provide a detailed theoretical analysis of the SLOE method, showing that it consistently estimates the corrupted signal strength, which is asymptotically equivalent to the true signal strength. The theoretical guarantees underpin the practical reliability of SLOE in high-dimensional settings. Through extensive simulations, the paper illustrates how SLOE improves the accuracy of confidence intervals (CIs) and p-values in logistic regression models. In particular, the corrected CIs generated by SLOE are shown to provide reliable coverage, even in high-dimensional settings where traditional large-sample approximations fail. This is especially important for making sound statistical inferences in fields like genomics and clinical applications, where reliable uncertainty quantification is critical.
 
-Camera-ready copies should have the title of the paper as running head
-on each page except the first one. The running title consists of a
-single line centered above a horizontal rule which is $1$~point thick.
-The running head should be centered, bold and in $9$~point type. The
-rule should be $10$~points above the main text. For those using the
-\textbf{\LaTeX} style file, the original title is automatically set as running
-head using the \texttt{fancyhdr} package which is included in the ICML
-2025 style file package. In case that the original title exceeds the
-size restrictions, a shorter form can be supplied by using
+This paper ultimately makes an important contribution to the field of high-dimensional statistical inference. The SLOE method introduced by the authors provide a simpler, faster, and more accurate approach to estimating signal strength in high-dimensional logistic regression. SLOE offers a practical solution to the problems caused by large-dimensional data, enabling more reliable statistical inference in these settings. The method is tested and validated on several real-world datasets, including applications to heart disease prediction and genomics, where it outperforms traditional methods in terms of both computational efficiency and statistical accuracy. SLOE paves the way for more robust and computationally feasible dimensionality corrections, making it a valuable tool for applied data science and statistical modeling.
 
-\verb|\icmltitlerunning{...}|
-
-just before $\mathtt{\backslash begin\{document\}}$.
-Authors using \textbf{Word} must edit the header of the document themselves.
+\textbf{Critique:} TBD.
 
 
-\subsubsection{Paper 3: Supplementary Paper}
+\subsubsection{Supplementary Paper \cite{shen20}: Stable learning via sample reweighting}
 
-The final versions of papers accepted for publication should follow the
-same format and naming convention as initial submissions, except that
-author information (names and affiliations) should be given. See
-\cref{final author} for formatting instructions.
+The paper aims to address the problem of model instability in machine learning, especially when there is a mismatch between training and test data distributions. In real-world scenarios, it is often unrealistic to assume that the training data and the test data come from the same distribution. This discrepancy can lead to unreliable performance, especially when the model relies heavily on collinear input variables. \citeauthor{shen20} aim to develop a method that ensures stability in predictions, even when the underlying data distribution changes. Their work is focused on linear models, which are commonly used for regression and classification tasks but are sensitive to collinearity, which can significantly distort parameter estimates and lead to unstable predictions.
+
+A central challenge addressed in this paper is the impact of collinearity on model stability. Collinearity occurs when there is a high correlation between input variables, leading to a sub-optimal design matrix. This problem is particularly notable in high-dimensional settings, where variables are highly interdependent. The authors argue that traditional methods, such as ordinary least squares (OLS), are susceptible to this issue, causing large errors in parameter estimation when the training data differs from the test data. In particular, they show that even small model misspecifications can lead to large errors in predictions due to the instability introduced by collinearity. Thus, the paper emphasizes the need for a robust approach that can mitigate the adverse effects of collinearity.
+
+To address this issue, the authors propose a novel method called Sample Reweighted Decorrelation Operator (SRDO). This method works by assigning appropriate weights to samples, effectively reweighting the data to reduce collinearity among input variables. By doing so, the design matrix becomes closer to an orthogonal structure, which is more stable and less prone to errors caused by multicollinearity. The theoretical foundation of SRDO shows that, under ideal conditions, the sample weights can make the design matrix nearly orthogonal, significantly improving the model's stability. The method is presented as a general pretreatment technique, meaning it can be integrated with standard linear regression methods like ordinary least squares (OLS), Lasso, and \textbf{logistic regression} to enhance their robustness against distribution shifts.
+
+The paper provides a detailed theoretical analysis of the SRDO method. It demonstrates that, in an idealized setting with infinite sample size, the optimal sample weights can minimize the effects of model misspecification and collinearity. However, the authors also acknowledge the practical challenges when working with finite sample sizes. In such cases, there is a tradeoff between reducing bias and increasing variance, which is common in statistical methods. Despite this, the SRDO method shows a clear advantage in terms of prediction stability and accuracy, especially when the training and test distributions differ significantly. The theoretical results are supported by empirical experiments, which show that SRDO outperforms traditional methods in both regression and classification tasks.
+
+Finally, the paper presents extensive experiments to validate the effectiveness of SRDO. The experiments are conducted using both synthetic and real-world datasets, demonstrating the method's ability to handle collinearity and distribution shifts. The results show that SRDO consistently reduces estimation errors and improves prediction accuracy, especially when training and test data distributions are mismatched. For instance, in the context of regression, SRDO significantly outperforms OLS and Lasso, especially in situations with strong collinearity. In classification tasks, the method also demonstrates improved stability when tested on diverse groups of users with varying behaviors. These findings highlight the practical applicability of SRDO in real-world machine learning scenarios, where data distributions are often subject to change. The authors conclude by emphasizing that SRDO is a versatile and valuable tool for improving the stability and reliability of linear models.
+
+\textbf{Critique:} TBD.
 
 \section{Implementation}
 
