@@ -1,6 +1,6 @@
 # `BasicLeverageScoresSampler`: Leverage-Score-Based Sampling Algorithm Implementation
 
-This sampling algorithm is used to approximate the logistic regression model by selecting a representative subset of the data, based on the leverage scores of the rows in the dataset.
+This sampling algorithm is used to approximate the logistic regression model by selecting a representative subset of the data based on the leverage scores of the rows in the dataset.
 
 ## Implementation Overview
 
@@ -21,13 +21,13 @@ This sampling process closely follows the paper’s method. The paper specifies 
 
 ## Differences Between This Implementation and the Paper's Approach
 
-This implementation simplifies the strategy taken by the authors. It offers a simplified version of the approach described in the paper. While it is **more computationally efficient** and **easy to use**, it does not fully capture the **optimizations** and **error guarantees** of the paper's more complex sampling model. The paper's approach would be more appropriate for high-dimensional datasets or applications where precise error bounds and model accuracy are critical. However, for many practical purposes, the simpler implementation can provide a reasonable trade-off between speed and approximation accuracy.
+This implementation simplifies the strategy taken by the authors, offering a simplified version of the approach described in the paper. While it is **more computationally efficient** and **easy to use**, it does not fully capture the **optimizations** and **error guarantees** of the paper's more complex sampling model. The paper's approach would be more appropriate for high-dimensional datasets or applications where precise error bounds and model accuracy are critical. However, for many practical purposes, the simpler implementation can provide a reasonable trade-off between speed and approximation accuracy.
 
 More objecively, class `BasicLeverageScoresSampler` differs from the paper in the aspects described below.
 
 ### Sampling Process
 
-The paper describes a more detailed approach where not only the leverage scores are used to sample the data, but also a **sketching matrix** is built, which allows the Logistic Regression model to be approximated more efficiently by reducing the dimensionality of the problem. The full matrix $S$ is used to modify how the data is projected into a lower-dimensional space, enabling faster training.
+The paper describes a more detailed approach where not only the leverage scores are used to sample the data, but also a **sketching matrix**, which allows the Logistic Regression model to be approximated more efficiently by reducing the dimensionality of the problem. The full matrix $S$ is used to modify how the data is projected into a lower-dimensional space, enabling faster training.
 
 In contrast, our implementation here **samples rows based on leverage scores**, but skips the detailed step of constructing the sketching matrix $S$. This simplifies the implementation, but results in a slightly less optimized solution as a trade-off.
 
@@ -35,13 +35,13 @@ In contrast, our implementation here **samples rows based on leverage scores**, 
 
 The paper provides theoretical guarantees for how well the sampled data approximates the full dataset’s Logistic Regression model. This involves complex mathematical analysis to bound the error in terms of approximation.
 
-Our implementation does not include these guarantees. While it is expected to work well in practice, wedo not have formal error bounds for the approximation quality.
+Our implementation does not include these guarantees. While it is expected to work well in practice, we do not have formal error bounds for the approximation quality in this implementation.
 
 ### Computation of Leverage Scores
 
 The paper suggests using leverage scores to form a **probability distribution** that is then used to sample rows. The approximation is based on a **sketching matrix** and further optimizations.
 
-Our implementation computes leverage scores in the same way, but does not take into account additional optimizations such as **oblivious sketching**, which the paper might use for better efficiency.
+Our implementation computes leverage scores in the same way, but does not take into account additional optimizations the paper might use for better efficiency.
 
 ### Simplification Advantages
 
