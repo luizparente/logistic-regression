@@ -56,7 +56,7 @@
 \begin{document}
 
 \twocolumn[
-\icmltitle{Exploring a Simplified Approach to Randomized Sampling for Logistic Regression}
+\icmltitle{Evaluating the Impact of Randomized Sampling on Diverse Prediction Model Training}
 
 % You can specify symbols, otherwise they are numbered in order.
 % Ideally, you should not use this facility. Affiliations will be numbered
@@ -73,7 +73,7 @@
 % You may provide any keywords that you
 % find helpful for describing your paper; these are used to populate
 % the "keywords" metadata in the PDF but will not be shown in the document
-\icmlkeywords{Machine Learning, Logistic Regression, Binary Classification, Sampling Algorithm}
+\icmlkeywords{Machine Learning, Sampling Algorithm, Leverage Scores}
 
 \vskip 0.3in
 ]
@@ -145,13 +145,18 @@ To validate their approach, the authors conduct extensive empirical evaluations 
 The paper concludes with a discussion about the implications of their findings and suggesting future research directions. While the proposed method performs well in practice, the authors highlight that there is still room for improvement in terms of algorithmic efficiency and scalability, particularly in high-dimensional settings. They also suggest exploring alternative sketching techniques, such as random projection-based methods, to further enhance the sampling process. Additionally, the paper points out that the approach could be extended to handle other forms of regression and machine learning models, making it a valuable tool for a variety of applications. The paper makes a significant contribution by providing an efficient and scalable solution to logistic regression for large datasets, with strong theoretical guarantees and solid empirical results.
 
 
-\textbf{Critique:} TBD.
+
+\textbf{Critique:} While the paper provides an excellent approach for logistic regression, it does not explore the application of the same sampling algorithm to other types of prediction models. The authors focus exclusively on logistic regression, which is understandable given the complexity and computational challenges associated with large datasets in this context. However, the question of whether the method could potentially be adapted for use with other models, such as linear regression, support vector machines, or even more complex deep learning models, remain unclear. Given that dataset distillation has been an area of interest in machine learning \cite{liu23}, a discussion of how their technique could be generalized or modified for broader applications range would have added valuable insight to the work. Exploring the adaptability of the sampling strategy to a range of prediction models could increase the impact and versatility of the proposed method, making it applicable to a wider array of real-world problems.
+
+Additionally, even though the paper does provide a robust theoretical foundation for the proposed method, it could benefit from a more detailed exploration of the trade-offs between simplicity and accuracy, particularly when it comes to the complexity of the algorithm. While the proposed algorithm is presented as computationally efficient, the authors do not thoroughly investigate alternative variations of the algorithm that might provide different levels of complexity or accuracy. For example, they focus heavily on the use of row leverage scores to select data points, but it would be valuable to see whether simpler strategies could yield comparable performance. Moreover, a discussion of whether implementing theoretical guarantees—such as the approximation bounds—justifies the added complexity would provide a clearer understanding of the practical trade-offs involved. The paper does an excellent job of presenting an efficient solution, but more emphasis on evaluating the balance between theoretical rigor and real-world applicability could enrich the findings.
+
+Another area where the paper could expand is in providing a more nuanced analysis of the error bounds and their impact on the overall model performance. While the theoretical guarantees are a key strength of the paper, there is limited exploration of how these bounds manifest in practice when applied to different types of datasets. It would have been helpful for the authors to conduct experiments that show how varying the sample size and error tolerance affects both the accuracy of the model and the computational efficiency. In addition, the relationship between the size of the dataset, the model's complexity, and the effectiveness of the approximation would have benefited from further elaboration. For example, is there a point at which the error bounds no longer provide substantial improvements, or do they continue to yield significant benefits with increasing complexity? Addressing these questions could further clarify when and why this sampling-based approach is most beneficial, providing a more comprehensive evaluation of its utility in real-world applications.
 
 
 \subsubsection{Supplementary Paper: SLOE: A Faster Method for Statistical Inference in High-Dimensional
 Logistic Regression \cite{yad21}}
 
-\textbf{Summary:} In high-dimensional problems, where the number of features is comparable to or exceeds the number of samples, traditional logistic regression methods, specifically maximum likelihood estimation (MLE), commonly present poor performance. The existing large-sample asymptotic theory for logistic regression approximations fails in these scenarios, leading to inflated parameter estimates and unreliable statistical inference.
+\textbf{Summary:} In high-dimensional problems, where the number of features is comparable to or exceeds the number of samples, traditional logistic regression methods, specifically maximum likelihood estimation (MLE), commonly present poor performance. The existing large-sample asymptotic theory for logistic regression approximations fails in these scenarios, leading to inadequate parameter estimates and unreliable statistical inference.
 
 \citeauthor{yad21} propose a novel solution, the Signal Strength Leave-One-Out Estimator (SLOE), to efficiently estimate the signal strength parameter, which is crucial for performing dimensionality corrections. This method significantly improves the practical application of the corrections developed in previous works, making it computationally feasible and faster to implement in real-world applications.
 
@@ -163,8 +168,11 @@ The authors provide a detailed theoretical analysis of the SLOE method, showing 
 
 This paper ultimately makes an important contribution to the field of high-dimensional statistical inference. The SLOE method introduced by the authors provide a simpler, faster, and more accurate approach to estimating signal strength in high-dimensional logistic regression. SLOE offers a practical solution to the problems caused by large-dimensional data, enabling more reliable statistical inference in these settings. The method is tested and validated on several real-world datasets, including applications to heart disease prediction and genomics, where it outperforms traditional methods in terms of both computational efficiency and statistical accuracy. SLOE paves the way for more robust and computationally feasible dimensionality corrections, making it a valuable tool for applied data science and statistical modeling.
 
-\textbf{Critique:} TBD.
+\textbf{Critique:} While the paper addresses the high-dimensional logistic regression setting under the assumption of Gaussian or sub-Gaussian features, it could have further explored how SLOE performs when the data distribution deviates from these assumptions. Many real-world datasets, for example those encountered in genomics, healthcare, or social sciences, often exhibit non-Gaussian characteristics. The authors briefly mention that SLOE works well in the presence of sub-Gaussian features, but a more thorough analysis of how the method generalizes to different data distributions would provide a clearer picture of it performs in diverse settings. A discussion on this would also be helpful in understanding whether additional steps are needed when dealing with non-Gaussian data, making the method even more applicable across different domains.
 
+In addition, since the paper focuses on overcoming challenges in high-dimensional logistic regression, it could have offered a more detailed comparison to other dimensionality reduction techniques commonly used in similar settings, such as principal component analysis (PCA), partial least squares (PLS), or feature selection methods. These methods are often used in high-dimensional regression problems to reduce the number of predictors, making it more manageable to estimate models. A brief discussion on how SLOE compares or complements these dimensionality reduction techniques would provide additional insights on when to use SLOE versus other popular methods, and whether it offers specific advantages or disadvantages depending on the type of dataset or the modeling goal.
+
+Lastly, one area that could have been explored in more depth is the scalability of the SLOE method to extremely large datasets. The computational efficiency of SLOE is emphasized, particularly in comparison to ProbeFrontier, but the paper could have provided more concrete examples or benchmarks when the dataset size approaches millions of samples, which can be of particular interest in modern real-world applications driven by big data. While the authors demonstrate that SLOE is much faster than its competitors, additional discussion around its performance in ultra-large datasets would be valuable, as it would allow the paper to transcend the academic domain and make a connection with common industry challenges.
 
 \subsubsection{Supplementary Paper: Stable learning via sample reweighting \cite{shen20}}
 
@@ -178,7 +186,12 @@ The paper provides a detailed theoretical analysis of the SRDO method. It demons
 
 Finally, the paper presents extensive experiments to validate the effectiveness of SRDO. The experiments are conducted using both synthetic and real-world datasets, demonstrating the method's ability to handle collinearity and distribution shifts. The results show that SRDO consistently reduces estimation errors and improves prediction accuracy, especially when training and test data distributions are mismatched. For instance, in the context of regression, SRDO significantly outperforms OLS and Lasso, especially in situations with strong collinearity. In classification tasks, the method also demonstrates improved stability when tested on diverse groups of users with varying behaviors. These findings highlight the practical applicability of SRDO in real-world machine learning scenarios, where data distributions are often subject to change. The authors conclude by emphasizing that SRDO is a versatile and valuable tool for improving the stability and reliability of linear models.
 
-\textbf{Critique:} TBD.
+\textbf{Critique:} One area that could have been further explored in the paper is the practical application and limitations of SRDO in real-world datasets with varying feature types. While the authors demonstrate the method’s effectiveness in handling collinearity and improving stability, the paper focuses primarily on linear models, which might not capture more complex patterns in the data. The authors could have discussed how SRDO performs when applied to datasets that involve both linear and non-linear relationships or datasets with categorical features. This would help extend the method’s applicability and provide guidance for researchers working in diverse domains, especially those dealing with non-linear or high-dimensional data. A more in-depth exploration of SRDO’s limitations in such contexts would be beneficial for understanding where the method might fall short or require adaptations.
+
+Furthermore, the authors could have more thoroughly explored the computational complexity and scalability of the proposed method. Despite the strong focus on the theoretical benefits and empirical performance of SRDO, there is little discussion on the practical aspects of implementing the method at scale. The process of calculating and applying sample weights, especially for large datasets with high-dimensional feature spaces, could be computationally expensive. This challenge is particularly important for real-world applications where datasets can contain millions of samples and variables. An analysis of the time complexity of the method, along with potential optimizations or approximations, could provide valuable insights when applying SRDO in large-scale problems.
+
+Another aspect that could have been addressed more thoroughly is the relationship between SRDO and existing regularization techniques for handling collinearity, such as Ridge or Lasso regression. While the paper emphasizes the novel approach of reweighting samples to reduce collinearity, it would have been useful to see a direct comparison with these established methods to better understand whether there are scenarios in which one method presents advantages relative to the others.
+
 
 \section{Implementation}
 
