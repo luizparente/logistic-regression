@@ -34,7 +34,7 @@ $$
 \hat{y}(z) = \frac{1}{1 + e^{-z}}
 $$
 
-## Loss Function (Cost Function)
+## Loss Function
 
 The loss function used in logistic regression is the **binary cross-entropy**, which measures the difference between the predicted probabilities versus the actual (expected) values. For a dataset of $n$ examples, the cost function $J(\theta)$ is given by:
 

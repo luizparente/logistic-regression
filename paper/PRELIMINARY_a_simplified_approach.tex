@@ -188,97 +188,124 @@ Another aspect that could have been addressed more thoroughly is the relationshi
 
 \section{Implementation}
 
-All submissions must follow the specified format.
+In order to evaluate the impacts of the sampling algorithm proposed by \citeauthor{chow24}, as well as the variations proposed by this study, we present the implementation efforts described in this section.
+
+\subsection{Preliminary Setup: Slow Logistic Regression}
+
+In this work, we set a performance baseline with our own implementation of the logistic regression algorithm, which is provided in Python code by class \texttt{SlowLogisticRegression}. It provides an abstraction that allows us to create a logistic regression prediction model.
+
+By design, \texttt{SlowLogisticRegression} employs a simple implementation strategy, which is intentionally not optimized. The rationale behind this decision is that a slower model would allow for better visualization of the impacts of the sampling algorithms explored here, which are the focus of this work. In other words, we are interested in measuring the extent to which the sampling algorithms improve (or degrade) a logistic regression model that does not implement any other optimizations. This approach will allow us to isolate the impacts caused specifically by the sampling algorithms.
+
+Prediction computations are performed by employing the strategy described as follows.
 
 
-\subsection{Preliminary Setup}
+\subsubsection{Training Data}
 
-The text of the paper should be formatted in two columns, with an
-overall width of 6.75~inches, height of 9.0~inches, and 0.25~inches
-between the columns. The left margin should be 0.75~inches and the top
-margin 1.0~inch (2.54~cm). The right and bottom margins will depend on
-whether you print on US letter or A4 paper, but all final versions
-must be produced for US letter size.
-Do not write anything on the margins.
+The model expects an input of training data in the following format:
 
-The paper body should be set in 10~point type with a vertical spacing
-of 11~points. Please use Times typeface throughout the text.
+\begin{itemize}
+
+\item \textbf{Features ($X$):} A matrix of input features where each row represents a data point and each column represents a feature (e.g., a matrix of shape $n \times m$, where $n$ is the number of data points and $m$ is the number of features).
+
+\item \textbf{Labels ($y$):} A vector of length $n$ with the target binary labels (0 or 1), corresponding to the input features.
+\end{itemize}
+
+
+\subsubsection{Initialization}
+
+Model parameters are initialized as follows:
+
+\begin{itemize}
+\item \textbf{Weights ($\theta$):} The weights (coefficients) of the model, here initialized as zeros. These weights are of size $m$ (one for each feature).
+
+\item \textbf{Bias ($b$):} A scalar value added to the output of the linear combination of the features, here initialized to zero.
+
+\end{itemize}
+
+
+\subsubsection{Model Hypothesis}
+
+A linear combination (linear model) is implemented for the inputs and weights.
+
+\begin{itemize}
+
+\item \textbf{Linear Combination:} For each data point, we compute the weighted sum of the features plus the bias term.
+$$
+z = \theta_1 x_1 + \theta_2 x_2 + \dots + \theta_m x_m + b
+$$
+
+\item \textbf{Sigmoid Function (Logistic Function):} This function maps the output of the linear combination to a probability between 0 and 1, which represents the probability of the positive class (prediction being $true$). We apply the sigmoid function to the linear combination $z$ to obtain the predicted probability:
+$$
+\hat{y}(z) = \frac{1}{1 + e^{-z}}
+$$
+
+\end{itemize}
+
+
+\subsubsection{Loss Function}
+
+The loss function used in logistic regression is the \textit{binary cross-entropy}, which measures the difference between the predicted probabilities versus the actual (expected) values. For a dataset of $n$ examples, the cost function $J(\theta)$ is given by:
+$$
+J(\theta) = -\frac{1}{n} \sum_{i=1}^{n} \left[ y^{(i)} \log(\hat{y}^{(i)}) + (1 - y^{(i)}) \log(1 - \hat{y}^{(i)}) \right]
+$$
+
+Where $y^{(i)}$ is the true label and $\hat{y}^{(i)}$ is the predicted probability for each data point.
+
+
+\subsubsection{Optimization}
+
+The goal of logistic regression is to find the optimal values for the weights and bias that minimize the loss function. This is typically done using an optimization algorithm like \textit{gradient descent}, which goes as follows:
+
+\begin{itemize}
+
+\item[1.] Compute the gradients (partial derivatives) of the loss function with respect to each parameter (weights and bias):
+$$
+\frac{\partial J(\theta)}{\partial \theta_j} = \frac{1}{n} \sum_{i=1}^{n} \left( \hat{y}^{(i)} - y^{(i)} \right) x_j^{(i)}
+$$
+$$
+\frac{\partial J(\theta)}{\partial b} = \frac{1}{n} \sum_{i=1}^{n} \left( \hat{y}^{(i)} - y^{(i)} \right)
+$$
+
+\item[2.] Update the weights and bias using the gradients, ($\alpha$ is the learning rate, which controls the step size of each update):
+$$
+\theta_j := \theta_j - \alpha \frac{\partial J(\theta)}{\partial \theta_j}
+$$
+$$
+b := b - \alpha \frac{\partial J(\theta)}{\partial b}
+$$
+
+\item[3.] Repeat until the loss converges (i.e., the change in the cost function between iterations is small enough) or a predefined number of iterations is reached.
+
+\end{itemize}
+
+
+\subsubsection{Model Evaluation}
+
+We evaluate the model’s performance by comparing the predicted labels against the actual values. Common metrics include accuracy, precision, recall, F1 score, among others.
+
+
+\subsubsection{Output}
+
+After training, the learned weights and bias can be used to make predictions on new data. The output is a probability, but for classification, a \textbf{decision boundary} (commonly $0.5$) is applied to convert the probability to a binary class label:
+$$
+\hat{y} = \begin{cases}
+1 & \text{if } \hat{y} \geq 0.5 \\
+0 & \text{if } \hat{y} < 0.5
+\end{cases}
+$$
+
 
 \subsection{Preliminary Implementation Effort}
 
-The paper title should be set in 14~point bold type and centered
-between two horizontal rules that are 1~point thick, with 1.0~inch
-between the top rule and the top edge of the page. Capitalize the
-first letter of content words and put the rest of the title in lower
-case.
+...
 
 \subsection{Challenges}
 
-ICML uses double-blind review, so author information must not appear. If
-you are using \LaTeX\/ and the \texttt{icml2025.sty} file, use
-\verb+\icmlauthor{...}+ to specify authors and \verb+\icmlaffiliation{...}+ to specify affiliations. (Read the TeX code used to produce this document for an example usage.) The author information
-will not be printed unless \texttt{accepted} is passed as an argument to the
-style file.
-Submissions that include the author information will not
-be reviewed.
-
-\subsubsection{Self-Citations}
-
-If you are citing published papers for which you are an author, refer
-to yourself in the third person. In particular, do not use phrases
-that reveal your identity (e.g., ``in previous work \cite{chow24}, we
-have shown \ldots'').
-
-Do not anonymize citations in the reference section. The only exception are manuscripts that are
-not yet published (e.g., under submission). If you choose to refer to
-such unpublished manuscripts \cite{anonymous}, anonymized copies have
-to be submitted
-as Supplementary Material via OpenReview\@. However, keep in mind that an ICML
-paper should be self contained and should contain sufficient detail
-for the reviewers to evaluate the work. In particular, reviewers are
-not required to look at the Supplementary Material when writing their
-review (they are not required to look at more than the first $8$ pages of the submitted document).
-
-\subsubsection{Camera-Ready Author Information}
-\label{final author}
-
-If a paper is accepted, a final camera-ready copy must be prepared.
-%
-For camera-ready papers, author information should start 0.3~inches below the
-bottom rule surrounding the title. The authors' names should appear in 10~point
-bold type, in a row, separated by white space, and centered. Author names should
-not be broken across lines. Unbolded superscripted numbers, starting 1, should
-be used to refer to affiliations.
-
-Affiliations should be numbered in the order of appearance. A single footnote
-block of text should be used to list all the affiliations. (Academic
-affiliations should list Department, University, City, State/Region, Country.
-Similarly for industrial affiliations.)
-
-Each distinct affiliations should be listed once. If an author has multiple
-affiliations, multiple superscripts should be placed after the name, separated
-by thin spaces. If the authors would like to highlight equal contribution by
-multiple first authors, those authors should have an asterisk placed after their
-name in superscript, and the term ``\textsuperscript{*}Equal contribution"
-should be placed in the footnote block ahead of the list of affiliations. A
-list of corresponding authors and their emails (in the format Full Name
-\textless{}email@domain.com\textgreater{}) can follow the list of affiliations.
-Ideally only one or two names should be listed.
-
-A sample file with author names is included in the ICML2025 style file
-package. Turn on the \texttt{[accepted]} option to the stylefile to
-see the names rendered. All of the guidelines above are implemented
-by the \LaTeX\ style file.
+...
 
 \subsection{Next Steps}
 
-The paper abstract should begin in the left column, 0.4~inches below the final
-address. The heading `Abstract' should be centered, bold, and in 11~point type.
-The abstract body should use 10~point type, with a vertical spacing of
-11~points, and should be indented 0.25~inches more than normal on left-hand and
-right-hand margins. Insert 0.4~inches of blank space after the body. Keep your
-abstract brief and self-contained, limiting it to one paragraph and roughly 4--6
-sentences. Gross violations will require correction at the camera-ready phase.
+...
 
 
 \subsection{Proposal for Course Project}
