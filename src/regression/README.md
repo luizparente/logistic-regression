@@ -1,4 +1,4 @@
-# `LogisticRegression` Class Implementation
+# `SlowLogisticRegression` Class Implementation
 
 This class provides an abstraction that allows users to create a Logistic Regression model instance that can be trained and used for predictions. The strategy employed for its implementation is described in the sub-sections below.
 
@@ -85,14 +85,14 @@ $$
 
 ## Example Usage
 
-The snippet below illustrates the typical usage of the `LogisticRegression` class using the [breast cancer dataset](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_breast_cancer.html). 
+The snippet below illustrates the typical usage of the `SlowLogisticRegression` class using the [breast cancer dataset](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_breast_cancer.html). 
 
 ```
 from sklearn.datasets import load_breast_cancer
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import accuracy_score
-from LogisticRegression import LogisticRegression
+from SlowLogisticRegression import SlowLogisticRegression
 
 # Loading the breast cancer dataset.
 data = load_breast_cancer()
@@ -107,7 +107,7 @@ X_train = scaler.transform(X_train)
 X_test = scaler.transform(X_test)
 
 # Initializing and training the model.
-logistic_regression_model = LogisticRegression(learning_rate=0.1, epochs=5000)
+logistic_regression_model = SlowLogisticRegression(learning_rate=0.1, epochs=5000)
 logistic_regression_model.fit(X_train, y_train)
 
 # Making predictions on the test set.
@@ -115,8 +115,8 @@ predictions = logistic_regression_model.predict(X_test)
 
 # Evaluating model.
 accuracy = accuracy_score(y_test, predictions)
-print(f"Accuracy on test set: {accuracy * 100:.2f}%")
 
+print(f"Accuracy on test set: {accuracy * 100:.2f}%")
 
 # Output: Accuracy on test set: 97.37%
 ```
