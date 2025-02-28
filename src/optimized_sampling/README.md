@@ -4,7 +4,7 @@ This sampling algorithm is used to approximate the logistic regression model by 
 
 ## Implementation Overview
 
-The goal of the algorithm is to efficiently approximate the full dataset using a sampled subset based on leverage scores. This is achieved by performing Singular Value Decomposition (SVD) on the data matrix $X$ to calculate the leverage scores, then using those scores to sample a subset of the data. Finally, the sampled data is used to train a Logistic Regression model, which is expected to approximate the performance of a model trained on the entire dataset.
+At a high level, the goal of the sampling algorithm studied here is to derive a sampled subset that efficiently approximate the full dataset. This is achieved by performing Singular Value Decomposition (SVD) on the data matrix $X$ to calculate leverage scores, then using it to sample a subset of the data. Finally, the sampled data is used to train a Logistic Regression model, which is expected to closely replicate the performance of a model trained on the entire dataset.
 
 ### Leverage Score Calculation
 The leverage scores are computed with method `compute_leverage_scores`, which uses **Singular Value Decomposition (SVD)**. It decomposes the matrix $X$ into its singular vectors and values. The leverage score for each dataset entry (row in the matrix) is calculated as the sum of the squares of the elements in the corresponding row of the left singular vector matrix $U$.
@@ -21,7 +21,7 @@ This sampling process closely follows the paper’s method. The paper specifies 
 
 ## Differences Between This Implementation and the Paper's Approach
 
-This implementation simplifies the strategy taken by the authors, offering a simplified version of the approach described in the paper. While it is **more computationally efficient** and **easy to use**, it does not fully capture the **optimizations** and **error guarantees** of the paper's more complex sampling model. The paper's approach would be more appropriate for high-dimensional datasets or applications where precise error bounds and model accuracy are critical. However, for many practical purposes, the simpler implementation can provide a reasonable trade-off between speed and approximation accuracy.
+This implementation simplifies the strategy taken by the authors, offering a simplified version of the approach described in the paper. While it is **more computationally efficient** and **easier to understand**, it does not fully capture the **optimizations** and **error guarantees** of the paper's more complex sampling model. The paper's approach would be more appropriate for high-dimensional datasets or applications where precise error bounds and model accuracy are critical. However, for many practical purposes, the simpler implementation can provide a reasonable trade-off between speed and approximation accuracy.
 
 More objecively, class `BasicLeverageScoresSampler` differs from the paper in the aspects described below.
 
@@ -33,7 +33,7 @@ In contrast, our implementation here **samples rows based on leverage scores**, 
 
 ### Error Bound and Theoretical Guarantees
 
-The paper provides theoretical guarantees for how well the sampled data approximates the full dataset’s Logistic Regression model. This involves complex mathematical analysis to bound the error in terms of approximation.
+The paper provides theoretical guarantees for how well the sampled data approximates the full dataset. This involves complex mathematical analysis to bound the error in terms of approximation.
 
 Our implementation does not include these guarantees. While it is expected to work well in practice, we do not have formal error bounds for the approximation quality in this implementation.
 
@@ -48,7 +48,7 @@ Our implementation computes leverage scores in the same way, but does not take i
 There are key advantages to simplifying the approach proposed in the paper:
 
 - **Simplicity**: The implementation here is **simpler** and easier to understand. It directly samples rows based on leverage scores, which is computationally efficient and suitable for smaller datasets or less complex problems.
-- **Speed**: By using only leverage score sampling without constructing a sketching matrix, the algorithm runs **faster** and requires **fewer computations**, making it suitable for situations where **speed** is more critical than exact accuracy.
+- **Performance**: By using only leverage score sampling without constructing a sketching matrix, the algorithm runs **faster**, since it requires **fewer computations**, making it suitable for situations where **speed** is more critical than exact accuracy.
   
 ### Simplification Disadvantages
 

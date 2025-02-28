@@ -105,25 +105,7 @@ Despite being a well established and effective method for binary classification 
 This work aims to explore implementations and viable utilizations for a randomized sampling algorithm, originally designed for logistic regression models, as outlined by \citet{chow24}. Given a dataset, the method derives a smaller subset that retains the most representative data-points, using it to train a prediction model capable of achieving accuracy levels comparable to models trained on the entire dataset. As demonstrated both theoretically and experimentally, the algorithm is successful at substantially reducing the size of training datasets, addressing many barriers found when handling large databases in machine learning applications. Given the predominance of digital systems driven by big-data in modern society, investigating implementation variations and applicability potential is a justified effort, and may help to further understand possible trafe-offs between algorithmic simplicity and prediction accuracy, as well as effectiveness in diverse data configurations.
 
 \subsection{Problem Definition}
-
-\begin{itemize}
-\item Submissions must be in PDF\@. 
-\item If your paper has appendices, submit the appendix together with the main body and the references \textbf{as a single file}. Reviewers will not look for appendices as a separate PDF file. So if you submit such an extra file, reviewers will very likely miss it.
-\item Page limit: The main body of the paper has to be fitted to 8 pages, excluding references and appendices; the space for the latter two is not limited in pages, but the total file size may not exceed 10MB. For the final version of the paper, authors can add one extra page to the main body.
-\item \textbf{Do not include author information or acknowledgements} in your
-    initial submission.
-\item Your paper should be in \textbf{10 point Times font}.
-\item Make sure your PDF file only uses Type-1 fonts.
-\item Place figure captions \emph{under} the figure (and omit titles from inside
-    the graphic file itself). Place table captions \emph{over} the table.
-\item References must include page numbers whenever possible and be as complete
-    as possible. Place multiple citations in chronological order.
-\item Do not alter the style template; in particular, do not compress the paper
-    format by reducing the vertical spaces.
-\item Keep your abstract brief and self-contained, one paragraph and roughly
-    4--6 sentences. Gross violations will require correction at the
-    camera-ready phase. The title should have content words capitalized.
-\end{itemize}
+...
 
 \subsection{Summary and Critique of the Selected Papers}
 
@@ -190,19 +172,16 @@ Another aspect that could have been addressed more thoroughly is the relationshi
 
 In order to evaluate the impacts of the sampling algorithm proposed by \citeauthor{chow24}, as well as the variations proposed by this study, we present the implementation efforts described in this section.
 
-\subsection{Preliminary Setup: Slow Logistic Regression}
+\subsection{Baseline Setup: Slow Logistic Regression}
 
 In this work, we set a performance baseline with our own implementation of the logistic regression algorithm, which is provided in Python code by class \texttt{SlowLogisticRegression}. It provides an abstraction that allows us to create a logistic regression prediction model.
 
 By design, \texttt{SlowLogisticRegression} employs a simple implementation strategy, which is intentionally not optimized. The rationale behind this decision is that a slower model would allow for better visualization of the impacts of the sampling algorithms explored here, which are the focus of this work. In other words, we are interested in measuring the extent to which the sampling algorithms improve (or degrade) a logistic regression model that does not implement any other optimizations. This approach will allow us to isolate the impacts caused specifically by the sampling algorithms.
 
-Prediction computations are performed by employing the strategy described as follows.
-
 
 \subsubsection{Training Data}
 
 The model expects an input of training data in the following format:
-
 \begin{itemize}
 
 \item \textbf{Features ($X$):} A matrix of input features where each row represents a data point and each column represents a feature (e.g., a matrix of shape $n \times m$, where $n$ is the number of data points and $m$ is the number of features).
@@ -295,13 +274,56 @@ $$
 $$
 
 
-\subsection{Preliminary Implementation Effort}
+\subsection{Randomized Sampling Algorithm}
 
-...
+\subsubsection{Overview}
 
-\subsection{Challenges}
+At a high level, the goal of the sampling algorithm proposed by \citeauthor{chow24} is to derive a sampled subset that efficiently approximate the full dataset. This is achieved by performing Singular Value Decomposition (SVD) on the data matrix $X$ to calculate leverage scores, then using it to sample a subset of the data. Finally, the sampled data is used to train a logistic regression model, which is expected to closely replicate the performance of a model trained on the entire dataset.
 
-...
+To better analyze the algorithm and assess its transportability to different prediction models, we encapsulate our first implementation attempt, which is provided in Python code, in class \texttt{BasicLeverageScoresSampler}. This class represents the first iteration of the randomized sampling algorithm on which this study is focused, however, this version simplifies the paper's approach. Such simplification will be useful later when benchmarking different implementations and analyzing trade-offs.
+
+
+\subsubsection{Leverage Scores Calculation}
+
+To estimate the relevance of each data-point in the dataset, the Singular Value Decomposition (SVD) method is applied. The matrix $X$ is decomposed into its singular vectors and values, and the leverage score for each dataset entry (row in the matrix) is calculated as the sum of the squares of the elements in the corresponding row of the left singular vector matrix $U$.
+
+This step directly follows the approach proposed in the paper. Specifically, the paper states that leverage scores can be computed using SVD to capture the importance of each data point in the dataset with respect to the model. Even though the paper does not specify exactly how the leverage scores are used to calculate the final sample, it does mention that leverage scores help to sample data points that contribute the most to the model’s accuracy.
+
+
+\subsubsection{Sampling}
+
+The computed leverage scores are first normalized to create a probability distribution that sums to $1$. This normalized distribution is then used to sample rows from the dataset $X$. The number of rows sampled is determined by a customizeable parameter.
+
+This sampling process closely follows the paper’s method. The authors are specific on the fact that the leverage scores are used to form a probability distribution from which data points are selected. Rows with higher leverage scores are more likely to be chosen for the sample, ensuring that important data points (those that affect the model the most) are more likely to be included in the subsampled dataset.
+
+\subsubsection{\texttt{BasicLeverageScoresSampler} versus \citeauthor{chow24}'s Approach}
+
+The simplified implementation provided by \texttt{BasicLeverageScoresSampler} simplifies the original strategy taken by the authors, offering a simplified version of the approach described in the paper. While it is arguably \textbf{more computationally efficient}, it does not fully capture the optimizations and error guarantees of the paper's more complex sampling model. The approach proposed by the authors would be more appropriate for high-dimensional datasets or applications where precise error bounds and model accuracy are critical. However, for many practical purposes, the simpler implementation can provide a reasonable trade-off between speed and approximation accuracy.
+
+More specifically, the paper describes a more detailed approach where not only the leverage scores are used to sample the data, but also a \textit{sketching matrix}, which allows the logistic regression model to be approximated more efficiently by reducing the dimensionality of the problem. The full matrix is used to modify how the data is projected into a lower-dimensional space, enabling faster training. In contrast, our initial implementation skips the step of constructing the sketching matrix. This simplifies the implementation, but results in a slightly less optimized solution as a trade-off.
+
+Moreover, the authors design theoretical guarantees for how well the sampled data approximates the full dataset. The process involves complex mathematical analysis to bound the error in terms of approximation. Our implementation does not include these guarantees. While it is expected to work well in practice, we do not have formal error bounds for the approximation quality in this initial implementation.
+
+In contemplation of the approach proposed by our initial implementation, we identify key advantages to simplifying the original algorithm:
+
+\begin{itemize}
+
+\item \textbf{Simplicity:} The implementation here is simpler and easier to understand. It directly samples rows based on leverage scores, which is computationally efficient and suitable for smaller datasets or less complex problems.
+
+\item \textbf{Performance:} By using only leverage score sampling without constructing a sketching matrix, the algorithm arguably runs faster, since it requires fewer computations. This makes it suitable for applications where performance is more critical than exact accuracy.
+
+\end{itemize}
+
+We also acknowledge the trade-offs between simplicity and accuracy:
+
+\begin{itemize}
+
+\item \textbf{Accuracy:} Because the simplified implementation skips the step of constructing the sketching matrix, the approximation may not be as accurate as the one described in the paper. Without the full matrix, the approximation quality could be compromised, especially for large, high-dimensional datasets.
+
+\item \textbf{Theoretical guarantees:} Unlike the paper, this implementation does not provide formal guarantees on the error bounds, which are important for accuracy-critical applications.
+
+\end{itemize}
+
 
 \subsection{Next Steps}
 
