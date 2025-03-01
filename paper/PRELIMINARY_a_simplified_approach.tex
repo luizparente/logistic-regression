@@ -174,6 +174,8 @@ In order to evaluate the impacts of the sampling algorithm proposed by \citeauth
 
 \subsection{Baseline Setup: Slow Logistic Regression}
 
+\subsubsection{Overview}
+
 In this work, we set a performance baseline with our own implementation of the logistic regression algorithm, which is provided in Python code by class \texttt{SlowLogisticRegression}. It provides an abstraction that allows us to create a logistic regression prediction model.
 
 By design, \texttt{SlowLogisticRegression} employs a simple implementation strategy, which is intentionally not optimized. The rationale behind this decision is that a slower model would allow for better visualization of the impacts of the sampling algorithms explored here, which are the focus of this work. In other words, we are interested in measuring the extent to which the sampling algorithms improve (or degrade) a logistic regression model that does not implement any other optimizations. This approach will allow us to isolate the impacts caused specifically by the sampling algorithms.
@@ -233,7 +235,7 @@ Where $y^{(i)}$ is the true label and $\hat{y}^{(i)}$ is the predicted probabili
 
 \subsubsection{Optimization}
 
-The goal of logistic regression is to find the optimal values for the weights and bias that minimize the loss function. This is typically done using an optimization algorithm like \textit{gradient descent}, which goes as follows:
+The goal of logistic regression is to find the optimal values for the weights and bias that minimize the loss function. In this work, this is done using \textit{gradient descent}, which goes as follows:
 
 \begin{itemize}
 
@@ -285,14 +287,34 @@ To better analyze the algorithm and assess its transportability to different pre
 
 \subsubsection{Leverage Scores Calculation}
 
-To estimate the relevance of each data-point in the dataset, the Singular Value Decomposition (SVD) method is applied. The matrix $X$ is decomposed into its singular vectors and values, and the leverage score for each dataset entry (row in the matrix) is calculated as the sum of the squares of the elements in the corresponding row of the left singular vector matrix $U$.
+To estimate the relevance of each data-point in the dataset, the Singular Value Decomposition (SVD) method is applied. The matrix $X$ is decomposed into its singular vectors and values, and the leverage score for each dataset entry (row in the matrix) is calculated as the sum of the squares of the elements in the corresponding row of the left singular vector matrix.
 
 This step directly follows the approach proposed in the paper. Specifically, the paper states that leverage scores can be computed using SVD to capture the importance of each data point in the dataset with respect to the model. Even though the paper does not specify exactly how the leverage scores are used to calculate the final sample, it does mention that leverage scores help to sample data points that contribute the most to the model’s accuracy.
 
 
 \subsubsection{Sampling}
 
-The computed leverage scores are first normalized to create a probability distribution that sums to $1$. This normalized distribution is then used to sample rows from the dataset $X$. The number of rows sampled is determined by a customizeable parameter.
+\textbf{Algorithm 1} illustrates the simplified sampling algorithm we derive from \citeauthor{chow24}'s original \cite{chow24}. The computed leverage scores are first normalized to create a probability distribution that sums to $1$. This normalized distribution is then used to sample rows from the dataset $X$. The number of rows sampled is determined by a customizeable parameter.
+
+\begin{algorithm}[tb]
+   \caption{Basic Leverage Scores Sampling}
+   \label{alg:example}
+\begin{algorithmic}
+   \STATE {\bfseries Input:} feature-matrix $X$, target-labels $y$, sample rate $r$
+
+   \vspace{0.25cm}
+
+   \STATE $scores \leftarrow$ \texttt{leverage\_scores($X$)}
+   \STATE $normalized\_p \leftarrow$ $scores$ / \texttt{sum($scores$)}
+   \STATE $sampled\_indices \leftarrow$ \texttt{random\_select($X$, $r$,  $normalized\_p$)}
+   \STATE $X\_sampled \leftarrow X[sampled\_indices]$
+   \STATE $y\_sampled \leftarrow y[sampled\_indices]$
+
+   \vspace{0.25cm}
+
+   \STATE {\bfseries Return:} \texttt{$X\_sampled, y\_sampled$}
+\end{algorithmic}
+\end{algorithm}
 
 This sampling process closely follows the paper’s method. The authors are specific on the fact that the leverage scores are used to form a probability distribution from which data points are selected. Rows with higher leverage scores are more likely to be chosen for the sample, ensuring that important data points (those that affect the model the most) are more likely to be included in the subsampled dataset.
 
@@ -349,7 +371,31 @@ Our proposal for this study is multifold. Ultimately, we aim to provide (1) an i
 
 \subsubsection{Methodology}
 
-To achieve the aforementioned goals, a thorough benchmark is necessary to evaluate how the simplified algorithm performs relative to the full implementation in diverse datasets. To keep comparisons objective, we will focus on select metrics such as \textbf{accuracy} and \textbf{training time}.
+To achieve the aforementioned goals, a thorough benchmark is necessary to evaluate how the simplified algorithm performs relative to the full implementation in diverse datasets. To keep comparisons objective, we will focus on select metrics such as \textbf{accuracy} ($Acc$),  \textbf{non-sampled training time} ($t_{ns}$, the time taken to train a model on the full dataset), and \textbf{sampled training time} ($t_s$,  the time taken to train a model with sampled data, including sampling time).
+
+Formally, we define:
+$$
+Acc(y, \hat{y}) = \frac{1}{n} \sum_{i=0}^{n-1} 1(\hat{y}_i = y_i)
+$$
+
+And
+
+$$
+t_s = s + t
+$$
+
+Where:
+
+\begin{itemize}
+
+\item[$y$] is a vector representing the true values.
+\item[$\hat{y}$] is a vector representing the predictions.
+\item[$n$] is the number of predictions based on which accuracy is being calculated.
+\item[$s$] is the time consumed by the sampling algorithm to derive a reduced dataset.
+
+\end{itemize}
+
+All times measured in milliseconds.
 
 Moreover, each algorithm-dataset combination will be run an adequate number of times (e.g., 20 times), and the key metrics are to be captured each time. Performance comparisons will be made with average values. This practice will allow for more consistent performance analysis across implementations. Specifically, the simplified and complete versions of the algorithms will be tested with different databases, such as those used by \citeauthor{chow24}, and also well-known open-source datasets, such as the Breast Cancer Wisconsin (Diagnostic) Data Set.
 
