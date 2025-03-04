@@ -10,23 +10,21 @@ All code presented here is restricted to native Python functions and NumPy.
 
 The code proposed here is organized as follows:
 
-- Directory `src` contains the source code for this project.
-   - `requirements.txt` lists the requirements for the Python virtual environment necessary for the project.
-   - `BasicLeverageScoresSampler_BreastCancer.ipynb` provides experiments for `BasicLeverageScoresSampler` using the Breast Cancer Diagnosis Dataset.
-- Sub-directory `regression` provides our "vanilla" implementation for the Logistic Regression algorithm.
+- Directory `src` is the root and contains the source code for this project.
+- Sub-directory `experiments` provides our experiments designed to benchmark the effectiveness of the randomized sampling algorithms studied in this work.
 - Sub-directory `optimized_sampling` provides a simplified implementation of the optimized sampling algorithm proposed in the aforementioned paper.
+- Sub-directory `regression` provides our "vanilla" implementation for the Logistic Regression algorithm.
 - Sub-directory `utilities` implements basic utilities for obtaining additional performance metrics for the models.
 
 ```
 src
-├── regression
-│   └── SlowLogisticRegression.py
+├── experiments
+│   └── BasicLeverageScoresSampler_BreastCancer.ipynb
 ├── optimized_sampling
 │   └── BasicLeverageScoresSampler.py
-├── utilities
-│   └── Stopwatch.py
-├── requirements.txt
-└── model_benchmarking.ipynb
+├── regression
+│   └── SlowLogisticRegression.py
+└── utilities
+    └── Stopwatch.py
 ```
-
 Further documentation on the particular implementations can be found in their corresponding directories.
