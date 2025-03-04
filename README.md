@@ -22,7 +22,7 @@ src
 ├── regression
 │   └── SlowLogisticRegression.py
 ├── optimized_sampling
-│   └── BasicOptimizedSampler.py
+│   └── BasicLeverageScoresSampler.py
 ├── utilities
 │   └── Stopwatch.py
 ├── requirements.txt
