@@ -51,7 +51,7 @@
 
 % The \icmltitle you define below is probably too long as a header.
 % Therefore, a short form for the running title is supplied here:
-\icmltitlerunning{Exploring a Simplified Approach to Randomized Sampling for Logistic Regression}
+\icmltitlerunning{Evaluating the Impact of Randomized Sampling on Diverse Prediction Model Training}
 
 \begin{document}
 
@@ -349,7 +349,88 @@ We also acknowledge the trade-offs between simplicity and accuracy:
 
 \subsection{Initial Results}
 
-...
+Preliminary experiments have been conducted, as detailed in Appendix A, to evaluate whether any impacts are observable with the integration of the sampling algorithm implemented in this study. Overall, positive results have been measured due to the application of the \texttt{BasicLeverageScoresSampler} algorithm.
+
+\textbf{Figure 1} shows \texttt{SlowLogisticRegression}'s performance without any sampling over the Breast Cancer Wisconsin Diagnostic Dataset \cite{breastcancer}. In \textbf{Figure 2}, we note the average accuracy of 0.97, and average training time of 0.96 seconds over 20 runs of the experiment. After repeating the experiment, this time employing \texttt{BasicLeverageScoresSampler}, we measured a substantial reduction of 80\% in the training time, as illustrated in \textbf{Figure 3} and \textbf{Figure 4}. These experiments allowed us to isolate the sampling algorithm and evaluate its impact in a setting where no other optimizations exist. As demonstrated here, the accuracy impact has been negligible, down to 0.96\% from 0.97\%. While 1\% may be significant in ultra-optimized implementations that aim for the highest possible accuracy, many practical scenarios might be satisfied with slightly lower accuracy levels.
+
+Experiments 3 and 4, illustrated in \textbf{Figure 5} and \textbf{Figure 6}, respectively, apply \texttt{BasicLeverageScoresSampler} to the same dataset, but this time utilizes class \texttt{LogisticRegression} from the SciKit-Learn Python library. The experiments did not allow for statistically relevant observations, alluding to the possibility that \texttt{LogisticRegression} may count with optimizations that can potentially minimize the impact of dataset size when training the model. Further exploration is required to determine whether experiments conducted with larger datasets under the same conditions yield the same results.
+
+Experiment 5, documented in \textbf{Figure 7}, amplifies the statistical relevance of the observed results by repeating experiments 1, 2, 3, and 4 under the same conditions, but this time over 1000 cycles. Equivalent results have been measured as a result of the experiment, confirming the observations made earlier.
+
+
+\begin{figure}[ht]
+\vskip 0.2in
+\begin{center}
+\centerline{\includegraphics[width=\columnwidth]{experiment_1a}}
+\caption{Measured accuracies and training times observed over 20 training cycles of \texttt{SlowLogisticRegression}, without any sampling, using the Breast Cancer Wisconsin Diagnostic Dataset \cite{breastcancer}.}
+\label{experiment_1a}
+\end{center}
+\vskip -0.2in
+\end{figure}
+
+\begin{figure}[ht]
+\vskip 0.2in
+\begin{center}
+\centerline{\includegraphics[width=\columnwidth]{experiment_1b}}
+\caption{Mean accuracies and training times observed over 20 training cycles of \texttt{SlowLogisticRegression}, without any sampling, using the Breast Cancer Wisconsin Diagnostic Dataset \cite{breastcancer}.}
+\label{experiment_1a}
+\end{center}
+\vskip -0.2in
+\end{figure}
+
+
+\begin{figure}[ht]
+\vskip 0.2in
+\begin{center}
+\centerline{\includegraphics[width=\columnwidth]{experiment_2a}}
+\caption{Measured accuracies and training times observed over 20 training cycles of \texttt{SlowLogisticRegression}, with \texttt{BasicLeverageScoresSampler} sampling, using the Breast Cancer Wisconsin Diagnostic Dataset \cite{breastcancer}.}
+\label{experiment_1a}
+\end{center}
+\vskip -0.2in
+\end{figure}
+
+
+\begin{figure}[ht]
+\vskip 0.2in
+\begin{center}
+\centerline{\includegraphics[width=\columnwidth]{experiment_2b}}
+\caption{Measured accuracies and training times observed over 20 training cycles of \texttt{SlowLogisticRegression}, with \texttt{BasicLeverageScoresSampler} sampling, using the Breast Cancer Wisconsin Diagnostic Dataset \cite{breastcancer}.}
+\label{experiment_1a}
+\end{center}
+\vskip -0.2in
+\end{figure}
+
+
+\begin{figure}[ht]
+\vskip 0.2in
+\begin{center}
+\centerline{\includegraphics[width=\columnwidth]{experiment_3b}}
+\caption{Mean accuracies and training times observed over 20 training cycles of SciKit-Learn's \texttt{LogisticRegression} class, without any sampling, using the Breast Cancer Wisconsin Diagnostic Dataset \cite{breastcancer}.}
+\label{experiment_1a}
+\end{center}
+\vskip -0.2in
+\end{figure}
+
+\begin{figure}[ht]
+\vskip 0.2in
+\begin{center}
+\centerline{\includegraphics[width=\columnwidth]{experiment_4b}}
+\caption{Mean accuracies and training times observed over 20 training cycles of SciKit-Learn's \texttt{LogisticRegression} class, with \texttt{BasicLeverageScoresSampler} sampling, using the Breast Cancer Wisconsin Diagnostic Dataset \cite{breastcancer}.}
+\label{experiment_1a}
+\end{center}
+\vskip -0.2in
+\end{figure}
+
+\begin{figure}[ht]
+\vskip 0.2in
+\begin{center}
+\centerline{\includegraphics[width=\columnwidth]{experiment_5}}
+\caption{Mean accuracies and training times observed when repeating experiments 1, 2, 3, and 3, this time with 1000 training cycles each.}
+\label{experiment_1a}
+\end{center}
+\vskip -0.2in
+\end{figure}
+
 
 \subsection{Next Steps}
 
@@ -395,7 +476,7 @@ Where:
 
 \end{itemize}
 
-Moreover, each algorithm-dataset combination will be run an adequate number of times (e.g., 20 times), and the key metrics are to be captured each time. Performance comparisons will be made with average values. This practice will allow for more consistent performance analysis across implementations. Specifically, the simplified and complete versions of the algorithms will be tested with different databases, such as those used by \citeauthor{chow24}, and also well-known open-source datasets, such as the Breast Cancer Wisconsin (Diagnostic) Data Set.
+Moreover, each algorithm-dataset combination will be run an adequate number of times for statistical relevance, and the key metrics are to be captured each time. Performance comparisons will be made with average values. This practice will allow for more consistent performance analysis across implementations. Specifically, the simplified and complete versions of the algorithms will be tested with different databases, such as those used by \citeauthor{chow24}, and also well-known open-source datasets, such as the Breast Cancer Wisconsin Diagnostic Data Set \cite{breastcancer}, among others. Further information regarding experiment design details are included in Appendix A.
 
 Lastly, we will assess whether the sampling algorithms contribute positively or negatively when used to train different prediction models beyond binary classification. At this preliminary stage, the types of predictions scoped for further exploration are \textbf{to be defined}.
 
@@ -409,222 +490,15 @@ Given the empirical nature of this study, the project so far has demonstrated to
 
 Our literature review indicates numerous efforts in the machine learning community in pushing the barriers of predictive algorithms, and in seeking creative solutions to improve accuracy and optimize computational efficiency of known methods. In particular, the core contribution of this project involves addressing questions left open by \citeauthor{chow24}, such as (1) are the theoretical guarantees provided by the original implementation indispensible, or could a simplified version of the algorithm provide comparable performance? And (2) can this sample method contribute positively to the training process of different machine learning models? By addressing these questions, our work further expands the body of knowledge proposed by the authors, and provides the academic community with further insights into the use of randomized sampling algorithms in reducing large training datasets.
 
-\begin{figure}[ht]
-\vskip 0.2in
-\begin{center}
-\centerline{\includegraphics[width=\columnwidth]{icml_numpapers}}
-\caption{Historical locations and number of accepted papers for International
-Machine Learning Conferences (ICML 1993 -- ICML 2008) and International
-Workshops on Machine Learning (ML 1988 -- ML 1992). At the time this figure was
-produced, the number of accepted papers for ICML 2008 was unknown and instead
-estimated.}
-\label{icml-historical}
-\end{center}
-\vskip -0.2in
-\end{figure}
 
 \section{Conclusion}
 
-You may want to include figures in the paper to illustrate
-your approach and results. Such artwork should be centered,
-legible, and separated from the text. Lines should be dark and at
-least 0.5~points thick for purposes of reproduction, and text should
-not appear on a gray background.
+...
 
-Label all distinct components of each figure. If the figure takes the
-form of a graph, then give a name for each axis and include a legend
-that briefly describes each curve. Do not include a title inside the
-figure; instead, the caption should serve this function.
-
-Number figures sequentially, placing the figure number and caption
-\emph{after} the graphics, with at least 0.1~inches of space before
-the caption and 0.1~inches after it, as in
-\cref{icml-historical}. The figure caption should be set in
-9~point type and centered unless it runs two or more lines, in which
-case it should be flush left. You may float figures to the top or
-bottom of a column, and you may set wide figures across both columns
-(use the environment \texttt{figure*} in \LaTeX). Always place
-two-column figures at the top or bottom of the page.
-
-\subsection{Algorithms}
-
-If you are using \LaTeX, please use the ``algorithm'' and ``algorithmic''
-environments to format pseudocode. These require
-the corresponding stylefiles, algorithm.sty and
-algorithmic.sty, which are supplied with this package.
-\cref{alg:example} shows an example.
-
-\begin{algorithm}[tb]
-   \caption{Bubble Sort}
-   \label{alg:example}
-\begin{algorithmic}
-   \STATE {\bfseries Input:} data $x_i$, size $m$
-   \REPEAT
-   \STATE Initialize $noChange = true$.
-   \FOR{$i=1$ {\bfseries to} $m-1$}
-   \IF{$x_i > x_{i+1}$}
-   \STATE Swap $x_i$ and $x_{i+1}$
-   \STATE $noChange = false$
-   \ENDIF
-   \ENDFOR
-   \UNTIL{$noChange$ is $true$}
-\end{algorithmic}
-\end{algorithm}
-
-\subsection{Tables}
-
-You may also want to include tables that summarize material. Like
-figures, these should be centered, legible, and numbered consecutively.
-However, place the title \emph{above} the table with at least
-0.1~inches of space before the title and the same after it, as in
-\cref{sample-table}. The table title should be set in 9~point
-type and centered unless it runs two or more lines, in which case it
-should be flush left.
-
-% Note use of \abovespace and \belowspace to get reasonable spacing
-% above and below tabular lines.
-
-\begin{table}[t]
-\caption{Classification accuracies for naive Bayes and flexible
-Bayes on various data sets.}
-\label{sample-table}
-\vskip 0.15in
-\begin{center}
-\begin{small}
-\begin{sc}
-\begin{tabular}{lcccr}
-\toprule
-Data set & Naive & Flexible & Better? \\
-\midrule
-Breast    & 95.9$\pm$ 0.2& 96.7$\pm$ 0.2& $\surd$ \\
-Cleveland & 83.3$\pm$ 0.6& 80.0$\pm$ 0.6& $\times$\\
-Glass2    & 61.9$\pm$ 1.4& 83.8$\pm$ 0.7& $\surd$ \\
-Credit    & 74.8$\pm$ 0.5& 78.3$\pm$ 0.6&         \\
-Horse     & 73.3$\pm$ 0.9& 69.7$\pm$ 1.0& $\times$\\
-Meta      & 67.1$\pm$ 0.6& 76.5$\pm$ 0.5& $\surd$ \\
-Pima      & 75.1$\pm$ 0.6& 73.9$\pm$ 0.5&         \\
-Vehicle   & 44.9$\pm$ 0.6& 61.5$\pm$ 0.4& $\surd$ \\
-\bottomrule
-\end{tabular}
-\end{sc}
-\end{small}
-\end{center}
-\vskip -0.1in
-\end{table}
-
-Tables contain textual material, whereas figures contain graphical material.
-Specify the contents of each row and column in the table's topmost
-row. Again, you may float tables to a column's top or bottom, and set
-wide tables across both columns. Place two-column tables at the
-top or bottom of the page.
-
-\subsection{Theorems and such}
-The preferred way is to number definitions, propositions, lemmas, etc. consecutively, within sections, as shown below.
-\begin{definition}
-\label{def:inj}
-A function $f:X \to Y$ is injective if for any $x,y\in X$ different, $f(x)\ne f(y)$.
-\end{definition}
-Using \cref{def:inj} we immediate get the following result:
-\begin{proposition}
-If $f$ is injective mapping a set $X$ to another set $Y$, 
-the cardinality of $Y$ is at least as large as that of $X$
-\end{proposition}
-\begin{proof} 
-Left as an exercise to the reader. 
-\end{proof}
-\cref{lem:usefullemma} stated next will prove to be useful.
-\begin{lemma}
-\label{lem:usefullemma}
-For any $f:X \to Y$ and $g:Y\to Z$ injective functions, $f \circ g$ is injective.
-\end{lemma}
-\begin{theorem}
-\label{thm:bigtheorem}
-If $f:X\to Y$ is bijective, the cardinality of $X$ and $Y$ are the same.
-\end{theorem}
-An easy corollary of \cref{thm:bigtheorem} is the following:
-\begin{corollary}
-If $f:X\to Y$ is bijective, 
-the cardinality of $X$ is at least as large as that of $Y$.
-\end{corollary}
-\begin{assumption}
-The set $X$ is finite.
-\label{ass:xfinite}
-\end{assumption}
-\begin{remark}
-According to some, it is only the finite case (cf. \cref{ass:xfinite}) that is interesting.
-\end{remark}
-%restatable
-
-\subsection{Citations and References}
-
-Please use APA reference format regardless of your formatter
-or word processor. If you rely on the \LaTeX\/ bibliographic
-facility, use \texttt{natbib.sty} and \texttt{icml2025.bst}
-included in the style-file package to obtain this format.
-
-Citations within the text should include the authors' last names and
-year. If the authors' names are included in the sentence, place only
-the year in parentheses, for example when referencing Arthur Samuel's
-pioneering work \yrcite{Samuel59}. Otherwise place the entire
-reference in parentheses with the authors and year separated by a
-comma \cite{Samuel59}. List multiple references separated by
-semicolons \cite{shen20,Samuel59,yad21}. Use the `et~al.'
-construct only for citations with three or more authors or after
-listing all authors to a publication in an earlier reference \cite{MachineLearningI}.
-
-Authors should cite their own work in the third person
-in the initial version of their paper submitted for blind review.
-Please refer to \cref{author info} for detailed instructions on how to
-cite your own papers.
-
-Use an unnumbered first-level section heading for the references, and use a
-hanging indent style, with the first line of the reference flush against the
-left margin and subsequent lines indented by 10 points. The references at the
-end of this document give examples for journal articles \cite{Samuel59},
-conference publications \cite{chow24}, book chapters \cite{Newell81}, books
-\cite{DudaHart2nd}, edited volumes \cite{MachineLearningI}, technical reports
-\cite{yad21}, and dissertations \cite{shen20}.
-
-Alphabetize references by the surnames of the first authors, with
-single author entries preceding multiple author entries. Order
-references for the same authors by year of publication, with the
-earliest first. Make sure that each reference includes all relevant
-information (e.g., page numbers).
-
-Please put some effort into making references complete, presentable, and
-consistent, e.g. use the actual current name of authors.
-If using bibtex, please protect capital letters of names and
-abbreviations in titles, for example, use \{B\}ayesian or \{L\}ipschitz
-in your .bib file.
-
-\section*{Accessibility}
-Authors are kindly asked to make their submissions as accessible as possible for everyone including people with disabilities and sensory or neurological differences.
-Tips of how to achieve this and what to pay attention to will be provided on the conference website \url{http://icml.cc/}.
 
 \section*{Software and Data}
 
-If a paper is accepted, we strongly encourage the publication of software and data with the
-camera-ready version of the paper whenever appropriate. This can be
-done by including a URL in the camera-ready copy. However, \textbf{do not}
-include URLs that reveal your institution or identity in your
-submission for review. Instead, provide an anonymous URL or upload
-the material as ``Supplementary Material'' into the OpenReview reviewing
-system. Note that reviewers are not required to look at this material
-when writing their review.
-
-% Acknowledgements should only appear in the accepted version.
-\section*{Acknowledgements}
-
-\textbf{Do not} include acknowledgements in the initial version of
-the paper submitted for blind review.
-
-If a paper is accepted, the final camera-ready version can (and
-usually should) include acknowledgements.  Such acknowledgements
-should be placed at the end of the section, in an unnumbered section
-that does not count towards the paper page limit. Typically, this will 
-include thanks to reviewers who gave useful comments, to colleagues 
-who contributed to the ideas, and to funding agencies and corporate 
-sponsors that provided financial support.
+Download links to the code that implements the algorithms explored in this study to be provided after the anonymous peer review.
 
 \section*{Impact Statement}
 
@@ -649,10 +523,6 @@ warrant further discussion, as this statement will be apparent if the
 paper is later flagged for ethics review.
 
 
-% In the unusual situation where you want a paper to appear in the
-% references without citing it in the main text, use \nocite
-%\nocite{chow24}
-
 \bibliography{paper_references}
 \bibliographystyle{icml2025}
 
@@ -665,13 +535,12 @@ paper is later flagged for ethics review.
 \newpage
 \appendix
 \onecolumn
-\section{You \emph{can} have an appendix here.}
+\section{Experiments}
 
-You can have as much text here as you want. The main body must be at most $8$ pages long.
-For the final version, one more page can be added.
-If you want, you can use an appendix like this one.  
+\subsection{Experiment 1}
 
-The $\mathtt{\backslash onecolumn}$ command above can be kept in place if you prefer a one-column appendix, or can be removed if you prefer a two-column appendix.  Apart from this possible change, the style (font size, spacing, margins, page numbering, etc.) should be kept the same as the main body.
+asd
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

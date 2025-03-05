@@ -27,4 +27,5 @@ src
 └── utilities
     └── Stopwatch.py
 ```
+
 Further documentation on the particular implementations can be found in their corresponding directories.
