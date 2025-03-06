@@ -303,7 +303,7 @@ This step directly follows the approach proposed in the paper. Specifically, the
 
 \subsubsection{Sampling}
 
-\textbf{Algorithm 1} illustrates the simplified sampling algorithm we derive from \citeauthor{chow24}'s original \cite{chow24}. The computed leverage scores are first normalized to create a probability distribution that sums to $1$. This normalized distribution is then used to sample rows from the dataset $X$. The number of rows sampled is determined by a customizeable parameter.
+\textbf{Algorithm 1} is a simplified version of the sampling algorithm proposed by \citet{chow24}. The computed leverage scores are first normalized to create a probability distribution that sums to $1$. This normalized distribution is then used to sample rows from the dataset $X$. The number of rows sampled is determined by a customizeable parameter.
 
 \begin{algorithm}[tb]
    \caption{Basic Leverage Scores Sampling}
@@ -448,6 +448,8 @@ In light of the positive preliminary results observed in this initial explorator
 
  \item \textbf{Complete Sampling Algorithm Implementation:} As stated earlier, this preliminary exploration implemented a simplified version of the algorithm proposed by \citeauthor{chow24}. To provide more depth and substance to this study, a full implementation of the algorithm is necessary. This effort will allow for more comprehensive benchmarking and trade-off analysis, as well as a better understanding of the circumstances in which the different variations demonstrate better (or worse) employability.
 
+\item \textbf{Sample Size Impacts:} To delve deeper into the subject of data-sampling, we plan on conducting an analysis to evaluate the impact of sample size in accuracy and training times for models trained with sampled data. In other words, we will seek to understand how different sample sizes affect the key metrics, and answer the question of whether an optimal point exists that allow for best prediction accuracy at a reasonable cost of training time.
+
 \item \textbf{Use-Case Diversification:} \citeauthor{chow24} focus their work on logistic regression models. Given that dataset reduction is a topic of common interest in the Machine Learning field, an exploration of whether the sampling algorithms implemented in this project can be used to train other types of prediction models is justified. Therefore, we propose a more substantial analysis into this question as a natural next step for this study.
 
 \end{itemize}
@@ -461,17 +463,13 @@ Our proposal for this study is multifold. Ultimately, we aim to provide (1) an i
 
 \subsubsection{Methodology}
 
-To achieve the aforementioned goals, a thorough benchmark is necessary to evaluate how the simplified algorithm performs relative to the full implementation in diverse datasets. To keep comparisons objective, we will focus on select metrics such as \textbf{accuracy} ($Acc$),  \textbf{non-sampled training time} ($t_{ns}$, the time taken to train a model on the full dataset), and \textbf{sampled training time} ($t_s$,  the time taken to train a model with sampled data, including sampling time).
-
-Formally, we define:
+To achieve the aforementioned goals, a thorough benchmark is necessary to evaluate how the simplified algorithm performs relative to the full implementation in diverse datasets. To keep comparisons objective, we will focus on select metrics such as \textbf{accuracy} and \textbf{training time}. Formally:
 $$
-Acc(y, \hat{y}) = \frac{1}{n} \sum_{i=0}^{n-1} 1(\hat{y}_i = y_i)
+Accuracy(y, \hat{y}) = \frac{1}{n} \sum_{i=0}^{n-1} 1(\hat{y}_i = y_i)
 $$
 
-And
-
 $$
-t_s = s + t
+Training\text{ }Time = s + t
 $$
 
 Where:
@@ -481,11 +479,11 @@ Where:
 \item[$y$] is a vector representing the true values.
 \item[$\hat{y}$] is a vector representing the predictions.
 \item[$n$] is the number of predictions based on which accuracy is being calculated.
-\item[$s$] is the time consumed by the sampling algorithm to derive a reduced dataset.
+\item[$s$] is the time consumed by the sampling algorithm to derive a reduced dataset. This is zero for non-sampled data.
 
 \end{itemize}
 
-Moreover, each algorithm-dataset combination will be run an adequate number of times for statistical relevance, and the key metrics are to be captured each time. Performance comparisons will be made with average values. This practice will allow for more consistent performance analysis across implementations. Specifically, the simplified and complete versions of the algorithms will be tested with different databases, such as those used by \citeauthor{chow24}, and also well-known open-source datasets, such as the Breast Cancer Wisconsin Diagnostic Data Set \cite{breastcancer}, among others. Further information regarding experiment design details are included in Appendix A.
+Moreover, each algorithm-dataset combination will be run an adequate number of times for statistical relevance, and the key metrics are to be captured each time. Performance comparisons will be made with average values. This practice will allow for more consistent performance analysis across implementations. Specifically, the simplified and complete versions of the algorithms will be tested with different databases, such as those used by \citeauthor{chow24}, and also well-known open-source datasets, such as the Breast Cancer Wisconsin Diagnostic Data Set \cite{breastcancer}, among others. Further details regarding experiment design are included in \textbf{Appendix A}.
 
 Lastly, we will assess whether the sampling algorithms contribute positively or negatively when used to train different prediction models beyond binary classification. At this preliminary stage, the types of predictions scoped for further exploration are \textbf{to be defined}.
 
@@ -502,7 +500,7 @@ Our literature review indicates numerous efforts in the machine learning communi
 
 \section{Conclusion}
 
-...
+This project proposes an exploration of data-sampling as a creative strategy for reducing large bodies of data to representative subsets that allow for the training of accurate prediction models at a smaller computational cost. The integration of a sampling algorithm based on leverage scores, according to this preliminary evaluation, provided valuable insights into the potential benefits of employing this method in the context of logistic regression models. In our view, this work justifies further efforts to analyze different implementations, as well as address the open question of whether similar impacts can be observed when training other types of models. We are confident that this project can provide meaningful contributions to the field of Machine Learning, specifically in addressing open questions regarding dimensionality reduction as a training optimization strategy.
 
 
 \section*{Software and Data}
@@ -511,22 +509,9 @@ Download links to the code that accompanies this study to be provided after the 
 
 \section*{Impact Statement}
 
-...
-
-Authors are \textbf{required} to include a statement of the potential 
-broader impact of their work, including its ethical aspects and future 
-societal consequences. This statement should be in an unnumbered 
-section at the end of the paper (co-located with Acknowledgements -- 
-the two may appear in either order, but both must be before References), 
-and does not count toward the paper page limit. In many cases, where 
-the ethical impacts and expected societal implications are those that 
-are well established when advancing the field of Machine Learning, 
-substantial discussion is not required, and a simple statement such 
-as the following will suffice:
-
-``This paper presents work whose goal is to advance the field of 
-Machine Learning. There are many potential societal consequences 
-of our work, none which we feel must be specifically highlighted here.''
+This paper presents work which goal is to advance the field of
+Machine Learning, particularly in what is known regarding dataset reduction. There are many potential societal consequences
+of our work, none which we feel must be specifically highlighted here.
 
 
 \bibliography{paper_references}
