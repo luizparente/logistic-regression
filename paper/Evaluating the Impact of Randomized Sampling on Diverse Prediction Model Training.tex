@@ -532,17 +532,13 @@ of our work, none which we feel must be specifically highlighted here.
 
 \subsubsection{Objective Metrics}
 
-The goal of the experiment described here is to record key metrics for each model-dataset combination, namely \textbf{accuracy} ($Acc$), \textbf{non-sampled training time} ($t_{ns}$, the time taken to train a model on the full dataset), and \textbf{sampled training time} ($t_s$,  the time taken to train a model with sampled data, including sampling time).
-
-Formally, we define:
+The goal of the experiment described here is to record key metrics for each model-dataset combination, namely \textbf{accuracy} and \textbf{training time}. Formally, we define:
 $$
-Acc(y, \hat{y}) = \frac{1}{n} \sum_{i=0}^{n-1} 1(\hat{y}_i = y_i)
+Accuracy(y, \hat{y}) = \frac{1}{n} \sum_{i=0}^{n-1} 1(\hat{y}_i = y_i)
 $$
 
-And
-
 $$
-t_s = s + t
+Training\text{ }Time = s + t
 $$
 
 Where:
@@ -551,8 +547,9 @@ Where:
 
 \item[$y$] is a vector representing the true values.
 \item[$\hat{y}$] is a vector representing the predictions.
-\item[$n$] is the number of predictions based on which accuracy is being calculated.
-\item[$s$] is the time consumed by the sampling algorithm to derive a reduced dataset.
+\item[$n$] is the number of predictions.
+\item[$s$] is the time consumed by the sampling algorithm. This is $zero$ for non-sampled models.
+\item[$t$] is the time consumed by the training process.
 
 \end{itemize}
 
