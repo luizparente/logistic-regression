@@ -51,12 +51,12 @@
 
 % The \icmltitle you define below is probably too long as a header.
 % Therefore, a short form for the running title is supplied here:
-\icmltitlerunning{Evaluating the Impact of Randomized Sampling on Diverse Prediction Model Training}
+\icmltitlerunning{Evaluating the Impact of Randomized Sampling on Training of Diverse Prediction Models}
 
 \begin{document}
 
 \twocolumn[
-\icmltitle{Evaluating the Impact of Randomized Sampling on Diverse Prediction Model Training}
+\icmltitle{Evaluating the Impact of Randomized Sampling on Training of Diverse Prediction Models}
 
 % You can specify symbols, otherwise they are numbered in order.
 % Ideally, you should not use this facility. Affiliations will be numbered
@@ -91,11 +91,7 @@
 
 \begin{abstract}
 
-In the modern world, data generation and collection have become ubiquitous, and machine learning algorithms are constantly employed to implement intelligent models for a diverse range of practical use-cases. Large corporations leverage customer data to predict consumption patterns. Health practitioners utilize medical datasets to diagnose sickness. Social media companies parse through \textit{likes} and \textit{comments} to analyze human behavior and maximize user engagement.
-
-The reliance on big-data has increasingly become the norm. However, as the available data grows in size and dimensionality, the computational power required to train such models increase proportionally. Therefore, optimizing compute efficiency when leveraging large-scale datasets to train machine learning prediction models becomes an obvious necessity as society shifts toward data-driven business models and paradigms.
-
-This study focuses on exploring \textbf{data sampling} as a possible solution for the problem of training on large data. The goal, given a dataset, is to derive a smaller subset that retains the main characteristics of the whole, allowing for the training of prediction models that provide comparable accuracy to those trained on the full dataset, however at a lower training cost.
+In the modern world, data generation and collection have become ubiquitous, and machine learning algorithms are constantly employed to implement intelligent models for a diverse range of practical use-cases. Large corporations leverage customer data to predict consumption patterns. Health practitioners utilize medical datasets to diagnose sickness. Social media companies parse through \textit{likes} and \textit{comments} to analyze human behavior and maximize user engagement. The reliance on big-data has increasingly become the norm. However, as the available data grows in size and dimensionality, the computational power required to train such models increase proportionally. Therefore, optimizing compute efficiency when leveraging large-scale datasets to train machine learning prediction models becomes an obvious necessity as society shifts toward data-driven business models and paradigms. This study focuses on exploring \textbf{data sampling} as a possible solution for the problem of training prediction models on large data. The goal, given a dataset, is to derive a smaller subset that retains the main characteristics of the whole, allowing for the training of prediction models that provide comparable accuracy to those trained on the full dataset, however at a lower training cost.
 
 \end{abstract}
 
@@ -114,7 +110,7 @@ With large datasets, the time complexity can become prohibitive, as the number o
 
 This work aims to explore potential solutions to the computational challenges posed by the use of high-dimensional datasets in the context of prediction models. Objectively, we evaluate the impacts, implementations, and viable utilizations for a randomized sampling algorithm originally designed for logistic regression models, as outlined by \citet{chow24}. Given a dataset, the proposed method derives a smaller subset that retains the most representative data-points, using it to train a prediction model capable of achieving accuracy levels comparable to models trained on the entire dataset. As demonstrated both theoretically and experimentally, the algorithm is successful at substantially reducing the size of training datasets, addressing many barriers found when handling large databases in machine learning applications.
 
-Given the predominance of digital systems driven by big-data in modern society, investigating implementation variations and applicability potential is a justified effort, and may help to further understand possible trafe-offs between algorithmic simplicity and prediction accuracy, as well as effectiveness in diverse data configurations.
+Given the predominance of digital systems driven by big-data in modern society, investigating implementation variations and applicability potential is a justified effort, and may help to further understand possible trade-offs between algorithmic simplicity and prediction accuracy, as well as effectiveness in diverse data configurations.
 
 
 \subsection{Summary and Critique of the Selected Papers}
@@ -502,7 +498,7 @@ Our literature review indicates numerous efforts in the machine learning communi
 
 \section{Conclusion}
 
-This project proposes an exploration of data-sampling as a creative strategy for reducing large bodies of data to representative subsets that allow for the training of accurate prediction models at a smaller computational cost. The integration of a sampling algorithm based on leverage scores, according to this preliminary evaluation, provided valuable insights into the potential benefits of employing this method in the context of logistic regression models. In our view, this work justifies further efforts to analyze different implementations, as well as address the open question of whether similar impacts can be observed when training other types of models. We are confident that this project can provide meaningful contributions to the field of Machine Learning, specifically in addressing open questions regarding dimensionality reduction as a training optimization strategy.
+This project proposes an exploration of data-sampling as a creative strategy for reducing large bodies of data to representative subsets that allow for the training of accurate prediction models at a smaller computational cost. The integration of a sampling algorithm based on leverage scores, according to this preliminary evaluation, provided valuable insights into the potential benefits of employing this method in the context of logistic regression models, specifically in reducing the training dataset without substantial loss of prediction quality. In our view, this work justifies further efforts to analyze different implementations, as well as address the open question of whether similar impacts can be observed when training other types of models. We are confident that this project can provide meaningful contributions to the field of Machine Learning, specifically in addressing open questions regarding dimensionality reduction as a training optimization strategy.
 
 
 \section*{Software and Data}
@@ -511,8 +507,8 @@ Download links to the code that accompanies this study to be provided after the 
 
 \section*{Impact Statement}
 
-This paper presents work which goal is to advance the field of
-Machine Learning, particularly in what is known regarding dataset reduction. There are many potential societal consequences
+This paper presents a study which goal is to advance the field of
+Machine Learning, particularly in what is known regarding dataset reduction. There are many potential societal implications
 of our work, none which we feel must be specifically highlighted here.
 
 
