@@ -12,7 +12,7 @@ The code proposed here is organized as follows:
 
 - Directory `src` is the root and contains the source code for this project.
 - Sub-directory `experiments` provides our experiments designed to benchmark the effectiveness of the randomized sampling algorithms studied in this work.
-- Sub-directory `optimized_sampling` provides a simplified implementation of the optimized sampling algorithm proposed in the aforementioned paper.
+- Sub-directory `sampling` provides a simplified implementation of the optimized sampling algorithm proposed in the aforementioned paper.
 - Sub-directory `regression` provides our "vanilla" implementation for the Logistic Regression algorithm.
 - Sub-directory `utilities` implements basic utilities for obtaining additional performance metrics for the models.
 
@@ -20,7 +20,7 @@ The code proposed here is organized as follows:
 src
 ├── experiments
 │   └── BasicLeverageScoresSampler_BreastCancer.ipynb
-├── optimized_sampling
+├── sampling
 │   └── BasicLeverageScoresSampler.py
 ├── regression
 │   └── SlowLogisticRegression.py
