@@ -1,2 +1,8 @@
 venv/
 __pycache__/
+paper/final/*.aux
+paper/final/*.bbl
+paper/final/*.blg
+paper/final/*.log
+paper/final/*.out
+paper/final/*.gz

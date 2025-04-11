@@ -363,80 +363,6 @@ Experiments 3 and 4, illustrated in \textbf{Figure 5} and \textbf{Figure 6}, res
 Experiment 5, documented in \textbf{Figure 7}, amplifies the statistical relevance of the observed results by repeating experiments 1, 2, 3, and 4 under the same conditions, but this time over 1000 cycles. Equivalent results have been measured as a result of the experiment, confirming the observations made earlier.
 
 
-\begin{figure}[ht]
-\vskip 0.2in
-\begin{center}
-\centerline{\includegraphics[width=\columnwidth]{experiment_1a}}
-\caption{Measured accuracies and training times observed over 20 training cycles of \texttt{SlowLogisticRegression}, without any sampling, using the Breast Cancer Wisconsin Diagnostic Dataset \cite{breastcancer}.}
-\label{experiment_1a}
-\end{center}
-\vskip -0.2in
-\end{figure}
-
-\begin{figure}[ht]
-\vskip 0.2in
-\begin{center}
-\centerline{\includegraphics[width=\columnwidth]{experiment_1b}}
-\caption{Mean accuracies and training times observed over 20 training cycles of \texttt{SlowLogisticRegression}, without any sampling, using the Breast Cancer Wisconsin Diagnostic Dataset \cite{breastcancer}.}
-\label{experiment_1a}
-\end{center}
-\vskip -0.2in
-\end{figure}
-
-
-\begin{figure}[ht]
-\vskip 0.2in
-\begin{center}
-\centerline{\includegraphics[width=\columnwidth]{experiment_2a}}
-\caption{Measured accuracies and training times observed over 20 training cycles of \texttt{SlowLogisticRegression}, with \texttt{BasicLeverageScoresSampler} sampling, using the Breast Cancer Wisconsin Diagnostic Dataset \cite{breastcancer}.}
-\label{experiment_1a}
-\end{center}
-\vskip -0.2in
-\end{figure}
-
-
-\begin{figure}[ht]
-\vskip 0.2in
-\begin{center}
-\centerline{\includegraphics[width=\columnwidth]{experiment_2b}}
-\caption{Mean accuracies and training times observed over 20 training cycles of \texttt{SlowLogisticRegression}, with \texttt{BasicLeverageScoresSampler} sampling, using the Breast Cancer Wisconsin Diagnostic Dataset \cite{breastcancer}.}
-\label{experiment_1a}
-\end{center}
-\vskip -0.2in
-\end{figure}
-
-
-\begin{figure}[ht]
-\vskip 0.2in
-\begin{center}
-\centerline{\includegraphics[width=\columnwidth]{experiment_3b}}
-\caption{Mean accuracies and training times observed over 20 training cycles of SciKit-Learn's \texttt{LogisticRegression} class, without any sampling, using the Breast Cancer Wisconsin Diagnostic Dataset \cite{breastcancer}.}
-\label{experiment_1a}
-\end{center}
-\vskip -0.2in
-\end{figure}
-
-\begin{figure}[ht]
-\vskip 0.2in
-\begin{center}
-\centerline{\includegraphics[width=\columnwidth]{experiment_4b}}
-\caption{Mean accuracies and training times observed over 20 training cycles of SciKit-Learn's \texttt{LogisticRegression} class, with \texttt{BasicLeverageScoresSampler} sampling, using the Breast Cancer Wisconsin Diagnostic Dataset \cite{breastcancer}.}
-\label{experiment_1a}
-\end{center}
-\vskip -0.2in
-\end{figure}
-
-\begin{figure}[ht]
-\vskip 0.2in
-\begin{center}
-\centerline{\includegraphics[width=\columnwidth]{experiment_5}}
-\caption{Mean accuracies and training times observed when repeating experiments 1, 2, 3, and 4, this time with 1000 training cycles each.}
-\label{experiment_1a}
-\end{center}
-\vskip -0.2in
-\end{figure}
-
-
 \subsection{Next Steps}
 
 In light of the positive preliminary results observed in this initial exploratory phase, we propose the following next steps to give continuity to this study:
@@ -523,7 +449,7 @@ of our work, none which we feel must be specifically highlighted here.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
 \appendix
-\onecolumn
+\twocolumn
 \section{Experiments}
 
 \subsubsection{Objective Metrics}
@@ -578,7 +504,7 @@ The classification model employed is a custom logistic regression implementation
 
 \subsubsection{Experimental Procedure}
 
-The experiment is repeated 20 times for this experiment. For each iteration:
+The experiment is repeated 100 times for statistical relevance. For each iteration:
 
 \begin{itemize}
  \item [1.] The dataset is split into training and test sets.
@@ -606,6 +532,19 @@ The experiment assumes that the dataset is suitable for binary classification an
 
 The experiment is expected to yield a distribution of accuracy scores reflecting the model's predictive capability and a distribution of training times indicating its efficiency. These results can be used to benchmark \texttt{SlowLogisticRegression} against other implementations or algorithms under identical conditions.
 
+\subsubsection{Measured Outcomes}
+
+The expected outcomes for this experiment have been empirically confirmed, as illustrated in \textbf{Figure 1}.
+
+\begin{figure}[ht]
+	\vskip 0.2in
+	\begin{center}
+		\centerline{\includegraphics[width=\columnwidth]{experiment_01}}
+		\caption{Mean accuracies and training times observed over 100 training cycles of \texttt{SlowLogisticRegression}, without any sampling, using the Breast Cancer Wisconsin Diagnostic Dataset \cite{breastcancer}.}
+		\label{experiment_01}
+	\end{center}
+	\vskip -0.2in
+\end{figure}
 
 
 \subsection{Experiment 2: \texttt{SlowLogisticRegression}'s Performance with Leverage Score Sampling}
@@ -631,7 +570,7 @@ The classification model employed is a custom logistic regression implementation
 
 \subsubsection{Experimental Procedure}
 
-The experiment is repeated 20 times for this experiment. For each iteration:
+The experiment is repeated 100 times for statistical relevance. For each iteration:
 
 \begin{itemize}
  \item [1.] The dataset is sampled to 20\% of its original size using \texttt{BasicLeverageScoresSampler}.
@@ -657,6 +596,20 @@ The experiment assumes that the dataset is suitable for binary classification an
 
 The experiment is expected to yield a distribution of accuracy scores reflecting the model's predictive capability and a distribution of training times indicating its efficiency. These results can be used to benchmark \texttt{SlowLogisticRegression} against other implementations or algorithms under identical conditions, and particularly to evaluate the impact of leverage score sampling algorithm \texttt{BasicLeverageScoresSampler} impacts on prediction accuracy and model training time.
 
+\subsubsection{Measured Outcomes}
+
+The expected outcomes for this experiment have been empirically confirmed, as illustrated in \textbf{Figure 2}.
+
+\begin{figure}[ht]
+	\vskip 0.2in
+	\begin{center}
+		\centerline{\includegraphics[width=\columnwidth]{experiment_02}}
+		\caption{Mean accuracies and training times observed over 100 training cycles of \texttt{SlowLogisticRegression}, with \texttt{BasicLeverageScoresSampler} sampling, using the Breast Cancer Wisconsin Diagnostic Dataset \cite{breastcancer}.}
+		\label{experiment_02}
+	\end{center}
+	\vskip -0.2in
+\end{figure}
+
 
 \subsection{Experiments 3 and 4: Repeating Experiments 1 and 2 using SciKit-Learn's \texttt{LogisticRegression} Model}
 
@@ -674,7 +627,7 @@ The model is SciKit-Learn's \texttt{LogisticRegression} with default parameters,
 
 \subsubsection{Experimental Procedure}
 
-The experiment is repeated 20 times per condition. The same procedure detailed for previous experiments are employed here for Experiment 3 and 4.
+The experiment is repeated 100 times for statistical relevance. The same procedure detailed for previous experiments are employed here for Experiment 3 and 4.
 
 \subsubsection{Analysis}
 
@@ -688,24 +641,113 @@ The experiment assumes binary classification suitability and effective min-max s
 
 Accuracy and training time distributions will reveal \texttt{LogisticRegression}'s performance, highlighting sampling impacts versus Experiments 1 and 2, and benchmarking optimized versus custom models.
 
+\subsubsection{Measured Outcomes}
 
-\subsection{Experiment 5: Statistical Validation of Experiments 1–4 with Increased Runs}
+The expected outcomes for this experiment have been empirically confirmed, as illustrated in \textbf{Figure 3} and \textbf{Figure 4}.
+
+\begin{figure}[ht]
+	\vskip 0.2in
+	\begin{center}
+		\centerline{\includegraphics[width=\columnwidth]{experiment_03}}
+		\caption{Mean accuracies and training times observed over 100 training cycles of SciKit-Learn's \texttt{LogisticRegression} class, without any sampling, using the Breast Cancer Wisconsin Diagnostic Dataset \cite{breastcancer}.}
+		\label{experiment_03}
+	\end{center}
+	\vskip -0.2in
+\end{figure}
+
+\begin{figure}[ht]
+	\vskip 0.2in
+	\begin{center}
+		\centerline{\includegraphics[width=\columnwidth]{experiment_04}}
+		\caption{Mean accuracies and training times observed over 100 training cycles of SciKit-Learn's \texttt{LogisticRegression} class, with \texttt{BasicLeverageScoresSampler} sampling, using the Breast Cancer Wisconsin Diagnostic Dataset \cite{breastcancer}.}
+		\label{experiment_04}
+	\end{center}
+	\vskip -0.2in
+\end{figure}
+
+
+\subsection{Experiment 5: \texttt{SlowLogisticRegression}'s Performance with Random Sampling}
 
 \subsubsection{Objective}
 
-Experiment 5 re-executes Experiments 1, 2, 3, and 4, increasing the number of cycles from 20 to 1000 per condition, to enhance the statistical relevance of prior observations. It assesses \texttt{SlowLogisticRegression} and \texttt{LogisticRegression} performance under full and 20\% sampled dataset scenarios, aiming to confirm the consistency and reliability of accuracy and training time findings from earlier experiments.
+The experiment aims to assess the performance of a custom implementation of logistic regression, named \texttt{SlowLogisticRegression}, in terms of classification accuracy and training time across multiple runs on an open-source dataset \cite{breastcancer}. The experiment seeks to quantify the model's generalization ability and computational efficiency under standardized conditions, incorporating a data sampling step using the randomized sampling algorithm \texttt{RandomSampler}.
+
 
 \subsubsection{Materials and Methods}
 
-The dataset, sampling (for Experiments 2 and 4), and scaling remain as in Experiments 1–4, using $ X \in \mathbb{R}^{n \times m} $, $ y \in \{0, 1\}^n $, an 80-20 train-test split (random seed 42), and \texttt{MinMaxScaler} normalization.
+The experiment utilizes a dataset represented by feature matrix $ X \in \mathbb{R}^{n \times m} $ and target vector $ y \in \{0, 1\}^n $, where $ n $ is the number of samples and $ m $ is the number of features. The dataset is assumed to be preprocessed and suitable for binary classification tasks.
+
+For each experimental run, the dataset is first sampled to 20\% of its original size using the \texttt{RandomSampler}, resulting in a reduced dataset ($ X_{\text{sampled}}, y_{\text{sampled}} $). This sampled dataset is then split into training and test sets using an 80-20 partition, with 80\% of the sampled data allocated to training ($ X_{\text{train}}, y_{\text{train}} $) and 20\% to testing ($ X_{\text{test}}, y_{\text{test}} $). The split is performed using a fixed random seed of 42 to ensure reproducibility across runs. Feature scaling is applied using Python's SciKit-Learn \texttt{MinMaxScaler}, which normalizes each feature to the range $[0, 1]$ based on the training set's minimum and maximum values. The scaling transformation is computed as:
+\[
+X'_{i,j} = \frac{X_{i,j} - \min(X_{:,j})}{\max(X_{:,j}) - \min(X_{:,j})}
+\]
+where $ X_{i,j} $ denotes the $ j $-th feature of the $ i $-th sample, and the transformation is fitted on $ X_{\text{train}} $ and applied to both $ X_{\text{train}} $ and $ X_{\text{test}} $.
 
 \subsubsection{Model and Training}
 
-Models are \texttt{SlowLogisticRegression} (learning rate 0.1, 5000 epochs) for Experiments 1 and 2, and SciKit-Learn's \texttt{LogisticRegression} (default parameters) for Experiments 3 and 4, as previously defined.
+The classification model employed is a custom logistic regression implementation (\texttt{SlowLogisticRegression}), parameterized by a learning rate of 0.1 and a fixed number of 5000 training epochs. The implementation of this model is detailed in section 2 of this paper.
 
 \subsubsection{Experimental Procedure}
 
-The experiment is repeated 1000 times per condition (Experiments 1–4). The same procedures described earlier for each experiment still apply here.
+The experiment is repeated 100 times for statistical relevance. For each iteration:
+
+\begin{itemize}
+	\item [1.] The dataset is sampled to 20\% of its original size using \texttt{RandomSampler}.
+	\item [2.] The sampled dataset is split into training and test sets.
+	\item [3.] Features are scaled using \texttt{MinMaxScaler}.
+	\item [4.] The \texttt{SlowLogisticRegression} model is initialized and trained on the scaled training data, with training time recorded.
+	\item [5.] Predictions are generated on the scaled test set.
+	\item [6.] Accuracy is calculated by comparing predictions to the true test labels.
+	\item [7.] Accuracy and training time are tracked separately.
+\end{itemize}
+
+This procedure records the accuracy scores and training times across each cycle, which are later used to calculate the average values for each metric.
+
+\subsubsection{Analysis}
+
+The collected accuracies and training times enable statistical analysis of the model's performance. Key statistics, such as the mean and standard deviation of accuracy, can be computed to evaluate consistency and generalization. Similarly, training time statistics provide insight into the computational cost of the \texttt{SlowLogisticRegression} implementation with leverage score sampling.
+
+\subsubsection{Assumptions and Limitations}
+
+The experiment assumes that the dataset is suitable for binary classification and that the features benefit from min-max scaling. The fixed hyperparameters (learning rate = 0.1, epochs = 5000), obtained empirically, appear to suit this experiment well and provide satisfactory results. Additionally, the use of random sampling assumes that the selected 20\% subset adequately represents the original dataset's structure.
+
+\subsubsection{Expected Outcomes}
+
+The experiment is expected to yield a distribution of accuracy scores reflecting the model's predictive capability and a distribution of training times indicating its efficiency. These results can be used to benchmark \texttt{SlowLogisticRegression} against other implementations or algorithms under identical conditions, and particularly to evaluate the impact of random sampling algorithm \texttt{RandomSampler} on prediction accuracy and model training time.
+
+
+\subsubsection{Measured Outcomes}
+
+The expected outcomes for this experiment have been empirically confirmed, as illustrated in \textbf{Figure 5}.
+
+\begin{figure}[ht]
+	\vskip 0.2in
+	\begin{center}
+		\centerline{\includegraphics[width=\columnwidth]{experiment_05}}
+		\caption{Mean accuracies and training times observed over 20 training cycles of \texttt{SlowLogisticRegression}, with \texttt{RandomSampler} sampling, using the Breast Cancer Wisconsin Diagnostic Dataset \cite{breastcancer}.}
+		\label{experiment_05}
+	\end{center}
+	\vskip -0.2in
+\end{figure}
+
+
+\subsection{Experiment 6: Statistical Validation of Experiments 1–5 with Increased Runs}
+
+\subsubsection{Objective}
+
+Experiment 5 re-executes Experiments 1, 2, 3, 4, and 5, increasing the number of cycles from 100 to 1000 per condition, to enhance the statistical relevance of prior observations. It assesses \texttt{SlowLogisticRegression} and \texttt{LogisticRegression} performance under full and 20\% sampled dataset scenarios, aiming to confirm the consistency and reliability of accuracy and training time findings from earlier experiments.
+
+\subsubsection{Materials and Methods}
+
+The dataset, sampling (for Experiments 2 and 4), and scaling remain as in Experiments 1–5, using $ X \in \mathbb{R}^{n \times m} $, $ y \in \{0, 1\}^n $, an 80-20 train-test split (random seed 42), and \texttt{MinMaxScaler} normalization.
+
+\subsubsection{Model and Training}
+
+Models are \texttt{SlowLogisticRegression} (learning rate 0.1, 5000 epochs) for Experiments 1, 2, and 5, and SciKit-Learn's \texttt{LogisticRegression} (default parameters) for Experiments 3 and 4, as previously defined.
+
+\subsubsection{Experimental Procedure}
+
+The experiment is repeated 1000 times per condition (Experiments 1–5). The same procedures described earlier for each experiment still apply here.
 
 \subsubsection{Analysis}
 
@@ -713,11 +755,568 @@ Mean and standard deviation of accuracy and training times, based on 1000 runs, 
 
 \subsubsection{Assumptions and Limitations}
 
-Assumptions align with Experiments 1–4: binary classification suitability, effective scaling, and representative sampling. Fixed parameters for \texttt{SlowLogisticRegression} and defaults for \texttt{LogisticRegression} are presumed suitable.
+Assumptions align with Experiments 1–5: binary classification suitability, effective scaling, and representative sampling. Fixed parameters for \texttt{SlowLogisticRegression} and defaults for \texttt{LogisticRegression} are presumed suitable.
 
 \subsubsection{Expected Outcomes}
 
-Distributions of accuracy and training times across 1000 runs will confirm the statistical relevance of Experiments 1–4, reinforcing comparisons between models and sampling effects with greater confidence.
+Distributions of accuracy and training times across 1000 runs will confirm the statistical relevance of Experiments 1–5, reinforcing comparisons between models and sampling effects with greater confidence.
+
+\subsubsection{Measured Outcomes}
+
+The expected outcomes for this experiment have been empirically confirmed, as illustrated in \textbf{Figure 6}.
+
+\begin{figure}[ht]
+	\vskip 0.2in
+	\begin{center}
+		\centerline{\includegraphics[width=\columnwidth]{experiment_06}}
+		\caption{Mean accuracies and training times observed when repeating experiments 1, 2, 3, 4, and 5, this time with 1000 training cycles each.}
+		\label{experiment_06}
+	\end{center}
+	\vskip -0.2in
+\end{figure}
+
+
+\subsection{Experiment 7: SciKit-Learn's \texttt{KNeighborsClassifier} Model's Performance, No Sampling}
+
+\subsubsection{Objective}
+
+The experiment aims to assess the performance of SciKit-Learn's K-Nearest Neighbors model, named \texttt{KNeighborsClassifier}, in terms of classification accuracy and training time across multiple runs on an open-source dataset \cite{iris}. The experiment seeks to quantify the model's generalization ability and computational efficiency under standardized conditions.
+
+
+\subsubsection{Materials and Methods}
+
+The experiment utilizes a dataset represented by feature matrix $ X \in \mathbb{R}^{n \times m} $ and target vector $ y \in \{0, 1\}^n $, where $ n $ is the number of samples and $ m $ is the number of features. The dataset is assumed to be preprocessed and suitable for classification tasks.
+
+For each experimental run, the dataset is split into training and test sets using an 80-20 partition, with 80\% of the data allocated to training ($ X_{\text{train}}, y_{\text{train}} $) and 20\% to testing ($ X_{\text{test}}, y_{\text{test}} $). The split is performed using a fixed random seed of 42 to ensure reproducibility across runs. Feature scaling is not used in this experiment.
+
+
+\subsubsection{Model and Training}
+
+The classification model employed is provided by SciKit-Learn's \texttt{KNeighborsClassifier} class.
+
+
+\subsubsection{Experimental Procedure}
+
+The experiment is repeated 100 times for statistical relevance. For each iteration:
+
+\begin{itemize}
+	\item [1.] The dataset is split into training and test sets.
+	\item [2.] The \texttt{KNeighborsClassifier} model is initialized and trained, with training time recorded.
+	\item [3.] Predictions are generated on the test set.
+	\item [4.] Accuracy is calculated by comparing predictions to the true test labels.
+	\item [5.] Accuracy and training time are tracked separately.
+\end{itemize}
+
+This procedure records the accuracy scores and training times across each cycle, which are later used to calculate the average values for each metric.
+
+
+\subsubsection{Analysis}
+
+The collected accuracies and training times enable statistical analysis of the model's performance. Key statistics, such as the mean and standard deviation of accuracy, can be computed to evaluate consistency and generalization. Similarly, training time statistics provide insight into the computational cost of the \texttt{KNeighborsClassifier} implementation without any sampling.
+
+
+\subsubsection{Assumptions and Limitations}
+
+The experiment assumes that the dataset is suitable for classification and that the features.
+
+
+\subsubsection{Expected Outcomes}
+
+The experiment is expected to yield a distribution of accuracy scores reflecting the model's predictive capability and a distribution of training times indicating its efficiency. These results can be used to benchmark \texttt{KNeighborsClassifier} against other implementations or algorithms under identical conditions.
+
+\subsubsection{Measured Outcomes}
+
+The expected outcomes for this experiment have been empirically confirmed, as illustrated in \textbf{Figure 7}.
+
+\begin{figure}[ht]
+	\vskip 0.2in
+	\begin{center}
+		\centerline{\includegraphics[width=\columnwidth]{experiment_07}}
+		\caption{Mean accuracies and training times observed over 100 training cycles of \texttt{KNeighborsClassifier}, without any sampling, using the Iris Dataset \cite{iris}.}
+		\label{experiment_07}
+	\end{center}
+	\vskip -0.2in
+\end{figure}
+
+
+\subsection{Experiment 8: SciKit-Learn's \texttt{KNeighborsClassifier} Model's Performance with Leverage Score Sampling}
+
+\subsubsection{Objective}
+
+The experiment aims to assess the performance of SciKit-Learn's \texttt{KNeighborsClassifier} model, in terms of classification accuracy and training time across multiple runs on an open-source dataset \cite{iris}. The experiment seeks to quantify the model's generalization ability and computational efficiency under standardized conditions, incorporating a data sampling step using the randomized sampling algorithm \texttt{BasicLeverageScoresSampler}.
+
+
+\subsubsection{Materials and Methods}
+
+The experiment utilizes a dataset represented by feature matrix $ X \in \mathbb{R}^{n \times m} $ and target vector $ y \in \{0, 1\}^n $, where $ n $ is the number of samples and $ m $ is the number of features. The dataset is assumed to be preprocessed and suitable for classification tasks.
+
+For each experimental run, the dataset is first sampled to 20\% of its original size using the \texttt{BasicLeverageScoresSampler}, resulting in a reduced dataset ($ X_{\text{sampled}}, y_{\text{sampled}} $). This sampled dataset is then split into training and test sets using an 80-20 partition, with 80\% of the sampled data allocated to training ($ X_{\text{train}}, y_{\text{train}} $) and 20\% to testing ($ X_{\text{test}}, y_{\text{test}} $). The split is performed using a fixed random seed of 42 to ensure reproducibility across runs. Feature scaling is not used in this experiment.
+
+\subsubsection{Model and Training}
+
+The classification model employed is provided by SciKit-Learn's \texttt{KNeighborsClassifier} class.
+
+\subsubsection{Experimental Procedure}
+
+The experiment is repeated 100 times for statistical relevance. For each iteration:
+
+\begin{itemize}
+	\item [1.] The dataset is sampled to 20\% of its original size using \texttt{BasicLeverageScoresSampler}.
+	\item [2.] The sampled dataset is split into training and test sets.
+	\item [3.] The \texttt{KNeighborsClassifier} model is initialized and trained on the training data, with training time recorded.
+	\item [4.] Predictions are generated on the test set.
+	\item [5.] Accuracy is calculated by comparing predictions to the true test labels.
+	\item [6.] Accuracy and training time are tracked separately.
+\end{itemize}
+
+This procedure records the accuracy scores and training times across each cycle, which are later used to calculate the average values for each metric.
+
+\subsubsection{Analysis}
+
+The collected accuracies and training times enable statistical analysis of the model's performance. Key statistics, such as the mean and standard deviation of accuracy, can be computed to evaluate consistency and generalization. Similarly, training time statistics provide insight into the computational cost of the \texttt{KNeighborsClassifier} implementation with leverage score sampling.
+
+\subsubsection{Assumptions and Limitations}
+
+The experiment assumes that the dataset is suitable for classification. Additionally, the use of leverage score sampling assumes that the selected 20\% subset adequately represents the original dataset's structure.
+
+\subsubsection{Expected Outcomes}
+
+The experiment is expected to yield a distribution of accuracy scores reflecting the model's predictive capability and a distribution of training times indicating its efficiency. These results can be used to benchmark \texttt{KNeighborsClassifier} against other implementations or algorithms under identical conditions, and particularly to evaluate the impact of leverage score sampling algorithm \texttt{BasicLeverageScoresSampler} impacts on prediction accuracy and model training time.
+
+\subsubsection{Measured Outcomes}
+
+The expected outcomes for this experiment have been empirically confirmed, as illustrated in \textbf{Figure 8}.
+
+\begin{figure}[ht]
+	\vskip 0.2in
+	\begin{center}
+		\centerline{\includegraphics[width=\columnwidth]{experiment_08}}
+		\caption{Mean accuracies and training times observed over 100 training cycles of \texttt{KNeighborsClassifier}, with \texttt{BasicLeverageScoresSampler} sampling, using the Iris Dataset \cite{iris}.}
+		\label{experiment_08}
+	\end{center}
+	\vskip -0.2in
+\end{figure}
+
+
+\subsection{Experiment 9: SciKit-Learn's \texttt{KNeighborsClassifier} Model's Performance with Random Sampling}
+
+\subsubsection{Objective}
+
+The experiment aims to assess the performance of SciKit-Learn's \texttt{KNeighborsClassifier} model, in terms of classification accuracy and training time across multiple runs on an open-source dataset \cite{iris}. The experiment seeks to quantify the model's generalization ability and computational efficiency under standardized conditions, incorporating a data sampling step using the randomized sampling algorithm \texttt{RandomSampler}.
+
+
+\subsubsection{Materials and Methods}
+
+The experiment utilizes a dataset represented by feature matrix $ X \in \mathbb{R}^{n \times m} $ and target vector $ y \in \{0, 1\}^n $, where $ n $ is the number of samples and $ m $ is the number of features. The dataset is assumed to be preprocessed and suitable for classification tasks.
+
+For each experimental run, the dataset is first sampled to 20\% of its original size using the \texttt{RandomSampler}, resulting in a reduced dataset ($ X_{\text{sampled}}, y_{\text{sampled}} $). This sampled dataset is then split into training and test sets using an 80-20 partition, with 80\% of the sampled data allocated to training ($ X_{\text{train}}, y_{\text{train}} $) and 20\% to testing ($ X_{\text{test}}, y_{\text{test}} $). The split is performed using a fixed random seed of 42 to ensure reproducibility across runs. Feature scaling is not used in this experiment.
+
+\subsubsection{Model and Training}
+
+The classification model employed is provided by SciKit-Learn's \texttt{KNeighborsClassifier} class.
+
+\subsubsection{Experimental Procedure}
+
+The experiment is repeated 100 times for statistical relevance. For each iteration:
+
+\begin{itemize}
+	\item [1.] The dataset is sampled to 20\% of its original size using \texttt{RandomSampler}.
+	\item [2.] The sampled dataset is split into training and test sets.
+	\item [3.] The \texttt{KNeighborsClassifier} model is initialized and trained on the training data, with training time recorded.
+	\item [4.] Predictions are generated on the test set.
+	\item [5.] Accuracy is calculated by comparing predictions to the true test labels.
+	\item [6.] Accuracy and training time are tracked separately.
+\end{itemize}
+
+This procedure records the accuracy scores and training times across each cycle, which are later used to calculate the average values for each metric.
+
+\subsubsection{Analysis}
+
+The collected accuracies and training times enable statistical analysis of the model's performance. Key statistics, such as the mean and standard deviation of accuracy, can be computed to evaluate consistency and generalization. Similarly, training time statistics provide insight into the computational cost of the \texttt{KNeighborsClassifier} implementation with random sampling.
+
+\subsubsection{Assumptions and Limitations}
+
+The experiment assumes that the dataset is suitable for classification. Additionally, the use of random sampling assumes that the selected 20\% subset adequately represents the original dataset's structure.
+
+\subsubsection{Expected Outcomes}
+
+The experiment is expected to yield a distribution of accuracy scores reflecting the model's predictive capability and a distribution of training times indicating its efficiency. These results can be used to benchmark \texttt{KNeighborsClassifier} against other implementations or algorithms under identical conditions, and particularly to evaluate the impact of leverage score sampling algorithm \texttt{RandomSampler} impacts on prediction accuracy and model training time.
+
+\subsubsection{Measured Outcomes}
+
+The expected outcomes for this experiment have been empirically confirmed, as illustrated in \textbf{Figure 9}.
+
+\begin{figure}[ht]
+	\vskip 0.2in
+	\begin{center}
+		\centerline{\includegraphics[width=\columnwidth]{experiment_09}}
+		\caption{Mean accuracies and training times observed over 100 training cycles of \texttt{KNeighborsClassifier}, with \texttt{RandomSampler} sampling, using the Iris Dataset \cite{iris}.}
+		\label{experiment_09}
+	\end{center}
+	\vskip -0.2in
+\end{figure}
+
+
+\subsection{Experiment 10: SciKit-Learn's \texttt{SVC} Model's Performance, No Sampling}
+
+\subsubsection{Objective}
+
+The experiment aims to assess the performance of SciKit-Learn's Support Vector Machine model, named \texttt{SVC}, in terms of classification accuracy and training time across multiple runs on an open-source dataset \cite{iris}. The experiment seeks to quantify the model's generalization ability and computational efficiency under standardized conditions.
+
+
+\subsubsection{Materials and Methods}
+
+The experiment utilizes a dataset represented by feature matrix $ X \in \mathbb{R}^{n \times m} $ and target vector $ y \in \{0, 1\}^n $, where $ n $ is the number of samples and $ m $ is the number of features. The dataset is assumed to be preprocessed and suitable for classification tasks.
+
+For each experimental run, the dataset is split into training and test sets using an 80-20 partition, with 80\% of the data allocated to training ($ X_{\text{train}}, y_{\text{train}} $) and 20\% to testing ($ X_{\text{test}}, y_{\text{test}} $). The split is performed using a fixed random seed of 42 to ensure reproducibility across runs. Feature scaling is not used in this experiment.
+
+
+\subsubsection{Model and Training}
+
+The classification model employed is provided by SciKit-Learn's \texttt{SVC} class.
+
+
+\subsubsection{Experimental Procedure}
+
+The experiment is repeated 100 times for statistical relevance. For each iteration:
+
+\begin{itemize}
+	\item [1.] The dataset is split into training and test sets.
+	\item [2.] The \texttt{SVC} model is initialized and trained, with training time recorded.
+	\item [3.] Predictions are generated on the test set.
+	\item [4.] Accuracy is calculated by comparing predictions to the true test labels.
+	\item [5.] Accuracy and training time are tracked separately.
+\end{itemize}
+
+This procedure records the accuracy scores and training times across each cycle, which are later used to calculate the average values for each metric.
+
+
+\subsubsection{Analysis}
+
+The collected accuracies and training times enable statistical analysis of the model's performance. Key statistics, such as the mean and standard deviation of accuracy, can be computed to evaluate consistency and generalization. Similarly, training time statistics provide insight into the computational cost of the \texttt{SVC} implementation without any sampling.
+
+
+\subsubsection{Assumptions and Limitations}
+
+The experiment assumes that the dataset is suitable for classification and that the features.
+
+
+\subsubsection{Expected Outcomes}
+
+The experiment is expected to yield a distribution of accuracy scores reflecting the model's predictive capability and a distribution of training times indicating its efficiency. These results can be used to benchmark \texttt{SVC} against other implementations or algorithms under identical conditions.
+
+\subsubsection{Measured Outcomes}
+
+The expected outcomes for this experiment have been empirically confirmed, as illustrated in \textbf{Figure 10}.
+
+\begin{figure}[ht]
+	\vskip 0.2in
+	\begin{center}
+		\centerline{\includegraphics[width=\columnwidth]{experiment_10}}
+		\caption{Mean accuracies and training times observed over 100 training cycles of \texttt{SVC}, without any sampling, using the Iris Dataset \cite{iris}.}
+		\label{experiment_10}
+	\end{center}
+	\vskip -0.2in
+\end{figure}
+
+
+\subsection{Experiment 11: SciKit-Learn's \texttt{SVC} Model's Performance with Leverage Score Sampling}
+
+\subsubsection{Objective}
+
+The experiment aims to assess the performance of SciKit-Learn's \texttt{SVC} model, in terms of classification accuracy and training time across multiple runs on an open-source dataset \cite{iris}. The experiment seeks to quantify the model's generalization ability and computational efficiency under standardized conditions, incorporating a data sampling step using the randomized sampling algorithm \texttt{BasicLeverageScoresSampler}.
+
+
+\subsubsection{Materials and Methods}
+
+The experiment utilizes a dataset represented by feature matrix $ X \in \mathbb{R}^{n \times m} $ and target vector $ y \in \{0, 1\}^n $, where $ n $ is the number of samples and $ m $ is the number of features. The dataset is assumed to be preprocessed and suitable for classification tasks.
+
+For each experimental run, the dataset is first sampled to 20\% of its original size using the \texttt{BasicLeverageScoresSampler}, resulting in a reduced dataset ($ X_{\text{sampled}}, y_{\text{sampled}} $). This sampled dataset is then split into training and test sets using an 80-20 partition, with 80\% of the sampled data allocated to training ($ X_{\text{train}}, y_{\text{train}} $) and 20\% to testing ($ X_{\text{test}}, y_{\text{test}} $). The split is performed using a fixed random seed of 42 to ensure reproducibility across runs. Feature scaling is not used in this experiment.
+
+\subsubsection{Model and Training}
+
+The classification model employed is provided by SciKit-Learn's \texttt{SVC} class.
+
+\subsubsection{Experimental Procedure}
+
+The experiment is repeated 100 times for statistical relevance. For each iteration:
+
+\begin{itemize}
+	\item [1.] The dataset is sampled to 20\% of its original size using \texttt{BasicLeverageScoresSampler}.
+	\item [2.] The sampled dataset is split into training and test sets.
+	\item [3.] The \texttt{SVC} model is initialized and trained on the training data, with training time recorded.
+	\item [4.] Predictions are generated on the test set.
+	\item [5.] Accuracy is calculated by comparing predictions to the true test labels.
+	\item [6.] Accuracy and training time are tracked separately.
+\end{itemize}
+
+This procedure records the accuracy scores and training times across each cycle, which are later used to calculate the average values for each metric.
+
+\subsubsection{Analysis}
+
+The collected accuracies and training times enable statistical analysis of the model's performance. Key statistics, such as the mean and standard deviation of accuracy, can be computed to evaluate consistency and generalization. Similarly, training time statistics provide insight into the computational cost of the \texttt{SVC} implementation with leverage score sampling.
+
+\subsubsection{Assumptions and Limitations}
+
+The experiment assumes that the dataset is suitable for classification. Additionally, the use of leverage score sampling assumes that the selected 20\% subset adequately represents the original dataset's structure.
+
+\subsubsection{Expected Outcomes}
+
+The experiment is expected to yield a distribution of accuracy scores reflecting the model's predictive capability and a distribution of training times indicating its efficiency. These results can be used to benchmark \texttt{SVC} against other implementations or algorithms under identical conditions, and particularly to evaluate the impact of leverage score sampling algorithm \texttt{BasicLeverageScoresSampler} impacts on prediction accuracy and model training time.
+
+\subsubsection{Measured Outcomes}
+
+The expected outcomes for this experiment have been empirically confirmed, as illustrated in \textbf{Figure 11}.
+
+\begin{figure}[ht]
+	\vskip 0.2in
+	\begin{center}
+		\centerline{\includegraphics[width=\columnwidth]{experiment_11}}
+		\caption{Mean accuracies and training times observed over 100 training cycles of \texttt{SVC}, with \texttt{BasicLeverageScoresSampler} sampling, using the Iris Dataset \cite{iris}.}
+		\label{experiment_11}
+	\end{center}
+	\vskip -0.2in
+\end{figure}
+
+
+\subsection{Experiment 12: SciKit-Learn's \texttt{SVC} Model's Performance with Random Sampling}
+
+\subsubsection{Objective}
+
+The experiment aims to assess the performance of SciKit-Learn's \texttt{SVC} model, in terms of classification accuracy and training time across multiple runs on an open-source dataset \cite{iris}. The experiment seeks to quantify the model's generalization ability and computational efficiency under standardized conditions, incorporating a data sampling step using the randomized sampling algorithm \texttt{RandomSampler}.
+
+
+\subsubsection{Materials and Methods}
+
+The experiment utilizes a dataset represented by feature matrix $ X \in \mathbb{R}^{n \times m} $ and target vector $ y \in \{0, 1\}^n $, where $ n $ is the number of samples and $ m $ is the number of features. The dataset is assumed to be preprocessed and suitable for classification tasks.
+
+For each experimental run, the dataset is first sampled to 20\% of its original size using the \texttt{RandomSampler}, resulting in a reduced dataset ($ X_{\text{sampled}}, y_{\text{sampled}} $). This sampled dataset is then split into training and test sets using an 80-20 partition, with 80\% of the sampled data allocated to training ($ X_{\text{train}}, y_{\text{train}} $) and 20\% to testing ($ X_{\text{test}}, y_{\text{test}} $). The split is performed using a fixed random seed of 42 to ensure reproducibility across runs. Feature scaling is not used in this experiment.
+
+\subsubsection{Model and Training}
+
+The classification model employed is provided by SciKit-Learn's \texttt{SVC} class.
+
+\subsubsection{Experimental Procedure}
+
+The experiment is repeated 100 times for statistical relevance. For each iteration:
+
+\begin{itemize}
+	\item [1.] The dataset is sampled to 20\% of its original size using \texttt{RandomSampler}.
+	\item [2.] The sampled dataset is split into training and test sets.
+	\item [3.] The \texttt{SVC} model is initialized and trained on the training data, with training time recorded.
+	\item [4.] Predictions are generated on the test set.
+	\item [5.] Accuracy is calculated by comparing predictions to the true test labels.
+	\item [6.] Accuracy and training time are tracked separately.
+\end{itemize}
+
+This procedure records the accuracy scores and training times across each cycle, which are later used to calculate the average values for each metric.
+
+\subsubsection{Analysis}
+
+The collected accuracies and training times enable statistical analysis of the model's performance. Key statistics, such as the mean and standard deviation of accuracy, can be computed to evaluate consistency and generalization. Similarly, training time statistics provide insight into the computational cost of the \texttt{SVC} implementation with random sampling.
+
+\subsubsection{Assumptions and Limitations}
+
+The experiment assumes that the dataset is suitable for classification. Additionally, the use of random sampling assumes that the selected 20\% subset adequately represents the original dataset's structure.
+
+\subsubsection{Expected Outcomes}
+
+The experiment is expected to yield a distribution of accuracy scores reflecting the model's predictive capability and a distribution of training times indicating its efficiency. These results can be used to benchmark \texttt{SVC} against other implementations or algorithms under identical conditions, and particularly to evaluate the impact of leverage score sampling algorithm \texttt{RandomSampler} impacts on prediction accuracy and model training time.
+
+\subsubsection{Measured Outcomes}
+
+The expected outcomes for this experiment have been empirically confirmed, as illustrated in \textbf{Figure 12}.
+
+\begin{figure}[ht]
+	\vskip 0.2in
+	\begin{center}
+		\centerline{\includegraphics[width=\columnwidth]{experiment_12}}
+		\caption{Mean accuracies and training times observed over 100 training cycles of \texttt{SVC}, with \texttt{RandomSampler} sampling, using the Iris Dataset \cite{iris}.}
+		\label{experiment_12}
+	\end{center}
+	\vskip -0.2in
+\end{figure}
+
+
+\subsection{Experiment 13: SciKit-Learn's \texttt{RandomForestClassifier} Model's Performance, No Sampling}
+
+\subsubsection{Objective}
+
+The experiment aims to assess the performance of SciKit-Learn's Random Forest Classifier model, named \texttt{RandomForestClassifier}, in terms of classification accuracy and training time across multiple runs on an open-source dataset \cite{wine}. The experiment seeks to quantify the model's generalization ability and computational efficiency under standardized conditions.
+
+
+\subsubsection{Materials and Methods}
+
+The experiment utilizes a dataset represented by feature matrix $ X \in \mathbb{R}^{n \times m} $ and target vector $ y \in \{0, 1\}^n $, where $ n $ is the number of samples and $ m $ is the number of features. The dataset is assumed to be preprocessed and suitable for classification tasks.
+
+For each experimental run, the dataset is split into training and test sets using an 80-20 partition, with 80\% of the data allocated to training ($ X_{\text{train}}, y_{\text{train}} $) and 20\% to testing ($ X_{\text{test}}, y_{\text{test}} $). The split is performed using a fixed random seed of 42 to ensure reproducibility across runs. Feature scaling is not used in this experiment.
+
+
+\subsubsection{Model and Training}
+
+The classification model employed is provided by SciKit-Learn's \texttt{RandomForestClassifier} class.
+
+
+\subsubsection{Experimental Procedure}
+
+The experiment is repeated 100 times for statistical relevance. For each iteration:
+
+\begin{itemize}
+	\item [1.] The dataset is split into training and test sets.
+	\item [2.] The \texttt{RandomForestClassifier} model is initialized and trained, with training time recorded.
+	\item [3.] Predictions are generated on the test set.
+	\item [4.] Accuracy is calculated by comparing predictions to the true test labels.
+	\item [5.] Accuracy and training time are tracked separately.
+\end{itemize}
+
+This procedure records the accuracy scores and training times across each cycle, which are later used to calculate the average values for each metric.
+
+
+\subsubsection{Analysis}
+
+The collected accuracies and training times enable statistical analysis of the model's performance. Key statistics, such as the mean and standard deviation of accuracy, can be computed to evaluate consistency and generalization. Similarly, training time statistics provide insight into the computational cost of the \texttt{RandomForestClassifier} implementation without any sampling.
+
+
+\subsubsection{Assumptions and Limitations}
+
+The experiment assumes that the dataset is suitable for classification and that the features.
+
+
+\subsubsection{Expected Outcomes}
+
+The experiment is expected to yield a distribution of accuracy scores reflecting the model's predictive capability and a distribution of training times indicating its efficiency. These results can be used to benchmark \texttt{RandomForestClassifier} against other implementations or algorithms under identical conditions.
+
+\subsubsection{Measured Outcomes}
+
+The expected outcomes for this experiment have been empirically confirmed, as illustrated in \textbf{Figure 13}.
+
+\begin{figure}[ht]
+	\vskip 0.2in
+	\begin{center}
+		\centerline{\includegraphics[width=\columnwidth]{experiment_13}}
+		\caption{Mean accuracies and training times observed over 100 training cycles of \texttt{RandomForestClassifier}, without any sampling, using the Wine Dataset \cite{wine}.}
+		\label{experiment_13}
+	\end{center}
+	\vskip -0.2in
+\end{figure}
+
+
+\subsection{Experiment 14: SciKit-Learn's \texttt{RandomForestClassifier} Model's Performance with Leverage Score Sampling}
+
+\subsubsection{Objective}
+
+The experiment aims to assess the performance of SciKit-Learn's \texttt{RandomForestClassifier} model, in terms of classification accuracy and training time across multiple runs on an open-source dataset \cite{wine}. The experiment seeks to quantify the model's generalization ability and computational efficiency under standardized conditions, incorporating a data sampling step using the randomized sampling algorithm \texttt{BasicLeverageScoresSampler}.
+
+
+\subsubsection{Materials and Methods}
+
+The experiment utilizes a dataset represented by feature matrix $ X \in \mathbb{R}^{n \times m} $ and target vector $ y \in \{0, 1\}^n $, where $ n $ is the number of samples and $ m $ is the number of features. The dataset is assumed to be preprocessed and suitable for classification tasks.
+
+For each experimental run, the dataset is first sampled to 20\% of its original size using the \texttt{BasicLeverageScoresSampler}, resulting in a reduced dataset ($ X_{\text{sampled}}, y_{\text{sampled}} $). This sampled dataset is then split into training and test sets using an 80-20 partition, with 80\% of the sampled data allocated to training ($ X_{\text{train}}, y_{\text{train}} $) and 20\% to testing ($ X_{\text{test}}, y_{\text{test}} $). The split is performed using a fixed random seed of 42 to ensure reproducibility across runs. Feature scaling is not used in this experiment.
+
+\subsubsection{Model and Training}
+
+The classification model employed is provided by SciKit-Learn's \texttt{RandomForestClassifier} class.
+
+\subsubsection{Experimental Procedure}
+
+The experiment is repeated 100 times for statistical relevance. For each iteration:
+
+\begin{itemize}
+	\item [1.] The dataset is sampled to 20\% of its original size using \texttt{BasicLeverageScoresSampler}.
+	\item [2.] The sampled dataset is split into training and test sets.
+	\item [3.] The \texttt{RandomForestClassifier} model is initialized and trained on the training data, with training time recorded.
+	\item [4.] Predictions are generated on the test set.
+	\item [5.] Accuracy is calculated by comparing predictions to the true test labels.
+	\item [6.] Accuracy and training time are tracked separately.
+\end{itemize}
+
+This procedure records the accuracy scores and training times across each cycle, which are later used to calculate the average values for each metric.
+
+\subsubsection{Analysis}
+
+The collected accuracies and training times enable statistical analysis of the model's performance. Key statistics, such as the mean and standard deviation of accuracy, can be computed to evaluate consistency and generalization. Similarly, training time statistics provide insight into the computational cost of the \texttt{RandomForestClassifier} implementation with leverage score sampling.
+
+\subsubsection{Assumptions and Limitations}
+
+The experiment assumes that the dataset is suitable for classification. Additionally, the use of leverage score sampling assumes that the selected 20\% subset adequately represents the original dataset's structure.
+
+\subsubsection{Expected Outcomes}
+
+The experiment is expected to yield a distribution of accuracy scores reflecting the model's predictive capability and a distribution of training times indicating its efficiency. These results can be used to benchmark \texttt{RandomForestClassifier} against other implementations or algorithms under identical conditions, and particularly to evaluate the impact of leverage score sampling algorithm \texttt{BasicLeverageScoresSampler} impacts on prediction accuracy and model training time.
+
+\subsubsection{Measured Outcomes}
+
+The expected outcomes for this experiment have been empirically confirmed, as illustrated in \textbf{Figure 14}.
+
+\begin{figure}[ht]
+	\vskip 0.2in
+	\begin{center}
+		\centerline{\includegraphics[width=\columnwidth]{experiment_14}}
+		\caption{Mean accuracies and training times observed over 100 training cycles of \texttt{RandomForestClassifier}, with \texttt{BasicLeverageScoresSampler} sampling, using the Wine Dataset \cite{wine}.}
+		\label{experiment_14}
+	\end{center}
+	\vskip -0.2in
+\end{figure}
+
+
+\subsection{Experiment 15: SciKit-Learn's \texttt{RandomForestClassifier} Model's Performance with Random Sampling}
+
+\subsubsection{Objective}
+
+The experiment aims to assess the performance of SciKit-Learn's \texttt{RandomForestClassifier} model, in terms of classification accuracy and training time across multiple runs on an open-source dataset \cite{wine}. The experiment seeks to quantify the model's generalization ability and computational efficiency under standardized conditions, incorporating a data sampling step using the randomized sampling algorithm \texttt{RandomSampler}.
+
+
+\subsubsection{Materials and Methods}
+
+The experiment utilizes a dataset represented by feature matrix $ X \in \mathbb{R}^{n \times m} $ and target vector $ y \in \{0, 1\}^n $, where $ n $ is the number of samples and $ m $ is the number of features. The dataset is assumed to be preprocessed and suitable for classification tasks.
+
+For each experimental run, the dataset is first sampled to 20\% of its original size using the \texttt{RandomSampler}, resulting in a reduced dataset ($ X_{\text{sampled}}, y_{\text{sampled}} $). This sampled dataset is then split into training and test sets using an 80-20 partition, with 80\% of the sampled data allocated to training ($ X_{\text{train}}, y_{\text{train}} $) and 20\% to testing ($ X_{\text{test}}, y_{\text{test}} $). The split is performed using a fixed random seed of 42 to ensure reproducibility across runs. Feature scaling is not used in this experiment.
+
+\subsubsection{Model and Training}
+
+The classification model employed is provided by SciKit-Learn's \texttt{RandomForestClassifier} class.
+
+\subsubsection{Experimental Procedure}
+
+The experiment is repeated 100 times for statistical relevance. For each iteration:
+
+\begin{itemize}
+	\item [1.] The dataset is sampled to 20\% of its original size using \texttt{RandomSampler}.
+	\item [2.] The sampled dataset is split into training and test sets.
+	\item [3.] The \texttt{RandomForestClassifier} model is initialized and trained on the training data, with training time recorded.
+	\item [4.] Predictions are generated on the test set.
+	\item [5.] Accuracy is calculated by comparing predictions to the true test labels.
+	\item [6.] Accuracy and training time are tracked separately.
+\end{itemize}
+
+This procedure records the accuracy scores and training times across each cycle, which are later used to calculate the average values for each metric.
+
+\begin{figure}[ht]
+	\vskip 0.2in
+	\begin{center}
+		\centerline{\includegraphics[width=\columnwidth]{experiment_15}}
+		\caption{Mean accuracies and training times observed over 100 training cycles of \texttt{RandomForestClassifier}, with \texttt{RandomSampler} sampling, using the Wine Dataset \cite{wine}.}
+		\label{experiment_15}
+	\end{center}
+	\vskip -0.2in
+\end{figure}
+
+\subsubsection{Analysis}
+
+The collected accuracies and training times enable statistical analysis of the model's performance. Key statistics, such as the mean and standard deviation of accuracy, can be computed to evaluate consistency and generalization. Similarly, training time statistics provide insight into the computational cost of the \texttt{SVC} implementation with random sampling.
+
+\subsubsection{Assumptions and Limitations}
+
+The experiment assumes that the dataset is suitable for classification. Additionally, the use of random sampling assumes that the selected 20\% subset adequately represents the original dataset's structure.
+
+\subsubsection{Expected Outcomes}
+
+The experiment is expected to yield a distribution of accuracy scores reflecting the model's predictive capability and a distribution of training times indicating its efficiency. These results can be used to benchmark \texttt{RandomForestClassifier} against other implementations or algorithms under identical conditions, and particularly to evaluate the impact of leverage score sampling algorithm \texttt{RandomSampler} impacts on prediction accuracy and model training time.
+
+\subsubsection{Measured Outcomes}
+
+The expected outcomes for this experiment have been empirically confirmed, as illustrated in \textbf{Figure 15}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
