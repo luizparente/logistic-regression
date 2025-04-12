@@ -281,7 +281,7 @@ $$
 $$
 
 
-\subsection{Randomized Sampling Algorithm (Simplified)}
+\subsection{Leverage Scores Random Sampler}
 
 \subsubsection{Overview}
 
@@ -302,23 +302,23 @@ This step directly follows the approach proposed in the paper. Specifically, the
 \textbf{Algorithm 1} is a simplified version of the sampling algorithm proposed by \citet{chow24}. The computed leverage scores are first normalized to create a probability distribution that sums to $1$. This normalized distribution is then used to sample rows from the dataset $X$. The number of rows sampled is determined by a customizeable parameter.
 
 \begin{algorithm}[tb]
-   \caption{Basic Leverage Scores Sampling}
-   \label{alg:example}
-\begin{algorithmic}
-   \STATE {\bfseries Input:} feature-matrix $X$, target-labels $y$, sample rate $r$
-
-   \vspace{0.25cm}
-
-   \STATE $scores \leftarrow$ \texttt{leverage\_scores($X$)}
-   \STATE $normalized\_p \leftarrow$ $scores$ / \texttt{sum($scores$)}
-   \STATE $sampled\_indices \leftarrow$ \texttt{random\_select($X$, $r$,  $normalized\_p$)}
-   \STATE $X\_sampled \leftarrow X[sampled\_indices]$
-   \STATE $y\_sampled \leftarrow y[sampled\_indices]$
-
-   \vspace{0.25cm}
-
-   \STATE {\bfseries Return:} \texttt{$X\_sampled, y\_sampled$}
-\end{algorithmic}
+	\caption{Basic Leverage Scores Sampling}
+	\label{alg:example}
+	\begin{algorithmic}
+		\STATE {\bfseries Input:} feature-matrix $X$, target-labels $y$, sample rate $r$
+		
+		\vspace{0.25cm}
+		
+		\STATE $scores \leftarrow$ \texttt{leverage\_scores($X$)}
+		\STATE $normalized\_p \leftarrow$ $scores$ / \texttt{sum($scores$)}
+		\STATE $sampled\_indices \leftarrow$ \texttt{random\_select($X$, $r$,  $normalized\_p$)}
+		\STATE $X\_sampled \leftarrow X[sampled\_indices]$
+		\STATE $y\_sampled \leftarrow y[sampled\_indices]$
+		
+		\vspace{0.25cm}
+		
+		\STATE {\bfseries Return:} \texttt{$X\_sampled, y\_sampled$}
+	\end{algorithmic}
 \end{algorithm}
 
 This sampling process closely follows the paper’s method. The authors are specific on the fact that the leverage scores are used to form a probability distribution from which data points are selected. Rows with higher leverage scores are more likely to be chosen for the sample, ensuring that important data points (those that affect the model the most) are more likely to be included in the subsampled dataset.
@@ -352,36 +352,47 @@ We also acknowledge the trade-offs between simplicity and accuracy:
 \end{itemize}
 
 
-\subsection{Initial Results}
-
-Preliminary experiments have been conducted, as detailed in Appendix A, to evaluate whether any impacts are observable with the integration of the sampling algorithm implemented in this study. Overall, positive results have been measured due to the application of the \texttt{BasicLeverageScoresSampler} algorithm.
-
-\textbf{Figure 1} shows \texttt{SlowLogisticRegression}'s performance without any sampling over the Breast Cancer Wisconsin Diagnostic Dataset \cite{breastcancer}. In \textbf{Figure 2}, we note the average accuracy of 0.97, and average training time of 0.96 seconds over 20 runs of the experiment. After repeating the experiment, this time employing \texttt{BasicLeverageScoresSampler}, we measured a substantial reduction of 80\% in the training time, as illustrated in \textbf{Figure 3} and \textbf{Figure 4}. These experiments allowed us to isolate the sampling algorithm and evaluate its impact in a setting where no other optimizations exist. As demonstrated here, the accuracy impact has been negligible, down to 0.96\% from 0.97\%. While 1\% may be significant in ultra-optimized implementations that aim for the highest possible accuracy, many practical scenarios might be satisfied with slightly lower accuracy levels.
-
-Experiments 3 and 4, illustrated in \textbf{Figure 5} and \textbf{Figure 6}, respectively, apply \texttt{BasicLeverageScoresSampler} to the same dataset, but this time utilizes class \texttt{LogisticRegression} from the SciKit-Learn Python library. The experiments did not allow for statistically relevant observations, alluding to the possibility that \texttt{LogisticRegression} may count with optimizations that can potentially minimize the impact of dataset size when training the model. Further exploration is required to determine whether experiments conducted with larger datasets under the same conditions yield the same results.
-
-Experiment 5, documented in \textbf{Figure 7}, amplifies the statistical relevance of the observed results by repeating experiments 1, 2, 3, and 4 under the same conditions, but this time over 1000 cycles. Equivalent results have been measured as a result of the experiment, confirming the observations made earlier.
-
-
-\subsection{Next Steps}
-
-In light of the positive preliminary results observed in this initial exploratory phase, we propose the following next steps to give continuity to this study:
-\begin{itemize}
-
- \item \textbf{Complete Sampling Algorithm Implementation:} As stated earlier, this preliminary exploration implemented a simplified version of the algorithm proposed by \citeauthor{chow24}. To provide more depth and substance to this study, a full implementation of the algorithm is necessary. This effort will allow for more comprehensive benchmarking and trade-off analysis, as well as a better understanding of the circumstances in which the different variations demonstrate better (or worse) employability.
-
-\item \textbf{Sample Size Impacts:} To delve deeper into the subject of data-sampling, we plan on conducting an analysis to evaluate the impact of sample size in accuracy and training times for models trained with sampled data. In other words, we will seek to understand how different sample sizes affect the key metrics, and answer the question of whether an optimal point exists that allow for best prediction accuracy at a reasonable cost of training time.
-
-\item \textbf{Use-Case Diversification:} \citeauthor{chow24} focus their work on logistic regression models. Given that dataset reduction is a topic of common interest in the Machine Learning field, an exploration of whether the sampling algorithms implemented in this project can be used to train other types of prediction models is justified. Therefore, we propose a more substantial analysis into this question as a natural next step for this study.
-
-\end{itemize}
-
-
-\subsection{Proposal for Course Project}
+\subsection{Uniform Random Sampler}
 
 \subsubsection{Overview}
 
-Our proposal for this study is multifold. Ultimately, we aim to provide (1) an implementation of the full sampling algorithm as originally proposed by \citeauthor{chow24}, (2) a simplified version that aims to strike a reasonable balance between computational performance and prediction accuracy, and (3) an empirical evaluation of the technical feasibility of employing the sampling algorithms implemented here on the training process of other types of prediction models beyond logistic regression.
+To effectively benchmark advanced data reduction algorithms, it is essential to understand whether there are advantages offered by the added selection complexity of such algorithms relative to a baseline method that employs a purely random selection strategy. For this purpose, a random sampling algorithm with uniform selection probability distribution is constructed. It provides this baseline by uniformly sampling dataset rows without considering any data-specific metrics or characteristics. This sampling technique is designed explicitly to evaluate the inherent performance implications of dataset size reduction independently of data-driven heuristics, thus offering a neutral point of comparison against more complex sampling methods, such as those utilizing leverage scores or other importance metrics.
+
+Our implementation of the Uniform Random Sampler is encapsulated within a concise Python class, \texttt{RandomSampler}, intended to replicate simple, unbiased selection behavior. This simplicity allows us to quantify the improvements gained through more sophisticated sampling strategies relative to a truly random baseline. Consequently, performance variations observed between models trained on uniformly sampled data and those using leverage-based or feature-driven sampling methods directly reflect the added benefit of informed data-point selection.
+
+\subsubsection{Uniform Sampling Methodology}
+
+The fundamental principle underlying the Uniform Random Sampler algorithm is the equal likelihood of selection for each row of the dataset, ensuring unbiased representational distribution. Given a feature matrix $X$ of dimensions $(n_{samples} \times n_{features})$ and an associated target vector $y$, the Uniform Random Sampler selects a subset containing a predefined fraction of the original dataset, denoted as the sample percentage. Crucially, this sampling procedure employs uniform probabilities, assigning identical selection likelihood to every data entry, irrespective of feature values, variance, or distribution.
+
+Formally, the selection process calculates the number of samples to extract, determined by the sample percentage multiplied by the total number of rows in the dataset. Subsequently, a set of unique indices is drawn randomly without replacement from the range of available indices. The resulting sampled subset, represented by the matrices $X_{sampled}$ and $y_{sampled}$, is then utilized to train the corresponding machine learning model. The simplicity of this method ensures its computational efficiency, making it highly suitable for large-scale datasets as a baseline sampling procedure.
+
+\subsubsection{Sampling}
+
+The implementation of the uniform random sampling algorithm is detailed in \textbf{Algorithm 2}. Initially, it calculates the exact number of samples required based on the user-specified sample rate. Next, a uniform random selection without replacement is performed on the available indices, yielding an unbiased subset of dataset rows. Finally, the sampled indices are employed to extract the corresponding rows from the feature and target matrices.
+
+\begin{algorithm}[tb]
+	\caption{Uniform Random Sampling}
+	\label{alg:random_alg}
+	\begin{algorithmic}
+		\STATE {\bfseries Input:} feature-matrix $X$, target-labels $y$, sample rate $r$
+		
+		\vspace{0.25cm}
+		
+		\STATE $sampled\_indices \leftarrow$ \texttt{random\_select($X$, $r$)}
+		\STATE $X\_sampled \leftarrow X[sampled\_indices]$
+		\STATE $y\_sampled \leftarrow y[sampled\_indices]$
+		
+		\vspace{0.25cm}
+		
+		\STATE {\bfseries Return:} \texttt{$X\_sampled, y\_sampled$}
+	\end{algorithmic}
+\end{algorithm}
+
+
+\subsubsection{Baseline Benchmarking and Analysis}
+
+The explicit introduction of uniform random sampling as a baseline significantly enriches comparative studies focused on dataset reduction. It enables precise quantification of the value added by complex selection strategies, such as those leveraging SVD-derived scores, feature importance, or prediction uncertainty. Consequently, due to the experimental nature of this study, we can more conclusively demonstrate the impacts attributable to the various sampling methods by explicitly contrasting their results against a standardized, unbiased baseline.
+
 
 \subsubsection{Methodology}
 
@@ -407,24 +418,142 @@ Where:
 
 \end{itemize}
 
-Moreover, each algorithm-dataset combination will be run an adequate number of times for statistical relevance, and the key metrics are to be captured each time. Performance comparisons will be made with average values. This practice will allow for more consistent performance analysis across implementations. Specifically, the simplified and complete versions of the algorithms will be tested with different databases, such as those used by \citeauthor{chow24}, and also well-known open-source datasets, such as the Breast Cancer Wisconsin Diagnostic Data Set \cite{breastcancer}, among others. Further details regarding experiment design are included in \textbf{Appendix A}.
+Moreover, each algorithm-dataset combination is run an adequate number of times for statistical relevance, and the key metrics are to be captured each time. Performance comparisons will be made with average values. This practice will allow for more consistent performance analysis across implementations. Specifically, the simplified and complete versions of the algorithms will be tested with different databases, such as those used by \citeauthor{chow24}, and also well-known open-source datasets, such as the Breast Cancer Wisconsin Diagnostic Data Set \cite{breastcancer}, among others. Further details regarding experiment design are included in \textbf{Appendix A}.
 
-Lastly, we will assess whether the sampling algorithms contribute positively or negatively when used to train different prediction models beyond binary classification. At this preliminary stage, the types of predictions scoped for further exploration are \textbf{to be defined}.
-
-
-\subsubsection{Feasibility}
-
-Given the empirical nature of this study, the project so far has demonstrated to be technically feasible, from an implementation standpoint. The paper \cite{chow24} provides a thorough review of the mathematical background, as well as detailed information behind the algorithm's rationale and theoretical foundations. Additionally, the authors provide their own implementation in Python code, which is publicly available and may be used for benchmarking as part of this study.
+Lastly, we will assess whether the sampling algorithms contribute positively or negatively when used to train different prediction models beyond binary classification.
 
 
-\subsubsection{Relevance}
+\section{Experimental Results}
 
-Our literature review indicates numerous efforts in the machine learning community in pushing the barriers of predictive algorithms, and in seeking creative solutions to improve accuracy and optimize computational efficiency of known methods. In particular, the core contribution of this project involves addressing questions left open by \citeauthor{chow24}, such as (1) are the theoretical guarantees provided by the original implementation indispensible, or could a simplified version of the algorithm provide comparable performance? And (2) can this sample method contribute positively to the training process of different machine learning models? By addressing these questions, our work further expands the body of knowledge proposed by the authors, and provides the academic community with further insights into the use of randomized sampling algorithms in reducing large training datasets.
+To assess the efficacy of the sampling algorithms explored by this study, experiments have been conducted as detailed in Appendix A.
+
+\begin{table}[t]
+	\caption{Experiments conducted for logistic regression using \texttt{SlowLogisticRegression} and corresponding average accuracy $Acc$ and training time $t_{training}$ for leverage scores random sampling and uniform random sampling.}
+	\label{t1}
+	\vskip 0.15in
+	\begin{center}
+		\begin{small}
+			\begin{sc}
+				\begin{tabular}{lcccr}
+					\toprule
+					Exp. \# & Sampling & $Accuracy$ & $Training \text{ } Time$\\
+					\midrule
+					1 & None & 0.97 $\pm$ 0.00 & 0.26 $\pm$ 0.04 s \\
+					2 & Lev. Scores & 0.96 $\pm$ 0.04 & 0.12 $\pm$ 0.01 s \\
+					5 & Uniform & 0.96 $\pm$ 0.04 & 0.13 $\pm$ 0.01 s \\
+					\bottomrule
+				\end{tabular}
+			\end{sc}
+		\end{small}
+	\end{center}
+	\vskip -0.1in
+\end{table}
+
+\textbf{Table 1} shows the series of experiments conducted with \texttt{SlowLogisticRegression} over the Breast Cancer Wisconsin Diagnostic Dataset \cite{breastcancer}. We observe significant reduction in training time, at the negligible cost of 1 percent in prediction accuracy for both \texttt{BasicLeverageScoresSampler} and \texttt{RandomSampler}. This experiment does not identify statistically relevant differences between the two sampling algorithms.
+
+\begin{table}[t]
+	\caption{Experiments conducted for logistic regression using SciKit-Learn's \texttt{LogisticRegression} and corresponding average accuracy $Acc$ and training time $t_{training}$ for leverage scores random sampling and uniform random sampling.}
+	\label{t2}
+	\vskip 0.15in
+	\begin{center}
+		\begin{small}
+			\begin{sc}
+				\begin{tabular}{lcccr}
+					\toprule
+					Exp. \# & Sampling & $Accuracy$ & $Training \text{ } Time$\\
+					\midrule
+					3 & None & 0.97 $\pm$ 0.00 & 1.88 $\pm$ 0.83 ms \\
+					4 & Lev. Scores & 0.94 $\pm$ 0.05 & 0.82 $\pm$ 0.38 ms \\
+					\bottomrule
+				\end{tabular}
+			\end{sc}
+		\end{small}
+	\end{center}
+	\vskip -0.1in
+\end{table}
+
+\textbf{Table 2} shows the series of experiments conducted with SciKit-Learn's \texttt{LogisticRegression} model over the Breast Cancer Wisconsin Diagnostic Dataset \cite{breastcancer}. We observe significant reduction in training time, at the cost of 3 percent in prediction accuracy.
+
+Next, we explore the impact of the randomized sampling algorithms in three typical classification algorithms, namely K-Nearest Neighbors, Support Vector Machine, and Random Forest Classification.
+
+\begin{table}[t]
+	\caption{Experiments conducted for K-Nearest Neighbors using SciKit-Learn's \texttt{KNeighborsClassifier} and corresponding average accuracy $Acc$ and training time $t_{training}$ for leverage scores random sampling and uniform random sampling.}
+	\label{t3}
+	\vskip 0.15in
+	\begin{center}
+		\begin{small}
+			\begin{sc}
+				\begin{tabular}{lcccr}
+					\toprule
+					Exp. \# & Sampling & $Accuracy$ & $Training \text{ } Time$\\
+					\midrule
+					7 & None & 1.00 $\pm$ 0.00 & 1.03 $\pm$ 0.64 ms \\
+					8 & Lev. Scores & 0.94 $\pm$ 0.11 & 0.89 $\pm$ 0.57 ms \\
+					9 & Uniform & 0.93 $\pm$ 0.11 & 0.81 $\pm$ 0.40 ms \\
+					\bottomrule
+				\end{tabular}
+			\end{sc}
+		\end{small}
+	\end{center}
+	\vskip -0.1in
+\end{table}
+
+\textbf{Table 3} shows the series of experiments conducted with SciKit-Learn's \texttt{KNeighborsClassifier} model over the Iris Dataset \cite{iris}. We observe moderate reduction in training time, at the cost of 6 percent in prediction accuracy for \texttt{BasicLeverageScoresSampler}, and 7 percent for \texttt{RandomSampler}. This experiment indicates uniform random sampling provides faster training time compared to leverage scores sampling.
+
+\begin{table}[t]
+	\caption{Experiments conducted for Support Vector Machine using SciKit-Learn's \texttt{SVC} and corresponding average accuracy $Acc$ and training time $t_{training}$ for leverage scores random sampling and uniform random sampling.}
+	\label{t4}
+	\vskip 0.15in
+	\begin{center}
+		\begin{small}
+			\begin{sc}
+				\begin{tabular}{lcccr}
+					\toprule
+					Exp. \# & Sampling & $Accuracy$ & $Training \text{ } Time$\\
+					\midrule
+					10 & None & 1.00 $\pm$ 0.00 & 1.48 $\pm$ 0.69 ms \\
+					11 & Lev. Scores & 0.86 $\pm$ 0.16 & 1.27 $\pm$ 0.69 ms \\
+					12 & Uniform & 0.86 $\pm$ 0.16 & 1.56 $\pm$ 1.02 ms \\
+					\bottomrule
+				\end{tabular}
+			\end{sc}
+		\end{small}
+	\end{center}
+	\vskip -0.1in
+\end{table}
+
+\textbf{Table 4} shows the series of experiments conducted with SciKit-Learn's \texttt{SVC} model over the Iris Dataset \cite{iris}. We observe no reduction in training time, at the significant cost of 14 percent in prediction accuracy for both sampling algorithms.
+
+\begin{table}[t]
+	\caption{Experiments conducted for Random Forest Classifier using SciKit-Learn's \texttt{RandomForestClassifier} and corresponding average accuracy $Acc$ and training time $t_{training}$ for leverage scores random sampling and uniform random sampling.}
+	\label{t5}
+	\vskip 0.15in
+	\begin{center}
+		\begin{small}
+			\begin{sc}
+				\begin{tabular}{lcccr}
+					\toprule
+					Exp. \# & Sampling & $Accuracy$ & $Training \text{ } Time$\\
+					\midrule
+					13 & None & 1.00 $\pm$ 0.00 & 0.15 $\pm$ 0.02 ms \\
+					14 & Lev. Scores & 0.93 $\pm$ 0.10 & 0.13 $\pm$ 0.01 ms \\
+					15 & Uniform & 0.94 $\pm$ 0.10 & 0.12 $\pm$ 0.01 ms \\
+					\bottomrule
+				\end{tabular}
+			\end{sc}
+		\end{small}
+	\end{center}
+	\vskip -0.1in
+\end{table}
+
+\textbf{Table 5} shows the series of experiments conducted with SciKit-Learn's \texttt{RandomForestClassifier} model over the Wine Dataset \cite{wine}. We observe marginal reduction in training time, at the substantial cost of 7 percent in prediction accuracy for \texttt{BasicLeverageScoresSampler} and 6 percent for \texttt{RandomSampler}. No statistically significant differences have been identified between the two sampling algorithms in this experiment.
 
 
 \section{Conclusion}
 
-This project proposes an exploration of data-sampling as a creative strategy for reducing large bodies of data to representative subsets that allow for the training of accurate prediction models at a smaller computational cost. The integration of a sampling algorithm based on leverage scores, according to this preliminary evaluation, provided valuable insights into the potential benefits of employing this method in the context of logistic regression models, specifically in reducing the training dataset without substantial loss of prediction quality. In our view, this work justifies further efforts to analyze different implementations, as well as address the open question of whether similar impacts can be observed when training other types of models. We are confident that this project can provide meaningful contributions to the field of Machine Learning, specifically in addressing open questions regarding dimensionality reduction as a training optimization strategy.
+This research work systematically explored the application of random sampling algorithms as a strategic attempt to effectively address the persistent and challenging problem associated with training machine learning models using datasets of exceptionally high magnitude. Through the rigorous experiments and analyses conducted here, we have gained valuable insights into the potential advantages and tangible benefits of employing random sampling methods, particularly highlighted by the findings observed in the context of logistic regression models. Specifically, these random selection algorithms have consistently demonstrated their capability to serve as a feasible and practical solution, effectively reducing the volume of the training dataset without causing critically significant loss in predictive quality or accuracy. 
+
+It is essential and particularly noteworthy to mention, however, that careful consideration is due when determining whether the inevitable loss in predictive accuracy introduced by dataset reduction remains acceptable, given the specific circumstances and demands of the use-case at hand. For example, scenarios involving academic or theoretical research might prioritize predictive accuracy as an indispensable component for a study, whereas practical, industry-focused applications might alternatively prioritize computational speed and reduced training time as key performance metrics, thus tolerating a slightly lower accuracy for the sake of faster model training and deployment. Nevertheless, the results presented herein clearly demonstrate the viability and practicality of random sampling methods as effective techniques in machine learning dataset reduction. Future research efforts should build upon these findings, further examining various trade-offs and validating these algorithms across diverse real-world scenarios to consolidate their practical applicability.
 
 
 \section*{Software and Data}
