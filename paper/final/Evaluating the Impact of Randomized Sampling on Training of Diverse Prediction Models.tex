@@ -95,10 +95,7 @@ In the modern world, data generation and collection have become ubiquitous, and 
 
 \end{abstract}
 
-\section{Literature Review}
-\label{submission}
-
-\subsection{Background}
+\section{Introduction}
 
 \textbf{Logistic regression} is a supervised learning technique commonly used to model the probability of an event occurring based on predictor variables. In the field of Machine Learning, logistic regression is often applied in the context of disease classification, anomaly detection, among others.
 
@@ -106,82 +103,78 @@ Despite being a well established and effective method for binary classification 
 
 With large datasets, the time complexity can become prohibitive, as the number of operations required for each iteration increases. Additionally, many logistic regression implementations require storing the data-points and intermediate computation results in memory. When working with big-data, this approach can lead to hardware bottlenecks. In particular, storing and manipulating large feature matrices can demand significant amounts of random-access memory (RAM), especially when the number of features is substantial. When the dataset exceeds memory limits, performance can degrade significantly, requiring the use of additional tooling, such as distributed computing or data sampling, as a means to overcome such challenges.
 
-\subsection{Problem Definition}
-
-This work aims to explore potential solutions to the computational challenges posed by the use of high-dimensional datasets in the context of prediction models. Objectively, we evaluate the impacts, implementations, and viable utilizations for a randomized sampling algorithm originally designed for logistic regression models, as outlined by \citet{chow24}. Given a dataset, the proposed method derives a smaller subset that retains the most representative data-points, using it to train a prediction model capable of achieving accuracy levels comparable to models trained on the entire dataset. As demonstrated both theoretically and experimentally, the algorithm is successful at substantially reducing the size of training datasets, addressing many barriers found when handling large databases in machine learning applications.
-
-Given the predominance of digital systems driven by big-data in modern society, investigating implementation variations and applicability potential is a justified effort, and may help to further understand possible trade-offs between algorithmic simplicity and prediction accuracy, as well as effectiveness in diverse data configurations.
+In this work, we explore the impacts of randomized sampling as an optimization strategy focused on addressing some of the challenges posed by high-dimensional datasets, specifically when the database size (e.g., number of records) is excessively large. The goal is to provide a comprehensive analysis rooted in extensive empirical observations made with a diverse collection of datasets and prediction methods, and evaluate whether the algorithms outlined by this study are effective in providing benefits when training machine learning prediction models.
 
 
-\subsection{Summary and Critique of the Selected Papers}
+\section{Related Work}
 
-\subsubsection{Main Paper: A Provably Accurate Randomized Sampling Algorithm for Logistic Regression \cite{chow24}}
+\subsection{Randomized Sampling}
 
-\textbf{Summary:} Logistic regression is a widely used method for binary classification tasks, where the goal is to predict one of two possible outcomes based on input features \cite{pml}. However, when the number of observations greatly exceeds the number of predictor variables, solving logistic regression becomes computationally expensive. In this work, \citeauthor{chow24} propose a novel approach to address this issue by leveraging a randomized sampling technique that guarantees high-quality approximations to the estimated probabilities of logistic regression, with a sample size significantly smaller than the total number of observations. The primary goal is to make logistic regression more computationally efficient for large-scale datasets while maintaining prediction accuracy.
+The application of sampling algorithms to optimize training performance and manage dataset reduction has been a persistent area of research in machine learning, particularly in logistic regression and other high-dimensional classification problems. In recent studies, various methodologies have been proposed, including sophisticated leverage-based sampling techniques. For example, \citeauthor{chow24} introduce a randomized sampling algorithm specifically designed for logistic regression scenarios. Their approach leverages row-wise leverage scores to strategically select a subset of the data that maintains key dataset characteristics. The method provides theoretical guarantees for achieving high-quality approximations of the logistic regression model parameters, significantly reducing computational overhead while preserving predictive accuracy. This leverage-based approach contrasts with simpler methods, such as uniform sampling, by prioritizing influential data points that contribute most significantly to model accuracy.
 
-The paper focuses on the use of leverage scores, which is a method that, given a dataset, allows for the extraction of a subset where the derived data points retain the main characteristics of the overall data \cite{ordo22}. The authors' proposed algorithm constructs a sampling matrix using these scores, and the resulting subsampled log-likelihood function is optimized to estimate the model parameters. This randomized approach allows for substantial reductions in computational cost while preserving the accuracy of the regression model.
-The paper provides a theoretical derivation of an approximation bound that guarantees the accuracy of the estimated probabilities obtained from the subsampled data. This result is significant because it shows that only a small subset of the data may be needed to achieve a high-quality approximation of the original data, making the algorithm more scalable and efficient.
+\subsection{Signal Strength Leave-One-Out Estimator (SLOE)}
 
-To validate their approach, the authors conduct extensive empirical evaluations on real-world datasets, including a cardiovascular disease prediction dataset, a customer churn prediction dataset, and a credit card default prediction dataset. The experiments compare the performance of the proposed leverage score-based sampling method with other sampling schemes, including uniform sampling and the L2S method proposed by \citeauthor{mun18}. The results demonstrate that the leverage score-based method performs comparably to other methods in terms of the accuracy of estimated probabilities, and shows potential for outperformance, particularly as the sample size increases. Moreover, the method achieves misclassification rates close to those obtained by the full-data model, further confirming its effectiveness. These empirical results validate the theoretical claims and show that the proposed algorithm can deliver accurate logistic regression estimates with a reduced sample size.
+Building on methods aiming to enhance efficiency in high-dimensional logistic regression, \citeauthor{yad21} proposed the Signal Strength Leave-One-Out Estimator (SLOE). This method addresses challenges inherent in high-dimensional scenarios where traditional logistic regression estimators, like maximum likelihood estimation (MLE), typically perform poorly. The SLOE algorithm efficiently estimates a crucial signal strength parameter using a computationally efficient leave-one-out strategy, significantly outperforming prior heuristics in terms of both speed and accuracy. The authors validate their method through extensive simulations, highlighting its improved computational feasibility and its reliability in correcting biases and variance. The practical significance of SLOE is evident in high-dimensional logistic regression applications such as genomics and clinical diagnostics, where reliable statistical inference and rapid computation are both critical.
 
-The paper concludes with a discussion about the implications of their findings and suggesting future research directions. While the proposed method performs well in practice, the authors highlight that there is still room for improvement in terms of algorithmic efficiency and scalability, particularly in high-dimensional settings. They also suggest exploring alternative sketching techniques, such as random projection-based methods, to further enhance the sampling process. Additionally, the paper points out that the approach could be extended to handle other forms of regression and machine learning models, making it a valuable tool for a variety of applications. The paper makes a significant contribution by providing an efficient and scalable solution to logistic regression for large datasets, with strong theoretical guarantees and solid empirical results.
+\subsection{Sample Reweighted Decorrelation Operator (SRDO)}
 
-\textbf{Critique:} While the paper provides an excellent approach for logistic regression, it does not explore the application of the same sampling algorithm to other types of prediction models. The authors focus exclusively on logistic regression, which is understandable given the complexity and computational challenges associated with large datasets in this context. However, the question of whether the method could potentially be adapted for use with other models, such as linear regression, support vector machines, or even more complex deep learning models, remain unclear. Given that dataset distillation has been an area of interest in machine learning \cite{liu23}, a discussion of how their technique could be generalized or modified for broader applications range would have added valuable insight to the work. Exploring the adaptability of the sampling strategy to a range of prediction models could increase the impact and versatility of the proposed method, making it applicable to a wider array of real-world problems.
+Addressing related stability concerns in training scenarios with mismatched data distributions, \citeauthor{shen20} introduced the Sample Reweighted Decorrelation Operator (SRDO). SRDO targets model instability caused by collinearity, a common issue in high-dimensional linear and logistic regression models. By intelligently reweighting samples, SRDO effectively reduces correlations among predictor variables, resulting in a design matrix that approximates orthogonality. This adjustment significantly mitigates instability and improves predictive accuracy when training and test datasets differ substantially in their underlying distributions. SRDO thus represents a complementary approach to dataset reduction techniques by ensuring robustness and stability in model predictions, particularly in environments prone to distribution shifts.
 
-Additionally, even though the paper does provide a robust theoretical foundation for the proposed method, it could benefit from a more detailed exploration of the trade-offs between simplicity and accuracy, particularly when it comes to the complexity of the algorithm. While the proposed algorithm is presented as computationally efficient, the authors do not thoroughly investigate alternative variations of the algorithm that might provide different levels of complexity or accuracy. For example, they focus heavily on the use of row leverage scores to select data points, but it would be valuable to see whether simpler strategies could yield comparable performance. Moreover, a discussion of whether implementing theoretical guarantees—such as the approximation bounds—justifies the added complexity would provide a clearer understanding of the practical trade-offs involved. The paper does an excellent job of presenting an efficient solution, but more emphasis on evaluating the balance between theoretical rigor and real-world applicability could enrich the findings.
+\subsection{Main Takeaways}
 
-Another area where the paper could expand is in providing a more nuanced analysis of the error bounds and their impact on the overall model performance. While the theoretical guarantees are a key strength of the paper, there is limited exploration of how these bounds manifest in practice when applied to different types of datasets. It would have been helpful for the authors to conduct experiments that show how varying the sample size and error tolerance affects both the accuracy of the model and the computational efficiency. In addition, the relationship between the size of the dataset, the model's complexity, and the effectiveness of the approximation would have benefited from further elaboration. For example, is there a point at which the error bounds no longer provide substantial improvements, or do they continue to yield significant benefits with increasing complexity? Addressing these questions could further clarify when and why this sampling-based approach is most beneficial, providing a more comprehensive evaluation of its utility in real-world applications.
-
-
-\subsubsection{Supplementary Paper: SLOE: A Faster Method for Statistical Inference in High-Dimensional
-Logistic Regression \cite{yad21}}
-
-\textbf{Summary:} In high-dimensional problems, where the number of features is comparable to or exceeds the number of samples, traditional logistic regression methods, specifically maximum likelihood estimation (MLE), commonly present poor performance. The existing large-sample asymptotic theory for logistic regression approximations fails in these scenarios, leading to inadequate parameter estimates and unreliable statistical inference.
-
-\citeauthor{yad21} propose a novel solution, the Signal Strength Leave-One-Out Estimator (SLOE), to efficiently estimate the signal strength parameter, which is crucial for performing dimensionality corrections. This method significantly improves the practical application of the corrections developed in previous works, making it computationally feasible and faster to implement in real-world applications.
-
-At the core of this paper is the challenge of estimating the signal strength, which is used in dimensionality corrections to adjust the bias and variance in high-dimensional \textbf{logistic regression}. Previous methods, such as the ProbeFrontier heuristic \cite{sur19}, attempted to estimate this signal strength but were computationally expensive and conceptually complex. The proposed SLOE method reparameterizes the problem in terms of a more easily estimated "corrupted" signal strength, which accounts for the noise in the parameter estimates due to finite sample sizes. The paper demonstrates that using this reparameterization, the bias and variance adjustments for MLE can be performed accurately, even in finite samples, which is a significant improvement over traditional methods that rely on large-sample approximations.
-
-One of the key advantages of SLOE is its computational efficiency. While previous heuristics like ProbeFrontier required multiple subsampling iterations and linear programming to estimate the signal strength, SLOE uses a simple and fast approach by leveraging leave-one-out (LOO) techniques. The method estimates the corrupted signal strength using a rank-one update formula that avoids refitting the model multiple times. The paper shows that SLOE achieves a substantial reduction in computation time compared to ProbeFrontier, making it a practical tool for routine use in high-dimensional logistic regression. This efficiency gain is particularly important when working with large datasets, where computational speed is crucial.
-
-The authors provide a detailed theoretical analysis of the SLOE method, showing that it consistently estimates the corrupted signal strength, which is asymptotically equivalent to the true signal strength. The theoretical guarantees underpin the practical reliability of SLOE in high-dimensional settings. Through extensive simulations, the paper illustrates how SLOE improves the accuracy of confidence intervals (CIs) and p-values in logistic regression models. In particular, the corrected CIs generated by SLOE are shown to provide reliable coverage, even in high-dimensional settings where traditional large-sample approximations fail. This is especially important for making sound statistical inferences in fields like genomics and clinical applications, where reliable uncertainty quantification is critical.
-
-This paper ultimately makes an important contribution to the field of high-dimensional statistical inference. The SLOE method introduced by the authors provide a simpler, faster, and more accurate approach to estimating signal strength in high-dimensional logistic regression. SLOE offers a practical solution to the problems caused by large-dimensional data, enabling more reliable statistical inference in these settings. The method is tested and validated on several real-world datasets, including applications to heart disease prediction and genomics, where it outperforms traditional methods in terms of both computational efficiency and statistical accuracy. SLOE paves the way for more robust and computationally feasible dimensionality corrections, making it a valuable tool for applied data science and statistical modeling.
-
-\textbf{Critique:} While the paper addresses the high-dimensional logistic regression setting under the assumption of Gaussian or sub-Gaussian features, it could have further explored how SLOE performs when the data distribution deviates from these assumptions. Many real-world datasets, for example those encountered in genomics, healthcare, or social sciences, often exhibit non-Gaussian characteristics. The authors briefly mention that SLOE works well in the presence of sub-Gaussian features, but a more thorough analysis of how the method generalizes to different data distributions would provide a clearer picture of it performs in diverse settings. A discussion on this would also be helpful in understanding whether additional steps are needed when dealing with non-Gaussian data, making the method even more applicable across different domains.
-
-In addition, since the paper focuses on overcoming challenges in high-dimensional logistic regression, it could have offered a more detailed comparison to other dimensionality reduction techniques commonly used in similar settings, such as principal component analysis (PCA), partial least squares (PLS), or feature selection methods. These methods are often used in high-dimensional regression problems to reduce the number of predictors, making it more manageable to estimate models. A brief discussion on how SLOE compares or complements these dimensionality reduction techniques would provide additional insights on when to use SLOE versus other popular methods, and whether it offers specific advantages or disadvantages depending on the type of dataset or the modeling goal.
-
-Lastly, one area that could have been explored in more depth is the scalability of the SLOE method to extremely large datasets. The computational efficiency of SLOE is emphasized, particularly in comparison to ProbeFrontier, but the paper could have provided more concrete examples or benchmarks when the dataset size approaches millions of samples, which can be of particular interest in modern real-world applications driven by big data. While the authors demonstrate that SLOE is much faster than its competitors, additional discussion around its performance in ultra-large datasets would be valuable, as it would allow the paper to transcend the academic domain and make a connection with common industry challenges.
-
-\subsubsection{Supplementary Paper: Stable learning via sample reweighting \cite{shen20}}
-
-The paper aims to address the problem of model instability in machine learning, especially when there is a mismatch between training and test data distributions. In real-world scenarios, it is often unrealistic to assume that the training data and the test data come from the same distribution. This discrepancy can lead to unreliable performance, especially when the model relies heavily on collinear input variables. \citeauthor{shen20} aim to develop a method that ensures stability in predictions, even when the underlying data distribution changes. Their work is focused on linear models, which are commonly used for regression and classification tasks but are sensitive to collinearity, which can significantly distort parameter estimates and lead to unstable predictions.
-
-A central challenge addressed in this paper is the impact of collinearity on model stability. Collinearity occurs when there is a high correlation between input variables, leading to a sub-optimal design matrix. This problem is particularly notable in high-dimensional settings, where variables are highly interdependent. The authors argue that traditional methods, such as ordinary least squares (OLS), are susceptible to this issue, causing large errors in parameter estimation when the training data differs from the test data. In particular, they show that even small model misspecifications can lead to large errors in predictions due to the instability introduced by collinearity. Thus, the paper emphasizes the need for a robust approach that can mitigate the adverse effects of collinearity.
-
-To address this issue, the authors propose a novel method called Sample Reweighted Decorrelation Operator (SRDO). This method works by assigning appropriate weights to samples, effectively reweighting the data to reduce collinearity among input variables. By doing so, the design matrix becomes closer to an orthogonal structure, which is more stable and less prone to errors caused by multicollinearity. The theoretical foundation of SRDO shows that, under ideal conditions, the sample weights can make the design matrix nearly orthogonal, significantly improving the model's stability. The method is presented as a general pretreatment technique, meaning it can be integrated with standard linear regression methods like ordinary least squares (OLS), Lasso, and \textbf{logistic regression} to enhance their robustness against distribution shifts.
-
-The paper provides a detailed theoretical analysis of the SRDO method. It demonstrates that, in an idealized setting with infinite sample size, the optimal sample weights can minimize the effects of model misspecification and collinearity. However, the authors also acknowledge the practical challenges when working with finite sample sizes. In such cases, there is a tradeoff between reducing bias and increasing variance, which is common in statistical methods. Despite this, the SRDO method shows a clear advantage in terms of prediction stability and accuracy, especially when the training and test distributions differ significantly. The theoretical results are supported by empirical experiments, which show that SRDO outperforms traditional methods in both regression and classification tasks.
-
-Finally, the paper presents extensive experiments to validate the effectiveness of SRDO. The experiments are conducted using both synthetic and real-world datasets, demonstrating the method's ability to handle collinearity and distribution shifts. The results show that SRDO consistently reduces estimation errors and improves prediction accuracy, especially when training and test data distributions are mismatched. For instance, in the context of regression, SRDO significantly outperforms OLS and Lasso, especially in situations with strong collinearity. In classification tasks, the method also demonstrates improved stability when tested on diverse groups of users with varying behaviors. These findings highlight the practical applicability of SRDO in real-world machine learning scenarios, where data distributions are often subject to change. The authors conclude by emphasizing that SRDO is a versatile and valuable tool for improving the stability and reliability of linear models.
-
-\textbf{Critique:} One area that could have been further explored in the paper is the practical application and limitations of SRDO in real-world datasets with varying feature types. While the authors demonstrate the method’s effectiveness in handling collinearity and improving stability, the paper focuses primarily on linear models, which might not capture more complex patterns in the data. The authors could have discussed how SRDO performs when applied to datasets that involve both linear and non-linear relationships or datasets with categorical features. This would help extend the method’s applicability and provide guidance for researchers working in diverse domains, especially those dealing with non-linear or high-dimensional data. A more in-depth exploration of SRDO’s limitations in such contexts would be beneficial for understanding where the method might fall short or require adaptations.
-
-Furthermore, the authors could have more thoroughly explored the computational complexity and scalability of the proposed method. Despite the strong focus on the theoretical benefits and empirical performance of SRDO, there is little discussion on the practical aspects of implementing the method at scale. The process of calculating and applying sample weights, especially for large datasets with high-dimensional feature spaces, could be computationally expensive. This challenge is particularly important for real-world applications where datasets can contain millions of samples and variables. An analysis of the time complexity of the method, along with potential optimizations or approximations, could provide valuable insights when applying SRDO in large-scale problems.
-
-Another aspect that could have been addressed more thoroughly is the relationship between SRDO and existing regularization techniques for handling collinearity, such as Ridge or Lasso regression. While the paper emphasizes the novel approach of reweighting samples to reduce collinearity, it would have been useful to see a direct comparison with these established methods to better understand whether there are scenarios in which one method presents advantages relative to the others.
+While these methods focus primarily on logistic regression and linear models, broader applicability across various predictive algorithms remains an open area for exploration. The leverage scores sampling method proposed by \citeauthor{chow24}, for instance, has not yet been thoroughly tested on non-linear models such as support vector machines, decision trees, or deep neural networks, where the composition of training data can profoundly impact model outcomes. Similarly, although SLOE has demonstrated significant efficiency gains in high-dimensional logistic regression, further research could explore its performance under non-Gaussian distributions and compare its effectiveness against traditional dimensionality reduction techniques, like principal component analysis or feature selection. The literature demonstrates a clear trend towards optimizing computational efficiency and robustness in high-dimensional regression problems through innovative sampling and reweighting strategies.
 
 
-\section{Implementation}
+\section{Problem Definition}
 
-In order to evaluate the impacts of the sampling algorithm proposed by \citeauthor{chow24} \cite{chow24}, as well as the simplified version proposed by this study, we present the implementation efforts described in this section.
+The rapid growth in data volume has significantly impacted the computational demands placed on machine-learning-based systems, especially those requiring iterative parameter estimation methods, such as logistic regression. Large-scale datasets pose considerable challenges, including prolonged training times, increased resource consumption, and potential reductions in model interpretability and manageability. Consequently, there is a critical need to develop effective dataset reduction strategies that maintain the predictive accuracy of machine learning models while drastically improving computational efficiency.
+
+This research explores solutions to the challenge of reducing the dataset size required for logistic regression and other classification models without incurring substantial losses in accuracy or stability. Traditional methods such as uniform random sampling, though computationally efficient, typically do not account for the inherent structure and importance of individual data points, potentially compromising model accuracy. Conversely, sophisticated sampling approaches leveraging data-driven metrics (e.g., leverage scores) offer theoretical guarantees for accuracy preservation but introduce complexity and additional computational overhead. Therefore, the primary research problem explored in this study is to systematically evaluate and quantify the trade-offs between computational complexity, training efficiency, and predictive performance when employing sampling algorithms with the specific goal of dataset reduction. This study investigates the efficacy of data-sampling strategies, determining their relative advantages and limitations across multiple classification algorithms, primarily logistic regression, but also support vector machines, K-nearest neighbors, and random forest classifiers.
+
+Through comprehensive experimental analysis, this work seeks to answer a key question: To what extent can dataset reduction be achieved without significant accuracy degradation? Addressing this central question will enable a deeper understanding of dataset reduction techniques, providing valuable guidance for practitioners and researchers aiming to optimize the training processes of various classification models, particularly within the logistic regression framework.
+
+
+\section{Methodology}
+
+\subsection{Goals}
+
+This study aims to explore potential solutions to the computational challenges posed by the use of high-dimensional datasets in the context of prediction model training. Objectively, we evaluate the impacts, implementations, and viable utilizations for randomized sampling algorithms originally designed for logistic regression models. Given a dataset, the goal is to derive a smaller subset that retains the most representative characteristics of the data, allowing the subset to be used for training prediction models capable of achieving accuracy levels comparable to models trained on the entire dataset. We aim to investigate, both theoretically and experimentally, whether the algorithms outlined in this study are successful at reducing the size of training datasets while preserving representativeness of the original data. If successful, this method can present a viable strategy for addressing many barriers faced when handling large databases in machine learning applications.
+
+
+\subsection{Key Metrics}
+
+To evaluate the impacts of the sampling algorithms in the training of prediction methods, a thorough benchmark is necessary to evaluate performance of models trained with sampled datasets relative to those trained on full datasets. To keep comparisons objective, we will focus on select metrics such as \textbf{accuracy} and \textbf{training time}. Formally:
+$$
+Accuracy(y, \hat{y}) = \frac{1}{n} \sum_{i=0}^{n-1} 1(\hat{y}_i = y_i)
+$$
+
+$$
+Training\text{ }Time = s + t
+$$
+
+Where:
+
+\begin{itemize}
+	
+	\item[$y$] is a vector representing the true values.
+	\item[$\hat{y}$] is a vector representing the predictions.
+	\item[$n$] is the number of predictions.
+	\item[$s$] is the time consumed by the sampling algorithm. This is $zero$ for non-sampled models.
+	\item[$t$] is the time consumed by the training process.
+	
+	
+\end{itemize}
+
+Moreover, each algorithm-dataset combination is run an adequate number of times for statistical relevance, and the key metrics are to be captured each time. Performance comparisons will be made with average values. This practice will allow for more consistent performance analysis across implementations. Specifically, the sampling algorithms will be tested with well-known open-source datasets, such as the Breast Cancer Wisconsin Diagnostic Dataset \cite{breastcancer}, the Iris Dataset \cite{iris} among others. A comprehensive and detailed review of each experiment conducted is included in \textbf{Appendix A}.
+
+Lastly, we will assess whether the sampling algorithms contribute positively or negatively when used to train different prediction models beyond binary classification.
+
 
 \subsection{Baseline Setup: Slow Logistic Regression}
 
-\subsubsection{Overview}
+In this study, we evaluate the impacts of a simplified version of the sampling algorithm proposed by \citet{chow24}, as well as an algorithm for true random sampling with uniform probability distribution, used for comparative analysis. These sampling algorithms are evaluated across a diverse variety of prediction models and databases, however, we here are primarily interested in assessing their applicability for predictions performed by \textbf{logistic regression} models. 
 
-In this work, we set a performance baseline with our own implementation of the logistic regression algorithm, which is provided in Python code by class \texttt{SlowLogisticRegression}. It provides an abstraction that allows us to create a logistic regression prediction model.
+To set a performance baseline for our analysis, we start with our own implementation of the logistic regression algorithm, which is provided in Python code by class \texttt{SlowLogisticRegression}. It provides an abstraction that allows us to create a logistic regression prediction model.
 
 By design, \texttt{SlowLogisticRegression} employs a simple implementation strategy, which is intentionally not optimized. The rationale behind this decision is that a slower model would allow for better visualization of the impacts of the sampling algorithms explored here, which are the focus of this work. In other words, we are interested in measuring the extent to which the sampling algorithms improve (or degrade) a logistic regression model that does not implement any other optimizations. This approach will allow us to isolate the impacts caused specifically by the sampling algorithms.
 
@@ -290,16 +283,13 @@ At a high level, the goal of the sampling algorithm proposed by \citeauthor{chow
 To better analyze the algorithm and assess its transportability to different prediction models, we encapsulate our first implementation attempt, which is provided in Python code, in class \texttt{BasicLeverageScoresSampler}. This class represents the first iteration of the randomized sampling algorithm on which this study is focused. However, this version \textbf{simplifies} the paper's approach. Such simplification will be useful later when benchmarking different implementations and analyzing trade-offs.
 
 
-\subsubsection{Leverage Scores Calculation}
+\subsubsection{Sampling Method}
 
 To estimate the relevance of each data-point in the dataset, the Singular Value Decomposition (SVD) method is applied. The matrix $X$ is decomposed into its singular vectors and values, and the leverage score for each dataset entry (row in the matrix) is calculated as the sum of the squares of the elements in the corresponding row of the left singular vector matrix.
 
 This step directly follows the approach proposed in the paper. Specifically, the paper states that leverage scores can be computed using SVD to capture the importance of each data point in the dataset with respect to the model. Even though the paper does not specify exactly how the leverage scores are used to calculate the final sample, it does mention that leverage scores help to sample data points that contribute the most to the model’s accuracy.
 
-
-\subsubsection{Sampling}
-
-\textbf{Algorithm 1} is a simplified version of the sampling algorithm proposed by \citet{chow24}. The computed leverage scores are first normalized to create a probability distribution that sums to $1$. This normalized distribution is then used to sample rows from the dataset $X$. The number of rows sampled is determined by a customizeable parameter.
+\textbf{Algorithm 1} is a simplified version of the sampling algorithm proposed by \citet{chow24}. The computed leverage scores are first normalized to create a probability distribution that sums to $1$. This normalized distribution is then used to sample rows from the dataset $X$. The number of rows sampled is determined by a customizeable parameter. This sampling process closely follows the paper’s method. The authors are specific on the fact that the leverage scores are used to form a probability distribution from which data points are selected. Rows with higher leverage scores are more likely to be chosen for the sample, ensuring that important data points (those that affect the model the most) are more likely to be included in the subsampled dataset.
 
 \begin{algorithm}[tb]
 	\caption{Basic Leverage Scores Sampling}
@@ -321,9 +311,6 @@ This step directly follows the approach proposed in the paper. Specifically, the
 	\end{algorithmic}
 \end{algorithm}
 
-This sampling process closely follows the paper’s method. The authors are specific on the fact that the leverage scores are used to form a probability distribution from which data points are selected. Rows with higher leverage scores are more likely to be chosen for the sample, ensuring that important data points (those that affect the model the most) are more likely to be included in the subsampled dataset.
-
-\subsubsection{\texttt{BasicLeverageScoresSampler} versus \citeauthor{chow24}'s Approach}
 
 The simplified implementation provided by \texttt{BasicLeverageScoresSampler} simplifies the original strategy taken by the authors, offering a simplified version of the approach described in the paper. While it is arguably \textbf{more computationally efficient}, it does not fully capture the optimizations and error guarantees of the paper's more complex sampling model. The approach proposed by the authors would be more appropriate for high-dimensional datasets or applications where precise error bounds and model accuracy are critical. However, for many practical purposes, the simpler implementation can provide a reasonable trade-off between speed and approximation accuracy.
 
@@ -360,13 +347,11 @@ To effectively benchmark advanced data reduction algorithms, it is essential to 
 
 Our implementation of the Uniform Random Sampler is encapsulated within a concise Python class, \texttt{RandomSampler}, intended to replicate simple, unbiased selection behavior. This simplicity allows us to quantify the improvements gained through more sophisticated sampling strategies relative to a truly random baseline. Consequently, performance variations observed between models trained on uniformly sampled data and those using leverage-based or feature-driven sampling methods directly reflect the added benefit of informed data-point selection.
 
-\subsubsection{Uniform Sampling Methodology}
+\subsubsection{Sampling Method}
 
 The fundamental principle underlying the Uniform Random Sampler algorithm is the equal likelihood of selection for each row of the dataset, ensuring unbiased representational distribution. Given a feature matrix $X$ of dimensions $(n_{samples} \times n_{features})$ and an associated target vector $y$, the Uniform Random Sampler selects a subset containing a predefined fraction of the original dataset, denoted as the sample percentage. Crucially, this sampling procedure employs uniform probabilities, assigning identical selection likelihood to every data entry, irrespective of feature values, variance, or distribution.
 
 Formally, the selection process calculates the number of samples to extract, determined by the sample percentage multiplied by the total number of rows in the dataset. Subsequently, a set of unique indices is drawn randomly without replacement from the range of available indices. The resulting sampled subset, represented by the matrices $X_{sampled}$ and $y_{sampled}$, is then utilized to train the corresponding machine learning model. The simplicity of this method ensures its computational efficiency, making it highly suitable for large-scale datasets as a baseline sampling procedure.
-
-\subsubsection{Sampling}
 
 The implementation of the uniform random sampling algorithm is detailed in \textbf{Algorithm 2}. Initially, it calculates the exact number of samples required based on the user-specified sample rate. Next, a uniform random selection without replacement is performed on the available indices, yielding an unbiased subset of dataset rows. Finally, the sampled indices are employed to extract the corresponding rows from the feature and target matrices.
 
@@ -389,45 +374,14 @@ The implementation of the uniform random sampling algorithm is detailed in \text
 \end{algorithm}
 
 
-\subsubsection{Baseline Benchmarking and Analysis}
-
 The explicit introduction of uniform random sampling as a baseline significantly enriches comparative studies focused on dataset reduction. It enables precise quantification of the value added by complex selection strategies, such as those leveraging SVD-derived scores, feature importance, or prediction uncertainty. Consequently, due to the experimental nature of this study, we can more conclusively demonstrate the impacts attributable to the various sampling methods by explicitly contrasting their results against a standardized, unbiased baseline.
-
-
-\subsubsection{Methodology}
-
-To achieve the aforementioned goals, a thorough benchmark is necessary to evaluate how the simplified algorithm performs relative to the full implementation in diverse datasets. To keep comparisons objective, we will focus on select metrics such as \textbf{accuracy} and \textbf{training time}. Formally:
-$$
-Accuracy(y, \hat{y}) = \frac{1}{n} \sum_{i=0}^{n-1} 1(\hat{y}_i = y_i)
-$$
-
-$$
-Training\text{ }Time = s + t
-$$
-
-Where:
-
-\begin{itemize}
-
-\item[$y$] is a vector representing the true values.
-\item[$\hat{y}$] is a vector representing the predictions.
-\item[$n$] is the number of predictions.
-\item[$s$] is the time consumed by the sampling algorithm. This is $zero$ for non-sampled models.
-\item[$t$] is the time consumed by the training process.
-
-
-\end{itemize}
-
-Moreover, each algorithm-dataset combination is run an adequate number of times for statistical relevance, and the key metrics are to be captured each time. Performance comparisons will be made with average values. This practice will allow for more consistent performance analysis across implementations. Specifically, the simplified and complete versions of the algorithms will be tested with different databases, such as those used by \citeauthor{chow24}, and also well-known open-source datasets, such as the Breast Cancer Wisconsin Diagnostic Data Set \cite{breastcancer}, among others. Further details regarding experiment design are included in \textbf{Appendix A}.
-
-Lastly, we will assess whether the sampling algorithms contribute positively or negatively when used to train different prediction models beyond binary classification.
 
 
 \section{Experimental Results}
 
 \subsection{Experiments}
 
-To assess the efficacy of the sampling algorithms explored by this study, experiments have been conducted as detailed in Appendix A.
+To assess the efficacy of the sampling algorithms explored by this study, comprehensive experiments have been conducted as detailed in Appendix A. This section provides a short summary of observations for each set of experiments.
 
 \begin{table}[t]
 	\caption{Experiments conducted for logistic regression using \texttt{SlowLogisticRegression} and corresponding average accuracy $Acc$ and training time $t_{training}$ for leverage scores random sampling and uniform random sampling.}
@@ -580,12 +534,6 @@ Future research efforts can build upon these findings by further strengthening t
 The source code for this work can be downloaded at:
 
 \url{https://github.com/luizparente/logistic-regression}
-
-\section*{Impact Statement}
-
-This paper presents a study which goal is to advance the field of
-Machine Learning, particularly in what is known regarding dataset reduction. There are many potential societal implications
-of our work, none which we feel must be specifically highlighted here.
 
 
 \bibliography{paper_references}
@@ -874,7 +822,7 @@ The expected outcomes for this experiment have been empirically confirmed, as il
 	\vskip 0.2in
 	\begin{center}
 		\centerline{\includegraphics[width=\columnwidth]{experiment_05}}
-		\caption{Mean accuracies and training times observed over 20 training cycles of \texttt{SlowLogisticRegression}, with \texttt{RandomSampler} sampling, using the Breast Cancer Wisconsin Diagnostic Dataset \cite{breastcancer}.}
+		\caption{Mean accuracies and training times observed over 100 training cycles of \texttt{SlowLogisticRegression}, with \texttt{RandomSampler} sampling, using the Breast Cancer Wisconsin Diagnostic Dataset \cite{breastcancer}.}
 		\label{experiment_05}
 	\end{center}
 	\vskip -0.2in
@@ -947,7 +895,7 @@ The classification model employed is provided by SciKit-Learn's \texttt{KNeighbo
 
 \subsubsection{Experimental Procedure}
 
-The experiment is repeated 100 times for statistical relevance. For each iteration:
+The experiment is repeated 1000 times for statistical relevance. For each iteration:
 
 \begin{itemize}
 	\item [1.] The dataset is split into training and test sets.
@@ -982,7 +930,7 @@ The expected outcomes for this experiment have been empirically confirmed, as il
 	\vskip 0.2in
 	\begin{center}
 		\centerline{\includegraphics[width=\columnwidth]{experiment_07}}
-		\caption{Mean accuracies and training times observed over 100 training cycles of \texttt{KNeighborsClassifier}, without any sampling, using the Iris Dataset \cite{iris}.}
+		\caption{Mean accuracies and training times observed over 1000 training cycles of \texttt{KNeighborsClassifier}, without any sampling, using the Iris Dataset \cite{iris}.}
 		\label{experiment_07}
 	\end{center}
 	\vskip -0.2in
@@ -1008,7 +956,7 @@ The classification model employed is provided by SciKit-Learn's \texttt{KNeighbo
 
 \subsubsection{Experimental Procedure}
 
-The experiment is repeated 100 times for statistical relevance. For each iteration:
+The experiment is repeated 1000 times for statistical relevance. For each iteration:
 
 \begin{itemize}
 	\item [1.] The dataset is sampled to 20\% of its original size using \texttt{BasicLeverageScoresSampler}.
@@ -1041,7 +989,7 @@ The expected outcomes for this experiment have been empirically confirmed, as il
 	\vskip 0.2in
 	\begin{center}
 		\centerline{\includegraphics[width=\columnwidth]{experiment_08}}
-		\caption{Mean accuracies and training times observed over 100 training cycles of \texttt{KNeighborsClassifier}, with \texttt{BasicLeverageScoresSampler} sampling, using the Iris Dataset \cite{iris}.}
+		\caption{Mean accuracies and training times observed over 1000 training cycles of \texttt{KNeighborsClassifier}, with \texttt{BasicLeverageScoresSampler} sampling, using the Iris Dataset \cite{iris}.}
 		\label{experiment_08}
 	\end{center}
 	\vskip -0.2in
@@ -1067,7 +1015,7 @@ The classification model employed is provided by SciKit-Learn's \texttt{KNeighbo
 
 \subsubsection{Experimental Procedure}
 
-The experiment is repeated 100 times for statistical relevance. For each iteration:
+The experiment is repeated 1000 times for statistical relevance. For each iteration:
 
 \begin{itemize}
 	\item [1.] The dataset is sampled to 20\% of its original size using \texttt{RandomSampler}.
@@ -1100,7 +1048,7 @@ The expected outcomes for this experiment have been empirically confirmed, as il
 	\vskip 0.2in
 	\begin{center}
 		\centerline{\includegraphics[width=\columnwidth]{experiment_09}}
-		\caption{Mean accuracies and training times observed over 100 training cycles of \texttt{KNeighborsClassifier}, with \texttt{RandomSampler} sampling, using the Iris Dataset \cite{iris}.}
+		\caption{Mean accuracies and training times observed over 1000 training cycles of \texttt{KNeighborsClassifier}, with \texttt{RandomSampler} sampling, using the Iris Dataset \cite{iris}.}
 		\label{experiment_09}
 	\end{center}
 	\vskip -0.2in
@@ -1128,7 +1076,7 @@ The classification model employed is provided by SciKit-Learn's \texttt{SVC} cla
 
 \subsubsection{Experimental Procedure}
 
-The experiment is repeated 100 times for statistical relevance. For each iteration:
+The experiment is repeated 1000 times for statistical relevance. For each iteration:
 
 \begin{itemize}
 	\item [1.] The dataset is split into training and test sets.
@@ -1163,7 +1111,7 @@ The expected outcomes for this experiment have been empirically confirmed, as il
 	\vskip 0.2in
 	\begin{center}
 		\centerline{\includegraphics[width=\columnwidth]{experiment_10}}
-		\caption{Mean accuracies and training times observed over 100 training cycles of \texttt{SVC}, without any sampling, using the Iris Dataset \cite{iris}.}
+		\caption{Mean accuracies and training times observed over 1000 training cycles of \texttt{SVC}, without any sampling, using the Iris Dataset \cite{iris}.}
 		\label{experiment_10}
 	\end{center}
 	\vskip -0.2in
@@ -1189,7 +1137,7 @@ The classification model employed is provided by SciKit-Learn's \texttt{SVC} cla
 
 \subsubsection{Experimental Procedure}
 
-The experiment is repeated 100 times for statistical relevance. For each iteration:
+The experiment is repeated 1000 times for statistical relevance. For each iteration:
 
 \begin{itemize}
 	\item [1.] The dataset is sampled to 20\% of its original size using \texttt{BasicLeverageScoresSampler}.
@@ -1222,7 +1170,7 @@ The expected outcomes for this experiment have been empirically confirmed, as il
 	\vskip 0.2in
 	\begin{center}
 		\centerline{\includegraphics[width=\columnwidth]{experiment_11}}
-		\caption{Mean accuracies and training times observed over 100 training cycles of \texttt{SVC}, with \texttt{BasicLeverageScoresSampler} sampling, using the Iris Dataset \cite{iris}.}
+		\caption{Mean accuracies and training times observed over 1000 training cycles of \texttt{SVC}, with \texttt{BasicLeverageScoresSampler} sampling, using the Iris Dataset \cite{iris}.}
 		\label{experiment_11}
 	\end{center}
 	\vskip -0.2in
@@ -1248,7 +1196,7 @@ The classification model employed is provided by SciKit-Learn's \texttt{SVC} cla
 
 \subsubsection{Experimental Procedure}
 
-The experiment is repeated 100 times for statistical relevance. For each iteration:
+The experiment is repeated 1000 times for statistical relevance. For each iteration:
 
 \begin{itemize}
 	\item [1.] The dataset is sampled to 20\% of its original size using \texttt{RandomSampler}.
@@ -1281,7 +1229,7 @@ The expected outcomes for this experiment have been empirically confirmed, as il
 	\vskip 0.2in
 	\begin{center}
 		\centerline{\includegraphics[width=\columnwidth]{experiment_12}}
-		\caption{Mean accuracies and training times observed over 100 training cycles of \texttt{SVC}, with \texttt{RandomSampler} sampling, using the Iris Dataset \cite{iris}.}
+		\caption{Mean accuracies and training times observed over 1000 training cycles of \texttt{SVC}, with \texttt{RandomSampler} sampling, using the Iris Dataset \cite{iris}.}
 		\label{experiment_12}
 	\end{center}
 	\vskip -0.2in
@@ -1309,7 +1257,7 @@ The classification model employed is provided by SciKit-Learn's \texttt{RandomFo
 
 \subsubsection{Experimental Procedure}
 
-The experiment is repeated 100 times for statistical relevance. For each iteration:
+The experiment is repeated 1000 times for statistical relevance. For each iteration:
 
 \begin{itemize}
 	\item [1.] The dataset is split into training and test sets.
@@ -1344,7 +1292,7 @@ The expected outcomes for this experiment have been empirically confirmed, as il
 	\vskip 0.2in
 	\begin{center}
 		\centerline{\includegraphics[width=\columnwidth]{experiment_13}}
-		\caption{Mean accuracies and training times observed over 100 training cycles of \texttt{RandomForestClassifier}, without any sampling, using the Wine Dataset \cite{wine}.}
+		\caption{Mean accuracies and training times observed over 1000 training cycles of \texttt{RandomForestClassifier}, without any sampling, using the Wine Dataset \cite{wine}.}
 		\label{experiment_13}
 	\end{center}
 	\vskip -0.2in
@@ -1370,7 +1318,7 @@ The classification model employed is provided by SciKit-Learn's \texttt{RandomFo
 
 \subsubsection{Experimental Procedure}
 
-The experiment is repeated 100 times for statistical relevance. For each iteration:
+The experiment is repeated 1000 times for statistical relevance. For each iteration:
 
 \begin{itemize}
 	\item [1.] The dataset is sampled to 20\% of its original size using \texttt{BasicLeverageScoresSampler}.
@@ -1403,7 +1351,7 @@ The expected outcomes for this experiment have been empirically confirmed, as il
 	\vskip 0.2in
 	\begin{center}
 		\centerline{\includegraphics[width=\columnwidth]{experiment_14}}
-		\caption{Mean accuracies and training times observed over 100 training cycles of \texttt{RandomForestClassifier}, with \texttt{BasicLeverageScoresSampler} sampling, using the Wine Dataset \cite{wine}.}
+		\caption{Mean accuracies and training times observed over 1000 training cycles of \texttt{RandomForestClassifier}, with \texttt{BasicLeverageScoresSampler} sampling, using the Wine Dataset \cite{wine}.}
 		\label{experiment_14}
 	\end{center}
 	\vskip -0.2in
@@ -1429,7 +1377,7 @@ The classification model employed is provided by SciKit-Learn's \texttt{RandomFo
 
 \subsubsection{Experimental Procedure}
 
-The experiment is repeated 100 times for statistical relevance. For each iteration:
+The experiment is repeated 1000 times for statistical relevance. For each iteration:
 
 \begin{itemize}
 	\item [1.] The dataset is sampled to 20\% of its original size using \texttt{RandomSampler}.
@@ -1446,7 +1394,7 @@ This procedure records the accuracy scores and training times across each cycle,
 	\vskip 0.2in
 	\begin{center}
 		\centerline{\includegraphics[width=\columnwidth]{experiment_15}}
-		\caption{Mean accuracies and training times observed over 100 training cycles of \texttt{RandomForestClassifier}, with \texttt{RandomSampler} sampling, using the Wine Dataset \cite{wine}.}
+		\caption{Mean accuracies and training times observed over 1000 training cycles of \texttt{RandomForestClassifier}, with \texttt{RandomSampler} sampling, using the Wine Dataset \cite{wine}.}
 		\label{experiment_15}
 	\end{center}
 	\vskip -0.2in
