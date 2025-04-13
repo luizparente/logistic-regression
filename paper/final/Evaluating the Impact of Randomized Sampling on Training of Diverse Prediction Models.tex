@@ -138,7 +138,7 @@ Through comprehensive experimental analysis, this work seeks to answer a key que
 
 \subsection{Goals}
 
-This study aims to explore potential solutions to the computational challenges posed by the use of high-dimensional datasets in the context of prediction model training. Objectively, we evaluate the impacts, implementations, and viable utilizations for randomized sampling algorithms originally designed for logistic regression models. Given a dataset, the goal is to derive a smaller subset that retains the most representative characteristics of the data, allowing the subset to be used for training prediction models capable of achieving accuracy levels comparable to models trained on the entire dataset. We aim to investigate, both theoretically and experimentally, whether the algorithms outlined in this study are successful at reducing the size of training datasets while preserving representativeness of the original data. If successful, this method can present a viable strategy for addressing many barriers faced when handling large databases in machine learning applications.
+This study aims to explore potential solutions to the challenges posed by the use of high-dimensional datasets in the context of prediction model training. Objectively, we evaluate the impacts, implementations, and viable utilizations for randomized sampling algorithms in deriving smaller data subsets that retain the most representative characteristics of the original dataset, allowing for faster training of prediction models. If successful, this method can present a viable strategy for addressing many barriers faced when handling large databases in machine learning applications.
 
 
 \subsection{Key Metrics}
@@ -280,16 +280,14 @@ $$
 
 At a high level, the goal of the sampling algorithm proposed by \citeauthor{chow24} is to derive a sampled subset that efficiently approximate the full dataset. This is achieved by performing Singular Value Decomposition (SVD) on the data matrix $X$ to calculate leverage scores, then using it to sample a subset of the data. Finally, the sampled data is used to train a logistic regression model, which is expected to closely replicate the performance of a model trained on the entire dataset.
 
-To better analyze the algorithm and assess its transportability to different prediction models, we encapsulate our first implementation attempt, which is provided in Python code, in class \texttt{BasicLeverageScoresSampler}. This class represents the first iteration of the randomized sampling algorithm on which this study is focused. However, this version \textbf{simplifies} the paper's approach. Such simplification will be useful later when benchmarking different implementations and analyzing trade-offs.
+To better analyze the algorithm and assess its transportability to different prediction models, we encapsulate our simplified implementation, which is provided in Python code, in class \texttt{BasicLeverageScoresSampler}. This class represents the first iteration of the randomized sampling algorithm on which this study is focused. However, this version \textbf{simplifies} the paper's approach. Such simplification will be useful later when benchmarking different implementations and analyzing trade-offs.
 
 
 \subsubsection{Sampling Method}
 
-To estimate the relevance of each data-point in the dataset, the Singular Value Decomposition (SVD) method is applied. The matrix $X$ is decomposed into its singular vectors and values, and the leverage score for each dataset entry (row in the matrix) is calculated as the sum of the squares of the elements in the corresponding row of the left singular vector matrix.
+To estimate the relevance of each data-point in the dataset, the Singular Value Decomposition (SVD) method is applied. The matrix $X$ is decomposed into its singular vectors and values, and the leverage score for each dataset entry (row in the matrix) is calculated as the sum of the squares of the elements in the corresponding row of the left singular vector matrix. This step directly follows the approach proposed by \citet{chow24}. Specifically, the paper states that leverage scores can be computed using SVD to capture the importance of each data point in the dataset with respect to the model.
 
-This step directly follows the approach proposed in the paper. Specifically, the paper states that leverage scores can be computed using SVD to capture the importance of each data point in the dataset with respect to the model. Even though the paper does not specify exactly how the leverage scores are used to calculate the final sample, it does mention that leverage scores help to sample data points that contribute the most to the model’s accuracy.
-
-\textbf{Algorithm 1} is a simplified version of the sampling algorithm proposed by \citet{chow24}. The computed leverage scores are first normalized to create a probability distribution that sums to $1$. This normalized distribution is then used to sample rows from the dataset $X$. The number of rows sampled is determined by a customizeable parameter. This sampling process closely follows the paper’s method. The authors are specific on the fact that the leverage scores are used to form a probability distribution from which data points are selected. Rows with higher leverage scores are more likely to be chosen for the sample, ensuring that important data points (those that affect the model the most) are more likely to be included in the subsampled dataset.
+\textbf{Algorithm 1} is a simplified version of the sampling algorithm proposed by \citet{chow24}. The computed leverage scores are first normalized to create a probability distribution that sums to $1$. This normalized distribution is then used to sample rows from the dataset $X$. The number of rows sampled is determined by a customizeable parameter. Rows with higher leverage scores are more likely to be chosen for the sample, ensuring that important data points (those that affect the model the most) are more likely to be included in the subsampled dataset.
 
 \begin{algorithm}[tb]
 	\caption{Basic Leverage Scores Sampling}
@@ -312,11 +310,9 @@ This step directly follows the approach proposed in the paper. Specifically, the
 \end{algorithm}
 
 
-The simplified implementation provided by \texttt{BasicLeverageScoresSampler} simplifies the original strategy taken by the authors, offering a simplified version of the approach described in the paper. While it is arguably \textbf{more computationally efficient}, it does not fully capture the optimizations and error guarantees of the paper's more complex sampling model. The approach proposed by the authors would be more appropriate for high-dimensional datasets or applications where precise error bounds and model accuracy are critical. However, for many practical purposes, the simpler implementation can provide a reasonable trade-off between speed and approximation accuracy.
+The implementation provided by \texttt{BasicLeverageScoresSampler} simplifies the original strategy taken by \citet{chow24}. While it is arguably \textbf{more computationally efficient}, it does not fully capture the optimizations and error guarantees of the paper's more complex sampling model. The approach proposed by the authors would be more appropriate for high-dimensional datasets or applications where precise error bounds and model accuracy are critical. However, for many practical purposes, the simpler implementation can provide a reasonable trade-off between speed and approximation accuracy.
 
 More specifically, the paper describes a more detailed approach where not only the leverage scores are used to sample the data, but also a \textit{sketching matrix}, which allows the logistic regression model to be approximated more efficiently by reducing the dimensionality of the problem. The full matrix is used to modify how the data is projected into a lower-dimensional space, enabling faster training. In contrast, our initial implementation skips the step of constructing the sketching matrix. This simplifies the implementation, but results in a slightly less optimized solution as a trade-off.
-
-Moreover, the authors design theoretical guarantees for how well the sampled data approximates the full dataset. The process involves complex mathematical analysis to bound the error in terms of approximation. Our implementation does not include these guarantees. While it is expected to work well in practice, we do not have formal error bounds for the approximation quality in this initial implementation.
 
 In contemplation of the approach proposed by our initial implementation, we identify key advantages to simplifying the original algorithm:
 
@@ -518,6 +514,18 @@ Further analysis addressed the use of sampling methods with the Support Vector M
 Lastly, experiments focused on applying sampling methods to a Random Forest Classifier trained with SciKit-Learn's \texttt{RandomForestClassifier} model and the Wine dataset \cite{wine}. Both sampling methods yielded minor training time improvements, with uniform sampling slightly outperforming leverage-based sampling ($0.12 \pm 0.01$ ms versus $0.13 \pm 0.01$ ms), compared to the original training time of $0.15 \pm 0.02$ ms. However, the accuracy reductions of seven percent for leverage-based sampling and six percent for uniform random sampling represented significant declines. No statistically significant difference between the two sampling methods was identified, suggesting that uniform random sampling might be equally effective—or ineffective—in this context, without the added computational complexity of leverage-based sampling.
 
 Overall, these experiments suggest that random sampling algorithms, whether informed by leverage scores or employing uniform selection probability, effectively reduce computational training effort, though often at a variable cost to model accuracy, strongly dependent upon the specific learning algorithm and dataset characteristics. Logistic regression models demonstrated the most promising results, exhibiting minimal accuracy degradation, whereas methods sensitive to the training set's composition, such as SVM and Random Forest, exhibited more substantial accuracy losses. Consequently, while these sampling approaches are valuable tools for dataset reduction in computationally intensive scenarios, careful evaluation and analysis of trade-offs specific to each application domain remain essential for their effective and practical deployment.
+
+\section{Contribution}
+
+The main focus of this work is to provide an implementation of the leverage scores sampling algorithm proposed by \citet{chow24} for \textbf{logistic regression}. Nevertheless, our contribution extends to additionally include the following items:
+
+\begin{itemize}
+	\item \textbf{A comparative analysis} of how the leverage-scores-based algorithm performs versus a random selection algorithm with uniform probability distribution, and whether advantages can be perceived in employing the more complex selection strategy of leverage scores when sampling the data.
+	
+	\item \textbf{An empirical analysis} of whether these sampling algorithms provide the same advantages observed for logistic regression when training other classification models, namely K-Nearest Neighbors, Support Vector Machine, and Random Forest Classification.
+\end{itemize}
+
+These efforts aim to extrapolate the study of applicability of random sampling algorithms in the context of classification models, and provide a hands-on exploration of the various use-cases through the experiments designed for this study.
 
 
 \section{Conclusion and Future Direction}
